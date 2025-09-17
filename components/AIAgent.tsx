@@ -597,6 +597,16 @@ Detta tar bara några sekunder!`,
                 <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
                   Rekommenderad hastighet: {calculateBandwidthNeed(state.userProfile)} Mbit/s
                 </p>
+                
+                {/* Real data indicator */}
+                <div className="mt-2 flex justify-center">
+                  <div className="flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/20 
+                                 text-green-700 dark:text-green-400 rounded-full text-sm">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    Live-data från Bredbandsval.se
+                  </div>
+                </div>
+                
                 <div className="mt-4 flex justify-center">
                   <ShareRecommendations 
                     recommendations={recommendations}

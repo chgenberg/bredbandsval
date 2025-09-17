@@ -44,10 +44,67 @@ export class BredbandsvalAPI {
     maxPrice?: number;
     providers?: string[];
   }): Promise<ProviderPackage[]> {
+    // Try scraping real data first
+    try {
+      console.log(`🔍 Fetching real data for ${address}`);
+      
+      const response = await fetch('/api/scrape-packages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.packages && data.packages.length > 0) {
+          console.log(`✅ Got ${data.packages.length} real packages from ${data.source}`);
+          
+          // Convert scraped data to our format
+          const convertedPackages = data.packages.map((pkg: any) => ({
+            id: pkg.id,
+            providerId: pkg.providerName.toLowerCase().replace(/\s+/g, '-'),
+            providerName: pkg.providerName,
+            name: pkg.name,
+            speed: pkg.speed,
+            pricing: pkg.pricing,
+            contract: pkg.contract,
+            includes: pkg.includes,
+            availability: pkg.availability,
+          }));
+
+          // Apply filters if provided
+          let filtered = convertedPackages;
+          if (filters?.minSpeed) {
+            filtered = filtered.filter((pkg: any) => pkg.speed.download >= filters.minSpeed!);
+          }
+          if (filters?.maxPrice) {
+            filtered = filtered.filter((pkg: any) => {
+              const price = pkg.pricing.campaign?.monthlyPrice || pkg.pricing.monthly;
+              return price <= filters.maxPrice!;
+            });
+          }
+          if (filters?.providers && filters.providers.length > 0) {
+            filtered = filtered.filter((pkg: any) => 
+              filters.providers!.some(p => 
+                pkg.providerName.toLowerCase().includes(p.toLowerCase())
+              )
+            );
+          }
+
+          return filtered;
+        }
+      }
+    } catch (error) {
+      console.warn('Scraping failed, falling back to mock data:', error);
+    }
+
+    // Fallback to mock data
     if (USE_MOCK_DATA) {
+      console.log('📦 Using mock data as fallback');
       return mockProviderPackages(address, filters);
     }
 
+    // Try original API as last resort
     try {
       const params = new URLSearchParams({
         address,
@@ -60,7 +117,7 @@ export class BredbandsvalAPI {
       if (!response.ok) throw new Error('Failed to fetch packages');
       return await response.json();
     } catch (error) {
-      console.warn('API call failed, using mock data:', error);
+      console.warn('All data sources failed, using mock data:', error);
       return mockProviderPackages(address, filters);
     }
   }
