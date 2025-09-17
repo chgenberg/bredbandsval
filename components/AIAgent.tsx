@@ -10,7 +10,7 @@ import RecommendationCard from './RecommendationCard';
 import AddressAutocomplete from './AddressAutocomplete';
 import StreamingCalculator from './StreamingCalculator';
 import ShareRecommendations from './ShareRecommendations';
-import { ConversationState, Message, ConversationStep } from '@/types';
+import { ConversationState, Message } from '@/types';
 import { conversationFlow, calculateBandwidthNeed } from '@/lib/conversation-flow';
 import { bredbandsvalAPI } from '@/lib/api/client';
 import { LocalStorage } from '@/lib/storage';
@@ -24,7 +24,14 @@ export default function AIAgent() {
     messages: [],
     isTyping: false,
   });
-  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [recommendations, setRecommendations] = useState<Array<{
+    package: any;
+    score: number;
+    reasons: string[];
+    pros: string[];
+    cons: string[];
+    savings: { monthly: number; yearly: number; streaming: number };
+  }>>([]);
   const [showStreamingCalc, setShowStreamingCalc] = useState(false);
   const [showAddressInput, setShowAddressInput] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -45,7 +52,7 @@ export default function AIAgent() {
       analytics.track('conversation_resumed');
     } else {
       // Initial welcome message
-      const welcomeMessage = conversationFlow.welcome.getMessage(state.userProfile);
+      const welcomeMessage = conversationFlow.welcome.getMessage({});
       const quickReplies = conversationFlow.welcome.getQuickReplies?.();
       
       setState(prev => ({
@@ -96,7 +103,6 @@ export default function AIAgent() {
     
     // Generate recommendations if we're at the calculating step
     if (nextStep === 'recommendations') {
-      const bandwidthNeed = calculateBandwidthNeed(updatedProfile);
       
       // Get recommendations from API
       const addressData = await bredbandsvalAPI.lookupAddress(updatedProfile.address || '');

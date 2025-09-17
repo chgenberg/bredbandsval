@@ -64,20 +64,27 @@ body {
 
 /* Message bubble styles */
 .message-bubble {
-  @apply rounded-2xl px-4 py-3 max-w-[80%];
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  max-width: 80%;
 }
 
 .user-message {
-  @apply bg-blue-500 text-white ml-auto;
+  background-color: rgb(59 130 246);
+  color: white;
+  margin-left: auto;
 }
 
 .agent-message {
-  @apply bg-gray-100 text-gray-900 mr-auto;
+  background-color: rgb(243 244 246);
+  color: rgb(17 24 39);
+  margin-right: auto;
 }
 
 @media (prefers-color-scheme: dark) {
   .agent-message {
-    @apply bg-gray-800 text-gray-100;
+    background-color: rgb(31 41 55);
+    color: rgb(243 244 246);
   }
 }
 

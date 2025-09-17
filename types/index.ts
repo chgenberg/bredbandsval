@@ -47,7 +47,6 @@ export interface Recommendation {
 
 export type ConversationStep = 
   | 'welcome'
-  | 'address'
   | 'household-size'
   | 'usage-streaming'
   | 'usage-gaming'
@@ -57,7 +56,6 @@ export type ConversationStep =
   | 'tv-channels'
   | 'streaming-services'
   | 'sports'
-  | 'current-services'
   | 'calculating'
   | 'recommendations';
 

@@ -5,8 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Share2, Mail, Download, Copy, Check, X } from 'lucide-react';
 
 interface ShareRecommendationsProps {
-  recommendations: any[];
-  userProfile: any;
+  recommendations: Array<{
+    package: { providerName: string; name: string; speed: { download: number }; pricing: { monthly: number } };
+    savings: { monthly: number };
+  }>;
+  userProfile: {
+    address?: string;
+    householdSize?: number;
+    estimatedBandwidthNeed?: number;
+  };
 }
 
 export default function ShareRecommendations({ recommendations, userProfile }: ShareRecommendationsProps) {
@@ -31,9 +38,9 @@ export default function ShareRecommendations({ recommendations, userProfile }: S
 
 Top 3 rekommendationer:
 ${recommendations.slice(0, 3).map((rec, i) => `
-${i + 1}. ${rec.provider} - ${rec.packageName}
-   💰 ${rec.price} kr/mån
-   ⚡ ${rec.speed} Mbit/s
+${i + 1}. ${rec.package.providerName} - ${rec.package.name}
+   💰 ${rec.package.pricing.monthly} kr/mån
+   ⚡ ${rec.package.speed.download} Mbit/s
    ${rec.savings?.monthly > 0 ? `💵 Sparar ${rec.savings.monthly} kr/mån på streaming` : ''}
 `).join('\n')}
 
@@ -105,7 +112,7 @@ Se alla detaljer: ${generateShareableLink()}`;
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-xl"
+              className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl"
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold">Dela dina rekommendationer</h3>

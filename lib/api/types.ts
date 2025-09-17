@@ -101,7 +101,7 @@ export interface UserPreferences {
   };
   preferences: {
     maxBudget?: number;
-    contractLength: 'none' | 'short' | 'long';
+    contractLength: 'none' | 'short' | 'long' | 'no-preference';
     includeRouter: boolean | null;
     tvChannels: string[];
     streamingServices: string[];

@@ -24,7 +24,6 @@ export default function RecommendationCard({
   bindingTime,
   features,
   savings,
-  matchScore,
   reasoning,
   index,
 }: RecommendationProps) {
@@ -44,7 +43,7 @@ export default function RecommendationCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`relative rounded-2xl p-6 ${
+      className={`relative rounded-lg p-6 ${
         isTopChoice
           ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-xl'
           : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
@@ -114,7 +113,7 @@ export default function RecommendationCard({
       <div className={`text-sm italic ${
         isTopChoice ? 'text-blue-100' : 'text-gray-600 dark:text-gray-400'
       }`}>
-        "{reasoning}"
+        &ldquo;{reasoning}&rdquo;
       </div>
 
       <motion.button

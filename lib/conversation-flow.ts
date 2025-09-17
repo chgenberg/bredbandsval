@@ -1,4 +1,4 @@
-import { ConversationStep, UserProfile, Message, QuickReply } from '@/types';
+import { ConversationStep, UserProfile, QuickReply } from '@/types';
 
 export const conversationFlow: Record<ConversationStep, {
   getMessage: (profile: UserProfile) => string;
@@ -12,7 +12,7 @@ export const conversationFlow: Record<ConversationStep, {
 Jag hjälper dig hitta det perfekta bredbandet och TV-paketet baserat på just dina behov. 
 
 Låt oss börja med att ta reda på vad som finns tillgängligt där du bor. Vilken adress söker du bredband till?`,
-    processInput: (input, profile) => ({
+    processInput: (input) => ({
       address: input,
     }),
     nextStep: () => 'household-size',

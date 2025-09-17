@@ -1,4 +1,5 @@
-import { UserPreferences, ConversationState } from '@/types';
+import { UserPreferences } from '@/lib/api/types';
+import { ConversationState } from '@/types';
 
 const STORAGE_KEYS = {
   USER_PREFERENCES: 'bredbandsval_user_preferences',
@@ -92,10 +93,10 @@ export class LocalStorage {
   }
 
   // Save comparison to history
-  static saveComparisonToHistory(comparison: {
+  static   saveComparisonToHistory(comparison: {
     date: Date;
     address: string;
-    recommendations: any[];
+    recommendations: unknown[];
     preferences: Partial<UserPreferences>;
   }): void {
     try {
@@ -115,7 +116,7 @@ export class LocalStorage {
   }
 
   // Get comparison history
-  static getComparisonHistory(): any[] {
+  static getComparisonHistory(): unknown[] {
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.COMPARISON_HISTORY);
       return stored ? JSON.parse(stored) : [];
@@ -133,8 +134,8 @@ export class LocalStorage {
   }
 
   // Export all data (for GDPR compliance)
-  static exportAllData(): Record<string, any> {
-    const data: Record<string, any> = {};
+  static exportAllData(): Record<string, unknown> {
+    const data: Record<string, unknown> = {};
     
     Object.entries(STORAGE_KEYS).forEach(([name, key]) => {
       try {

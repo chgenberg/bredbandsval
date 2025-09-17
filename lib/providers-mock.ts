@@ -135,7 +135,7 @@ export const mockProviders: Provider[] = [
   },
 ];
 
-export function getRecommendations(profile: any, bandwidthNeed: number) {
+export function getRecommendations(profile: Record<string, unknown>, bandwidthNeed: number) {
   const allPackages = mockProviders.flatMap(provider => 
     provider.packages.map(pkg => ({ ...pkg, provider: provider.name }))
   );
@@ -178,7 +178,7 @@ export function getRecommendations(profile: any, bandwidthNeed: number) {
 
     // Streaming services match
     const matchingServices = pkg.streamingServices.filter(service => 
-      profile.streamingServices?.includes(service)
+      (profile.streamingServices as string[])?.includes(service)
     );
     if (matchingServices.length > 0) {
       score += matchingServices.length * 15;
@@ -187,7 +187,7 @@ export function getRecommendations(profile: any, bandwidthNeed: number) {
 
     // Sports match
     const matchingSports = pkg.sports.filter(sport => 
-      profile.sports?.includes(sport)
+      (profile.sports as string[])?.includes(sport)
     );
     if (matchingSports.length > 0) {
       score += matchingSports.length * 20;
@@ -196,7 +196,7 @@ export function getRecommendations(profile: any, bandwidthNeed: number) {
 
     // Beräkna potentiell besparing
     let savings = 0;
-    if (profile.currentStreamingServices?.length > 0) {
+    if ((profile.currentStreamingServices as string[])?.length > 0) {
       const streamingCosts: Record<string, number> = {
         'Netflix': 109,
         'HBO Max': 109,

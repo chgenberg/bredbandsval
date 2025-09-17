@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Check, X, TrendingDown, Info } from 'lucide-react';
+import { Check, TrendingDown, Info } from 'lucide-react';
 import { bredbandsvalAPI } from '@/lib/api/client';
 import { StreamingService } from '@/lib/api/types';
 
@@ -68,7 +68,7 @@ export default function StreamingCalculator({ onComplete }: StreamingCalculatorP
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg"
+      className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg"
     >
       <h3 className="text-xl font-semibold mb-4">Vilka streamingtjänster använder du idag?</h3>
       

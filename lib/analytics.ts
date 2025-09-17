@@ -3,7 +3,7 @@
 
 export interface AnalyticsEvent {
   name: string;
-  properties?: Record<string, any>;
+  properties?: Record<string, unknown>;
   timestamp: Date;
 }
 
@@ -41,7 +41,7 @@ export class Analytics {
   }
 
   // Track an event
-  track(eventName: string, properties?: Record<string, any>): void {
+  track(eventName: string, properties?: Record<string, unknown>): void {
     const event: AnalyticsEvent = {
       name: eventName,
       properties: {
@@ -77,11 +77,11 @@ export class Analytics {
   }
 
   // Track recommendations shown
-  trackRecommendationsShown(recommendations: any[], userPreferences: any): void {
+  trackRecommendationsShown(recommendations: unknown[], userPreferences: Record<string, unknown>): void {
     this.track('recommendations_shown', {
       recommendationCount: recommendations.length,
-      topProvider: recommendations[0]?.provider,
-      estimatedSavings: recommendations[0]?.savings?.monthly,
+      topProvider: (recommendations[0] as any)?.provider,
+      estimatedSavings: (recommendations[0] as any)?.savings?.monthly,
       userBandwidthNeed: userPreferences.estimatedBandwidthNeed,
       householdSize: userPreferences.householdSize,
     });
@@ -102,7 +102,7 @@ export class Analytics {
   }
 
   // Track errors
-  trackError(error: string, context?: Record<string, any>): void {
+  trackError(error: string, context?: Record<string, unknown>): void {
     this.track('error', {
       error,
       ...context,
