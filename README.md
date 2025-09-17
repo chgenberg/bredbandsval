@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bredbandsval AI Agent
 
-## Getting Started
+En modern AI-driven lösning för att hjälpa användare hitta det perfekta bredbandet och TV-paketet baserat på deras unika behov.
 
-First, run the development server:
+## 🚀 Funktioner
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Conversational AI Interface
+- **Naturlig konversation** - AI-agenten leder användaren genom processen med naturlig dialog
+- **Smart frågeflöde** - Dynamiska frågor som anpassar sig efter användarens svar
+- **Quick replies** - Snabba svarsalternativ för enklare interaktion
+- **Typing indicators** - Visuell feedback när agenten "tänker"
+
+### Avancerad Rekommendationsmotor
+- **Personaliserade rekommendationer** - Baserat på hushållsstorlek, användningsmönster och preferenser
+- **Bandbreddsberäkning** - Automatisk beräkning av bandbreddsbehov
+- **Besparingsanalys** - Visar potentiella besparingar när streaming ingår i paketet
+- **Smart ranking** - Poängsättning baserat på matchning mot användarens behov
+
+### Produktionsklara Features
+- **API-abstraktionslager** - Enkelt att byta mellan mock-data och riktiga API:er
+- **Adressökning med autocomplete** - Förberedd för Google Places API
+- **Lokal datalagring** - Sparar användarpreferenser och konversationshistorik
+- **Analytics** - Spårar användarflöden och konvertering
+- **Streamingkalkylator** - Beräknar kostnader och besparingar för streamingtjänster
+- **Export/dela funktionalitet** - Användare kan dela sina rekommendationer
+
+## 🛠️ Teknisk Stack
+
+- **Next.js 14** - React framework med App Router
+- **TypeScript** - För typsäkerhet och bättre utvecklarupplevelse
+- **Tailwind CSS** - För modern och responsiv design
+- **Framer Motion** - Smooth animationer
+- **LocalStorage API** - För datalagring
+
+## 📁 Projektstruktur
+
+```
+bredbandsval-ai-agent/
+├── app/                    # Next.js app directory
+├── components/             # React komponenter
+│   ├── AIAgent.tsx        # Huvudkomponent för AI-agenten
+│   ├── ChatMessage.tsx    # Meddelandekomponent
+│   ├── AddressAutocomplete.tsx # Adressökning
+│   ├── StreamingCalculator.tsx # Streamingkalkylator
+│   └── ...
+├── lib/                   # Utility funktioner och API:er
+│   ├── api/              # API-klient och typer
+│   ├── analytics.ts      # Analytics tracking
+│   ├── storage.ts        # LocalStorage wrapper
+│   └── conversation-flow.ts # Konversationslogik
+└── types/                # TypeScript typdefinitioner
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Installation & Utveckling
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Installera dependencies
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Starta utvecklingsserver
+npm run dev
 
-## Learn More
+# Bygg för produktion
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🔧 Konfiguration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Miljövariabler
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Skapa en `.env.local` fil:
 
-## Deploy on Vercel
+```env
+# API Configuration
+NEXT_PUBLIC_USE_MOCK_DATA=true  # Sätt till false för riktiga API:er
+NEXT_PUBLIC_API_BASE_URL=https://api.bredbandsval.se/v1
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Google Places API (för adressökning)
+NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=your-api-key
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Byta från Mock till Riktiga API:er
+
+1. Sätt `NEXT_PUBLIC_USE_MOCK_DATA=false`
+2. Uppdatera `API_BASE_URL` till er riktiga API endpoint
+3. API-klienten kommer automatiskt använda riktiga API:er
+
+## 📊 Analytics Events
+
+Följande events spåras automatiskt:
+
+- `page_view` - När sidan laddas
+- `conversation_step` - Varje steg i konversationen
+- `recommendations_shown` - När rekommendationer visas
+- `package_selected` - När användare väljer ett paket
+- `funnel_step` - Konverteringstratt
+
+## 🔐 GDPR & Integritet
+
+- All data lagras lokalt i användarens webbläsare
+- Användare kan exportera all sin data
+- Enkel rensning av all lagrad data
+
+## 🎯 Nästa Steg
+
+1. **Integration med riktiga API:er**
+   - Leverantörsdata
+   - Adresstillgänglighet
+   - Realtidspriser
+
+2. **AI-förbättringar**
+   - NLP för friare konversation
+   - Machine learning för bättre rekommendationer
+
+3. **Ytterligare funktioner**
+   - Flerspråkighet
+   - Prisjämförelser över tid
+   - Notifikationer vid nya erbjudanden
+
+## 📝 Licens
+
+© 2025 Bredbandsval.se

@@ -39,3 +39,22 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Railway deployment
+.env.local
+
+# Development
+.DS_Store
+*.log
+
+# Dependencies
+node_modules/
+
+# Production
+.next/
+out/
+build/
+
+# Misc
+.vercel
+.turbo
