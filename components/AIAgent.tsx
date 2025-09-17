@@ -51,25 +51,43 @@ export default function AIAgent() {
       setState(savedState);
       analytics.track('conversation_resumed');
     } else {
-      // Initial welcome message
-      const welcomeMessage = conversationFlow.welcome.getMessage({});
-      const quickReplies = conversationFlow.welcome.getQuickReplies?.();
-      
-      setState(prev => ({
-        ...prev,
-        messages: [{
-          id: '1',
-          content: welcomeMessage,
-          sender: 'agent',
-          timestamp: new Date(),
-          quickReplies,
-        }],
-      }));
-      
+      // Start with proactive questioning
+      startProactiveConversation();
       analytics.trackFunnelStep('started');
-      setShowAddressInput(true);
     }
   }, []);
+
+  const startProactiveConversation = async () => {
+    // Simulate thinking time
+    setState(prev => ({ ...prev, isTyping: true }));
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const welcomeMessage = `Hej och välkommen till Bredbandsval! 👋
+
+Jag är din personliga bredbandsrådgivare och hjälper dig hitta det perfekta paketet för just dina behov.
+
+För att ge dig de bästa rekommendationerna behöver jag ställa några korta frågor. Det tar bara 2-3 minuter!
+
+Låt oss börja: **Vilken adress letar du bredband till?**`;
+
+    setState(prev => ({
+      ...prev,
+      messages: [{
+        id: '1',
+        content: welcomeMessage,
+        sender: 'agent',
+        timestamp: new Date(),
+        quickReplies: [
+          { text: 'Stockholm', value: 'Stockholm' },
+          { text: 'Göteborg', value: 'Göteborg' },
+          { text: 'Malmö', value: 'Malmö' },
+          { text: 'Annan stad', value: 'other' },
+        ],
+      }],
+      isTyping: false,
+    }));
+    setShowAddressInput(true);
+  };
 
   const handleUserMessage = async (input: string) => {
     // Add user message
@@ -145,14 +163,15 @@ export default function AIAgent() {
       });
     }
 
-    // Get next message
-    const nextFlow = conversationFlow[nextStep];
+    // Generate smart next question
+    const nextQuestion = await generateNextQuestion(updatedProfile, nextStep);
+    
     const agentMessage: Message = {
       id: (Date.now() + 1).toString(),
-      content: nextFlow.getMessage(updatedProfile),
+      content: nextQuestion.message,
       sender: 'agent',
       timestamp: new Date(),
-      quickReplies: nextFlow.getQuickReplies?.(),
+      quickReplies: nextQuestion.quickReplies,
     };
 
     setState(prev => ({
@@ -162,6 +181,156 @@ export default function AIAgent() {
       messages: [...prev.messages, agentMessage],
       isTyping: false,
     }));
+  };
+
+  const generateNextQuestion = async (profile: any, step: string) => {
+    // Smart question generation based on what we know
+    const questions = {
+      'household-size': {
+        message: `Tack! Jag kollar vad som finns på ${profile.address || 'din adress'}. 
+
+Nästa fråga: **Hur många personer bor i ert hushåll?** 
+
+Detta hjälper mig förstå hur mycket bandbredd ni behöver.`,
+        quickReplies: [
+          { text: '1 person', value: '1' },
+          { text: '2 personer', value: '2' },
+          { text: '3-4 personer', value: '3-4' },
+          { text: '5+ personer', value: '5+' },
+        ]
+      },
+      
+      'usage-streaming': {
+        message: `Bra att veta! ${profile.householdSize === 1 ? 'Som singel' : `Med ${profile.householdSize} personer`} är det viktigt att få rätt hastighet.
+
+**Streamar ni mycket film och serier?** (Netflix, HBO Max, Disney+ osv.)
+
+Detta påverkar vilken hastighet jag rekommenderar.`,
+        quickReplies: [
+          { text: '🎬 Ja, dagligen', value: 'heavy' },
+          { text: '📺 Några gånger/vecka', value: 'moderate' },
+          { text: '📱 Sällan', value: 'light' },
+        ]
+      },
+      
+      'usage-gaming': {
+        message: `${profile.streamingHeavy ? 'Med mycket streaming behöver ni definitivt bra hastighet!' : 'Okej, inte så mycket streaming.'} 
+
+**Spelar någon i hushållet onlinespel?** 🎮
+
+Gaming kräver både hög hastighet och låg latens.`,
+        quickReplies: [
+          { text: '🎮 Ja, mycket gaming', value: 'yes' },
+          { text: '🎯 Lite ibland', value: 'some' },
+          { text: '❌ Nej', value: 'no' },
+        ]
+      },
+      
+      'usage-meetings': {
+        message: `${profile.onlineGaming ? 'Gaming + streaming = ni behöver riktigt bra bredband!' : 'Okej, inget gaming att tänka på.'} 
+
+**Har ni ofta videomöten hemma?** (Teams, Zoom, Google Meet)
+
+Jobbar någon hemifrån eller studerar online?`,
+        quickReplies: [
+          { text: '💼 Ja, jobbar hemifrån', value: 'daily' },
+          { text: '🎓 Studerar online', value: 'student' },
+          { text: '📞 Ibland möten', value: 'sometimes' },
+          { text: '❌ Sällan/aldrig', value: 'rarely' },
+        ]
+      },
+      
+      'router-preference': {
+        message: `Perfekt! Jag börjar få en bild av era behov.
+
+**Vill ni ha router inkluderat i abonnemanget?**
+
+Många väljer detta för enkelhetens skull - då slipper ni köpa egen.`,
+        quickReplies: [
+          { text: '✅ Ja, inkludera router', value: 'yes' },
+          { text: '🔧 Har egen router', value: 'no' },
+          { text: '🤷 Spelar ingen roll', value: 'no-preference' },
+        ]
+      },
+      
+      'contract-preference': {
+        message: `Bra! Nu till bindningstiden.
+
+**Föredrar ni kort eller lång bindningstid?**
+
+Längre bindning ger ofta bättre pris, men mindre flexibilitet.`,
+        quickReplies: [
+          { text: '⚡ Ingen bindning', value: 'none' },
+          { text: '📅 Kort (3-6 mån)', value: 'short' },
+          { text: '💰 Lång för bättre pris', value: 'long' },
+        ]
+      },
+      
+      'tv-channels': {
+        message: `Utmärkt! Nu har jag koll på bredbandsbehovet.
+
+Låt oss prata TV! **Vilka TV-kanaler är viktiga för er?**
+
+Skriv gärna några exempel, eller välj bland alternativen.`,
+        quickReplies: [
+          { text: '📺 Grundkanaler (SVT, TV4)', value: 'basic' },
+          { text: '🎬 Film & serier', value: 'movies' },
+          { text: '⚽ Sport', value: 'sports' },
+          { text: '👶 Barnkanaler', value: 'kids' },
+          { text: '❌ Ingen TV', value: 'none' },
+        ]
+      },
+      
+      'streaming-services': {
+        message: `Bra att veta om TV-kanalerna!
+
+**Vilka streamingtjänster använder ni idag?**
+
+Många paket inkluderar streaming - kan spara er pengar!`,
+        quickReplies: [
+          { text: '🎬 Netflix', value: 'Netflix' },
+          { text: '🏠 HBO Max', value: 'HBO Max' },
+          { text: '🏰 Disney+', value: 'Disney+' },
+          { text: '⚽ Viaplay', value: 'Viaplay' },
+          { text: '📦 Prime Video', value: 'Prime Video' },
+          { text: '❌ Inga', value: 'none' },
+        ]
+      },
+      
+      'sports': {
+        message: `Tack! Nu kollar jag vilka paket som kan spara pengar på streaming.
+
+Sista frågan: **Följer ni någon särskild sport?**
+
+Många sportpaket är bundna till specifika leverantörer.`,
+        quickReplies: [
+          { text: '⚽ Allsvenskan', value: 'Allsvenskan' },
+          { text: '🏆 Champions League', value: 'Champions League' },
+          { text: '🇬🇧 Premier League', value: 'Premier League' },
+          { text: '🏒 Hockey/NHL', value: 'NHL' },
+          { text: '❌ Ingen sport', value: 'none' },
+        ]
+      },
+      
+      'calculating': {
+        message: `Perfekt! 🎯
+
+Nu har jag all information jag behöver. Jag analyserar era behov och söker bland alla tillgängliga alternativ från våra 21 leverantörer...
+
+⚡ Beräknar optimal hastighet
+💰 Jämför priser och kampanjer  
+📺 Kollar streaming-besparingar
+⚽ Matchar sport-önskemål
+
+Detta tar bara några sekunder!`,
+        quickReplies: []
+      }
+    };
+
+    return questions[step] || {
+      message: "Tack för informationen! Låt mig tänka på nästa fråga...",
+      quickReplies: []
+    };
   };
 
   const handleQuickReply = (value: string) => {
@@ -229,6 +398,42 @@ export default function AIAgent() {
     }, 100);
   };
 
+  const getProgressStep = () => {
+    const steps = ['welcome', 'household-size', 'usage-streaming', 'usage-gaming', 'usage-meetings', 'router-preference', 'contract-preference', 'tv-channels'];
+    return steps.indexOf(state.currentStep) + 1;
+  };
+
+  const getProgressPercent = () => {
+    const steps = ['welcome', 'household-size', 'usage-streaming', 'usage-gaming', 'usage-meetings', 'router-preference', 'contract-preference', 'tv-channels'];
+    const currentIndex = steps.indexOf(state.currentStep);
+    return Math.round(((currentIndex + 1) / steps.length) * 100);
+  };
+
+  const getHelpHint = () => {
+    switch (state.currentStep) {
+      case 'household-size':
+        return 'Använd knapparna ovan eller skriv "Vi är 3 personer"';
+      case 'usage-streaming':
+        return 'Tänk på Netflix, HBO Max, Disney+ osv. Klicka på knapparna!';
+      case 'usage-gaming':
+        return 'PlayStation, Xbox, PC-gaming - allt räknas!';
+      case 'usage-meetings':
+        return 'Teams, Zoom, Google Meet för jobb eller skola';
+      case 'router-preference':
+        return 'Många väljer "inkludera" för enkelhetens skull';
+      case 'contract-preference':
+        return 'Längre bindning = lägre pris, men mindre flexibilitet';
+      case 'tv-channels':
+        return 'Skriv t.ex. "SVT, TV4, Discovery" eller använd knapparna';
+      case 'streaming-services':
+        return 'Vilka betalar ni för idag? Kan spara pengar!';
+      case 'sports':
+        return 'Fotboll, hockey, tennis - vad följer ni?';
+      default:
+        return 'Använd knapparna ovan eller skriv ett eget svar';
+    }
+  };
+
   const getInputPlaceholder = () => {
     switch (state.currentStep) {
       case 'welcome':
@@ -285,6 +490,24 @@ export default function AIAgent() {
         </div>
       </header>
 
+      {/* Progress bar */}
+      {state.currentStep !== 'recommendations' && state.messages.length > 1 && (
+        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+          <div className="max-w-3xl mx-auto">
+            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <span>Steg {getProgressStep()} av 8</span>
+              <span>{getProgressPercent()}% klart</span>
+            </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div 
+                className="bg-blue-500 h-2 rounded-full transition-all duration-500"
+                style={{ width: `${getProgressPercent()}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Chat area */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
         <div className="max-w-3xl mx-auto space-y-4">
@@ -310,6 +533,24 @@ export default function AIAgent() {
                 onAddressSelect={handleAddressSelect}
                 placeholder="Börja skriva din adress..."
               />
+              <div className="mt-2 text-center">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  💡 Exempel: "Vasagatan 12, Stockholm" eller bara "Stockholm"
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Help hints for current step */}
+          {state.currentStep !== 'welcome' && state.currentStep !== 'recommendations' && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center"
+            >
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                💡 {getHelpHint()}
+              </p>
             </motion.div>
           )}
 
