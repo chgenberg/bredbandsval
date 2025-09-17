@@ -43,7 +43,7 @@ export default function RecommendationCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`relative rounded-lg p-6 ${
+      className={`relative rounded-2xl p-6 ${
         isTopChoice
           ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-xl'
           : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
@@ -88,7 +88,7 @@ export default function RecommendationCard({
       </div>
 
       {savings && savings > 0 && (
-        <div className={`mb-4 p-3 rounded-lg ${
+        <div className={`mb-4 p-3 rounded-2xl ${
           isTopChoice ? 'bg-white/20' : 'bg-green-50 dark:bg-green-900/20'
         }`}>
           <p className={`text-sm font-medium ${
@@ -119,7 +119,7 @@ export default function RecommendationCard({
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        className={`w-full mt-4 py-3 rounded-lg font-medium transition-colors ${
+        className={`w-full mt-4 py-3 rounded-2xl font-medium transition-colors ${
           isTopChoice
             ? 'bg-white text-blue-600 hover:bg-blue-50'
             : 'bg-blue-500 text-white hover:bg-blue-600'

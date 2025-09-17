@@ -132,7 +132,7 @@ export default function AddressAutocomplete({ onAddressSelect, placeholder = "Sk
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 
-                     rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                     rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent
                      bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
         />
         <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -153,7 +153,7 @@ export default function AddressAutocomplete({ onAddressSelect, placeholder = "Sk
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
             className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 
-                       rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 
+                       rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 
                        max-h-60 overflow-auto"
           >
             {suggestions.map((suggestion, index) => (
@@ -188,7 +188,7 @@ export default function AddressAutocomplete({ onAddressSelect, placeholder = "Sk
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="absolute z-50 w-full mt-2 p-4 bg-gray-50 dark:bg-gray-800 
-                     rounded-lg text-center text-sm text-gray-500 dark:text-gray-400"
+                     rounded-2xl text-center text-sm text-gray-500 dark:text-gray-400"
         >
           Inga adresser hittades. Försök med en annan sökning.
         </motion.div>

@@ -473,7 +473,7 @@ Detta tar bara några sekunder!`,
             <button
               onClick={() => setShowStreamingCalc(true)}
               className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-300 
-                       hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                       hover:bg-gray-100 dark:hover:bg-gray-700 rounded-2xl transition-colors"
             >
               <Calculator size={16} />
               Streamingkalkylator
@@ -481,7 +481,7 @@ Detta tar bara några sekunder!`,
             <button
               onClick={handleReset}
               className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-300 
-                       hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                       hover:bg-gray-100 dark:hover:bg-gray-700 rounded-2xl transition-colors"
             >
               <RotateCcw size={16} />
               Börja om

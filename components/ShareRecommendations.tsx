@@ -91,7 +91,7 @@ Se alla detaljer: ${generateShareableLink()}`;
         whileTap={{ scale: 0.95 }}
         onClick={() => setShowModal(true)}
         className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 
-                   text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 
+                   text-gray-700 dark:text-gray-300 rounded-2xl hover:bg-gray-200 
                    dark:hover:bg-gray-700 transition-colors"
       >
         <Share2 size={18} />
@@ -112,13 +112,13 @@ Se alla detaljer: ${generateShareableLink()}`;
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl"
+              className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-xl"
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold">Dela dina rekommendationer</h3>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-2xl transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -129,7 +129,7 @@ Se alla detaljer: ${generateShareableLink()}`;
                 <button
                   onClick={copyToClipboard}
                   className="w-full flex items-center justify-between p-4 border border-gray-200 
-                           dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 
+                           dark:border-gray-700 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700/50 
                            transition-colors"
                 >
                   <div className="flex items-center gap-3">
@@ -157,7 +157,7 @@ Se alla detaljer: ${generateShareableLink()}`;
                 <button
                   onClick={downloadPDF}
                   className="w-full flex items-center gap-3 p-4 border border-gray-200 
-                           dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 
+                           dark:border-gray-700 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700/50 
                            transition-colors"
                 >
                   <Download className="text-green-500" size={20} />
@@ -179,13 +179,13 @@ Se alla detaljer: ${generateShareableLink()}`;
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="din@epost.se"
                       className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 
-                               rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                               rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent
                                bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                     />
                     <button
                       onClick={sendEmail}
                       disabled={!email || sendingEmail}
-                      className="px-4 py-2 bg-blue-500 text-white rounded-lg 
+                      className="px-4 py-2 bg-blue-500 text-white rounded-2xl 
                                hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed
                                transition-colors flex items-center gap-2"
                     >

@@ -68,7 +68,7 @@ export default function StreamingCalculator({ onComplete }: StreamingCalculatorP
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg"
+      className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg"
     >
       <h3 className="text-xl font-semibold mb-4">Vilka streamingtjänster använder du idag?</h3>
       
@@ -79,7 +79,7 @@ export default function StreamingCalculator({ onComplete }: StreamingCalculatorP
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             onClick={() => toggleService(service.id)}
-            className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+            className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
               selectedServices.has(service.id)
                 ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                 : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
@@ -150,7 +150,7 @@ export default function StreamingCalculator({ onComplete }: StreamingCalculatorP
             )}
           </div>
 
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 mb-4">
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 mb-4">
             <div className="flex items-start gap-2">
               <Info size={16} className="text-blue-600 dark:text-blue-400 mt-0.5" />
               <div className="text-sm text-blue-700 dark:text-blue-300">
@@ -166,7 +166,7 @@ export default function StreamingCalculator({ onComplete }: StreamingCalculatorP
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onComplete(Array.from(selectedServices), totalMonthlyCost)}
-              className="w-full py-3 bg-blue-500 text-white rounded-lg font-medium 
+              className="w-full py-3 bg-blue-500 text-white rounded-2xl font-medium 
                        hover:bg-blue-600 transition-colors"
             >
               Fortsätt och se besparingar
