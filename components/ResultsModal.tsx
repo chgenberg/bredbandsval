@@ -71,12 +71,12 @@ export function ResultsModal({
     
     // Generate AI response using the real AI function
     try {
-      const aiAnswer = await generateFollowUpAnswer(
-        chatInput,
-        recommendations,
+      const aiAnswer = await generateFollowUpAnswer({
+        question: chatInput,
+        recommendations: Object.values(recommendations).flat(),
         userProfile,
-        aiRecommendation
-      );
+        conversationContext: aiRecommendation
+      });
       
       const aiResponse = {
         id: `msg-${Date.now()}`,
