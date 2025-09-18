@@ -483,11 +483,13 @@ export default function AppleStyleAgent() {
       
       // Sortera om baserat på behovsmodellen
       recs = recs.map(rec => {
-        const { score, reasons } = scorePackageMatch(rec.package, needs);
+        const { score, reasons, badges, trustScore } = scorePackageMatch(rec.package, needs);
         return {
           ...rec,
           matchScore: score,
-          reasons: [...reasons, ...(rec.reasons || [])]
+          reasons: [...reasons, ...(rec.reasons || [])],
+          badges,
+          trustScore
         };
       }).sort((a, b) => b.matchScore - a.matchScore);
       
@@ -908,6 +910,8 @@ export default function AppleStyleAgent() {
                   matchScore={rec.matchScore}
                   reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
                   index={index}
+                  badges={rec.badges || []}
+                  trustScore={rec.trustScore || 70}
                 />
               ))}
             </motion.div>

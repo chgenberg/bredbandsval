@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Check, Zap, Tv, Gamepad2, Router, Calendar } from 'lucide-react';
+import { Check, Zap, Tv, Gamepad2, Router, Calendar, Star, Shield, Award, TrendingUp } from 'lucide-react';
 
 interface RecommendationProps {
   provider: string;
@@ -14,6 +14,8 @@ interface RecommendationProps {
   matchScore: number;
   reasoning: string;
   index: number;
+  badges?: string[];
+  trustScore?: number;
 }
 
 export default function RecommendationCard({
@@ -26,6 +28,8 @@ export default function RecommendationCard({
   savings,
   reasoning,
   index,
+  badges = [],
+  trustScore = 70,
 }: RecommendationProps) {
   const isTopChoice = index === 0;
 
@@ -36,6 +40,21 @@ export default function RecommendationCard({
     if (lower.includes('gaming')) return <Gamepad2 size={16} />;
     if (lower.includes('streaming')) return <Tv size={16} />;
     return <Check size={16} />;
+  };
+
+  const getBadgeIcon = (badge: string) => {
+    const lower = badge.toLowerCase();
+    if (lower.includes('värde') || lower.includes('pris')) return <TrendingUp size={12} />;
+    if (lower.includes('support') || lower.includes('bra')) return <Star size={12} />;
+    if (lower.includes('gaming') || lower.includes('4k')) return <Award size={12} />;
+    if (lower.includes('router') || lower.includes('mesh')) return <Router size={12} />;
+    return <Shield size={12} />;
+  };
+
+  const getTrustColor = (score: number) => {
+    if (score >= 80) return 'text-green-600';
+    if (score >= 70) return 'text-yellow-600';
+    return 'text-orange-600';
   };
 
   return (
@@ -59,7 +78,15 @@ export default function RecommendationCard({
 
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2">
         <div className="flex-1">
-          <h3 className="text-base sm:text-lg font-semibold">{provider}</h3>
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="text-base sm:text-lg font-semibold">{provider}</h3>
+            <div className="flex items-center gap-1">
+              <Star size={14} className={getTrustColor(trustScore)} />
+              <span className={`text-xs font-medium ${getTrustColor(trustScore)}`}>
+                {Math.round(trustScore / 20 * 10) / 10}
+              </span>
+            </div>
+          </div>
           <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600 dark:text-gray-400'}`}>
             {packageName}
           </p>
@@ -86,6 +113,29 @@ export default function RecommendationCard({
           </div>
         )}
       </div>
+
+      {/* Badges */}
+      {badges.length > 0 && (
+        <div className="mb-4 flex flex-wrap gap-2">
+          {badges.map((badge, i) => (
+            <div
+              key={i}
+              className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                isTopChoice 
+                  ? 'bg-white/20 text-white' 
+                  : badge.toLowerCase().includes('bäst') || badge.toLowerCase().includes('perfekt')
+                  ? 'bg-green-100 text-green-700'
+                  : badge.toLowerCase().includes('dyrt') || badge.toLowerCase().includes('långsamt')
+                  ? 'bg-red-100 text-red-700'
+                  : 'bg-blue-100 text-blue-700'
+              }`}
+            >
+              {getBadgeIcon(badge)}
+              {badge}
+            </div>
+          ))}
+        </div>
+      )}
 
       {savings && savings > 0 && (
         <div className={`mb-4 p-3 rounded-2xl ${
