@@ -6,7 +6,7 @@ import {
   MapPin, BarChart3, User, Users, Play, Gamepad2, 
   Briefcase, Video, Router, Zap, ArrowRight
 } from 'lucide-react';
-import AddressAutocomplete from './AddressAutocomplete';
+import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import RealUsagePermission from './RealUsagePermission';
 import { analytics } from '@/lib/analytics';
 import { bredbandsvalAPI } from '@/lib/api/client';
@@ -380,9 +380,9 @@ ${recs.slice(0, 3).map((rec, i) =>
               animate={{ opacity: 1, y: 0 }}
               className="mt-8"
             >
-              <AddressAutocomplete
+              <GoogleAddressAutocomplete
                 onAddressSelect={handleAddressSelect}
-                placeholder="Ange adress"
+                placeholder="Ange din adress"
               />
             </motion.div>
           )}
