@@ -653,15 +653,27 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       setRecommendations(recs);
       
-      // Separate broadband and TV packages (fix filters to use correct schema)
-      const broadbandRecs = recs.filter(r => (r.package?.speed?.download || 0) > 0 && !r.package?.isCombo && !r.package?.tv);
-      const tvRecs = recs.filter(r => !!r.package?.tv);
+      // Separate broadband and TV packages (less strict filtering to show more options)
+      const broadbandRecs = recs.filter(r => (r.package?.speed?.download || 0) > 0 && !r.package?.tv);
+      const tvRecs = recs.filter(r => !!r.package?.tv || (r.package?.speed?.download || 0) === 0);
       
       console.log('📊 Package separation:', {
         total: recs.length,
         broadband: broadbandRecs.length,
         tv: tvRecs.length
       });
+      
+      console.log('📦 Sample broadband packages:', broadbandRecs.slice(0, 3).map(r => ({
+        provider: r.package?.providerName,
+        name: r.package?.name,
+        speed: r.package?.speed?.download
+      })));
+      
+      console.log('📺 Sample TV packages:', tvRecs.slice(0, 3).map(r => ({
+        provider: r.package?.providerName,
+        name: r.package?.name,
+        hasTV: !!r.package?.tv
+      })));
 
       // Helper: map a recommendation to RecommendationCard props shape
       const mapRecToCard = (rec: any) => {
