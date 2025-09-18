@@ -314,6 +314,195 @@ export function mockProviderPackages(
         technology: 'fiber',
       },
     },
+    // Telenor packages
+    {
+      id: 'telenor-100-basic',
+      providerId: 'telenor',
+      providerName: 'Telenor',
+      name: 'Bredband 100',
+      speed: { download: 100, upload: 100 },
+      pricing: {
+        monthly: 329,
+        setupFee: 0,
+        campaign: {
+          monthlyPrice: 249,
+          months: 6,
+          description: 'Halvt pris i 6 månader',
+        },
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 1,
+        autoRenewal: true,
+      },
+      includes: {
+        router: true,
+        publicIP: false,
+        emailAccounts: 3,
+        antiVirus: false,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1-2 veckor',
+        technology: 'fiber',
+      },
+    },
+    {
+      id: 'telenor-tv-sport',
+      providerId: 'telenor',
+      providerName: 'Telenor',
+      name: 'TV Sport + Film',
+      speed: { download: 0, upload: 0 }, // TV-only package
+      pricing: {
+        monthly: 459,
+        setupFee: 99,
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 3,
+        autoRenewal: true,
+      },
+      tv: {
+        channels: ['40+ kanaler', 'Allsvenskan', 'Premier League', 'Champions League'],
+        channelPackages: ['Sport', 'Film', 'Dokumentär'],
+        recordingHours: 150,
+        simultaneousStreams: 3,
+      },
+      streaming: {
+        included: ['Viaplay Sport', 'C More Sport'],
+        discounted: [],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '5-7 dagar',
+        technology: 'streaming',
+      },
+    },
+    // Bredband2 packages
+    {
+      id: 'bredband2-250-value',
+      providerId: 'bredband2',
+      providerName: 'Bredband2',
+      name: 'Värde 250',
+      speed: { download: 250, upload: 250 },
+      pricing: {
+        monthly: 349,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: false,
+      },
+      includes: {
+        router: true,
+        publicIP: true,
+        emailAccounts: 5,
+        antiVirus: false,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '2-3 veckor',
+        technology: 'fiber',
+      },
+    },
+    // Combination packages
+    {
+      id: 'combo-telia-telenor',
+      providerId: 'combo',
+      providerName: 'Telia + Telenor',
+      name: 'Bredband från Telia + TV från Telenor',
+      speed: { download: 250, upload: 250 },
+      pricing: {
+        monthly: 758, // 329 + 459 - 30 (combo discount)
+        setupFee: 99,
+        campaign: {
+          monthlyPrice: 628,
+          months: 3,
+          description: 'Kombinationsrabatt första 3 månaderna',
+        },
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 3,
+        autoRenewal: true,
+      },
+      includes: {
+        router: true,
+        publicIP: true,
+        emailAccounts: 5,
+        antiVirus: false,
+      },
+      tv: {
+        channels: ['40+ kanaler', 'Sport', 'Film'],
+        channelPackages: ['Sport', 'Film'],
+        recordingHours: 150,
+        simultaneousStreams: 3,
+      },
+      streaming: {
+        included: ['Viaplay Sport'],
+        discounted: [],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '2-3 veckor',
+        technology: 'combo',
+      },
+      isCombo: true,
+      comboDetails: {
+        broadbandProvider: 'Telia',
+        tvProvider: 'Telenor',
+        savings: 30,
+      },
+    },
+    {
+      id: 'combo-bahnhof-boxer',
+      providerId: 'combo',
+      providerName: 'Bahnhof + Boxer',
+      name: 'Bredband från Bahnhof + TV från Boxer',
+      speed: { download: 250, upload: 250 },
+      pricing: {
+        monthly: 674, // 325 + 399 - 50 (combo discount)
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: false,
+      },
+      includes: {
+        router: false,
+        publicIP: true,
+        emailAccounts: 10,
+        antiVirus: false,
+      },
+      tv: {
+        channels: ['50+ kanaler', 'Dokumentärer'],
+        channelPackages: ['Bas', 'Dokumentär'],
+        recordingHours: 100,
+        simultaneousStreams: 2,
+      },
+      streaming: {
+        included: ['Boxer Play'],
+        discounted: [],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '2-4 veckor',
+        technology: 'combo',
+      },
+      isCombo: true,
+      comboDetails: {
+        broadbandProvider: 'Bahnhof',
+        tvProvider: 'Boxer',
+        savings: 50,
+      },
+    },
   ];
 
   // Apply filters

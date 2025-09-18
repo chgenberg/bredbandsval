@@ -16,6 +16,12 @@ interface RecommendationProps {
   index: number;
   badges?: string[];
   trustScore?: number;
+  isCombo?: boolean;
+  comboDetails?: {
+    broadbandProvider: string;
+    tvProvider: string;
+    savings: number;
+  };
 }
 
 export default function RecommendationCard({
@@ -30,6 +36,8 @@ export default function RecommendationCard({
   index,
   badges = [],
   trustScore = 70,
+  isCombo = false,
+  comboDetails,
 }: RecommendationProps) {
   const isTopChoice = index === 0;
 
@@ -87,7 +95,16 @@ export default function RecommendationCard({
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2">
         <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className={`text-base sm:text-lg font-semibold ${isTopChoice ? 'text-white' : 'text-gray-900'}`}>{provider}</h3>
+              <h3 className={`text-base sm:text-lg font-semibold ${isTopChoice ? 'text-white' : 'text-gray-900'}`}>
+                {provider}
+                {isCombo && (
+                  <span className={`ml-2 text-xs px-2 py-1 rounded-full ${
+                    isTopChoice ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700'
+                  }`}>
+                    KOMBO
+                  </span>
+                )}
+              </h3>
               <div className="flex items-center gap-1">
                 <Star size={14} className={getTrustColor(trustScore, isTopChoice)} />
                 <span className={`text-xs font-medium ${getTrustColor(trustScore, isTopChoice)}`}>
@@ -145,9 +162,26 @@ export default function RecommendationCard({
         </div>
       )}
 
-      {savings && savings > 0 && (
+      {isCombo && comboDetails && (
         <div className={`mb-4 p-3 rounded-2xl ${
-          isTopChoice ? 'bg-white/20' : 'bg-green-50 dark:bg-green-900/20'
+          isTopChoice ? 'bg-white/20' : 'bg-purple-50'
+        }`}>
+          <p className={`text-sm font-medium ${
+            isTopChoice ? 'text-white' : 'text-purple-700'
+          }`}>
+            🔗 Bredband: {comboDetails.broadbandProvider} • TV: {comboDetails.tvProvider}
+          </p>
+          <p className={`text-xs mt-1 ${
+            isTopChoice ? 'text-white/80' : 'text-purple-600'
+          }`}>
+            Sparar {comboDetails.savings} kr/mån jämfört med separata avtal
+          </p>
+        </div>
+      )}
+
+      {savings && savings > 0 && !isCombo && (
+        <div className={`mb-4 p-3 rounded-2xl ${
+          isTopChoice ? 'bg-white/20' : 'bg-green-50'
         }`}>
           <p className={`text-sm font-medium ${
             isTopChoice ? 'text-white' : 'text-green-700'

@@ -1104,6 +1104,8 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   index={index}
                   badges={rec.badges || []}
                   trustScore={rec.trustScore || 70}
+                  isCombo={rec.package.isCombo}
+                  comboDetails={rec.package.comboDetails}
                 />
               ))}
               

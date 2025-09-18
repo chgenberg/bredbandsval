@@ -387,15 +387,29 @@ ${recommendations.slice(0, 3).map((rec, i) =>
 
 FORMATKRAV:
 - Svara i ren HTML (ingen Markdown). Använd <strong> för rubrik och <p> för stycken.
-- Struktur:
+- Struktur baserat på servicetyp:
+  
+  För BREDBAND:
   <div>
-    <p><strong>Rekommendation</strong></p>
-    <p>[Stycke 1: kärnan i valet och varför det passar]</p>
-    <p>[Stycke 2: pris/värde, bindning, router, ev. TV/streaming‑fit]</p>
-    <p>[Stycke 3: alternativ 2–3 kort motivering, och vad man vinner]</p>
+    <p><strong>Min rekommendation för dig</strong></p>
+    <p>[Varför just denna leverantör och hastighet passar dina behov]</p>
+    <p>[Specifika fördelar: pris, bindning, router, support, teknologi]</p>
+    <p>[Alternativ 2-3 med konkreta skillnader och när de kan vara bättre]</p>
   </div>
-- Skriv på svenska, tydligt och koncist. Avsluta alltid meningar – bryt aldrig mitt i en mening.
-- Håll 3–6 meningar totalt och undvik upprepningar.`;
+  
+  För BÅDE BREDBAND OCH TV:
+  <div>
+    <p><strong>Bästa kombinationen för dig</strong></p>
+    <p>[Om det är en kombination från samma leverantör ELLER varför olika leverantörer är bättre]</p>
+    <p>[Totalkostnad, vad som ingår, fördelar med valet]</p>
+    <p>[Alternativa kombinationer och vad som skiljer dem åt]</p>
+  </div>
+
+- Var SPECIFIK med leverantörsnamn, priser och tekniska detaljer
+- Förklara VARFÖR ett val är bättre (inte bara att det är bra)
+- Nämn konkreta besparingar eller fördelar
+- Skriv på svenska, personligt och övertygande
+- 4-8 meningar totalt, avsluta alltid meningar helt`;
 
   try {
     const openai = new OpenAI({

@@ -64,7 +64,13 @@ export interface ProviderPackage {
     address: string;
     available: boolean;
     installationTime: string;
-    technology: 'fiber' | 'cable' | 'dsl' | '5g';
+    technology: 'fiber' | 'cable' | 'dsl' | '5g' | 'streaming' | 'combo';
+  };
+  isCombo?: boolean;
+  comboDetails?: {
+    broadbandProvider: string;
+    tvProvider: string;
+    savings: number;
   };
 }
 
