@@ -1142,25 +1142,27 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   Ladda hem rekommendation
                 </motion.button>
               </div>
-              {recommendations.slice(0, 3).map((rec, index) => (
-                <RecommendationCard
-                  key={rec.package.id}
-                  provider={rec.package.providerName}
-                  packageName={rec.package.name}
-                  speed={rec.package.speed.download}
-                  price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
-                  bindingTime={rec.package.contractLength}
-                  features={rec.package.features || []}
-                  savings={rec.savings}
-                  matchScore={rec.matchScore}
-                  reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
-                  index={index}
-                  badges={rec.badges || []}
-                  trustScore={rec.trustScore || 70}
-                  isCombo={rec.package.isCombo}
-                  comboDetails={rec.package.comboDetails}
-                />
-              ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {recommendations.slice(0, 3).map((rec, index) => (
+                  <RecommendationCard
+                    key={rec.package.id}
+                    provider={rec.package.providerName}
+                    packageName={rec.package.name}
+                    speed={rec.package.speed.download}
+                    price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
+                    bindingTime={rec.package.contractLength}
+                    features={rec.package.features || []}
+                    savings={rec.savings}
+                    matchScore={rec.matchScore}
+                    reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
+                    index={index}
+                    badges={rec.badges || []}
+                    trustScore={rec.trustScore || 70}
+                    isCombo={rec.package.isCombo}
+                    comboDetails={rec.package.comboDetails}
+                  />
+                ))}
+              </div>
               
               {/* Follow-up questions section */}
               <motion.div
