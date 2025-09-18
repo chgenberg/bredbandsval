@@ -262,9 +262,9 @@ export default function AIAgentDashboard() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        visit.agentType === 'chatgpt' ? 'bg-green-100 text-green-800' :
-                        visit.agentType === 'claude' ? 'bg-blue-100 text-blue-800' :
-                        'bg-gray-100 text-gray-800'
+                        visit.agentType === 'chatgpt' ? 'bg-gray-900 text-white' :
+                        visit.agentType === 'claude' ? 'bg-gray-800 text-white' :
+                        'bg-gray-700 text-white'
                       }`}>
                         {visit.agentType}
                       </span>
@@ -282,15 +282,15 @@ export default function AIAgentDashboard() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {visit.completedOrder ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-900 text-white">
                           Completed Order
                         </span>
                       ) : visit.actions.includes('reached_order') ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-800 text-white">
                           At Order Page
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-700 text-white">
                           Browsing
                         </span>
                       )}

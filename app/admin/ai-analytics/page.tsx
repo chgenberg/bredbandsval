@@ -144,7 +144,7 @@ export default function AIAnalyticsDashboard() {
                   backgroundColor: ['#10B981', '#059669', '#10B981']
                 }}
                 transition={{ duration: 2.5, repeat: Infinity }}
-                className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center"
+                className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
               >
                 <Zap className="w-6 h-6 text-white" />
               </motion.div>
@@ -171,7 +171,7 @@ export default function AIAnalyticsDashboard() {
                   rotate: [0, 10, -10, 0]
                 }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center"
+                className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
               >
                 <BarChart2 className="w-6 h-6 text-white" />
               </motion.div>
@@ -268,7 +268,7 @@ export default function AIAnalyticsDashboard() {
             </h3>
             <div className="space-y-3">
               {agentTypes.map((agent, index) => {
-                const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-orange-500'];
+                const colors = ['bg-gray-900', 'bg-gray-800', 'bg-gray-700', 'bg-gray-600'];
                 const percentage = metrics.length > 0 ? (agent.count / metrics.length) * 100 : 0;
                 
                 return (
@@ -334,9 +334,9 @@ export default function AIAnalyticsDashboard() {
                     </td>
                     <td className="px-6 py-4 text-sm">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        metric.agentType === 'chatgpt' ? 'bg-green-100 text-green-800' :
-                        metric.agentType === 'claude' ? 'bg-blue-100 text-blue-800' :
-                        'bg-gray-100 text-gray-800'
+                        metric.agentType === 'chatgpt' ? 'bg-gray-900 text-white' :
+                        metric.agentType === 'claude' ? 'bg-gray-800 text-white' :
+                        'bg-gray-700 text-white'
                       }`}>
                         {metric.agentType}
                       </span>
