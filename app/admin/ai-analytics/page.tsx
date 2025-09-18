@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Users, TrendingUp, Clock, Zap, Target, BarChart2, 
-  BarChart3, PieChart, Activity, AlertCircle 
+  BarChart3, PieChart, Activity, AlertCircle, Monitor 
 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -111,7 +111,7 @@ export default function AIAnalyticsDashboard() {
                   backgroundColor: ['#101929', '#1a2332', '#101929']
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-12 h-12 bg-[#101929] rounded-xl flex items-center justify-center"
+                className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
               >
                 <Users className="w-6 h-6 text-white" />
               </motion.div>
@@ -188,7 +188,7 @@ export default function AIAnalyticsDashboard() {
                   y: [0, -3, 0]
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="w-12 h-12 bg-[#101929] rounded-xl flex items-center justify-center"
+                className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
               >
                 <Monitor className="w-6 h-6 text-white" />
               </motion.div>
@@ -212,7 +212,7 @@ export default function AIAnalyticsDashboard() {
               <motion.div
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                className="w-8 h-8 bg-[#101929] rounded-lg flex items-center justify-center"
+                className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center"
               >
                 <BarChart3 className="w-5 h-5 text-white" />
               </motion.div>
@@ -252,7 +252,7 @@ export default function AIAnalyticsDashboard() {
                   rotate: [0, 180, 360]
                 }}
                 transition={{ duration: 6, repeat: Infinity }}
-                className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center"
               >
                 <PieChart className="w-5 h-5 text-white" />
               </motion.div>
@@ -294,7 +294,7 @@ export default function AIAnalyticsDashboard() {
                   backgroundColor: ['#10B981', '#059669', '#10B981']
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center"
               >
                 <Activity className="w-5 h-5 text-white" />
               </motion.div>
@@ -383,7 +383,7 @@ export default function AIAnalyticsDashboard() {
                 rotate: [0, -10, 10, 0]
               }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center"
             >
                 <AlertCircle className="w-5 h-5 text-white" />
             </motion.div>
