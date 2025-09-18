@@ -398,6 +398,19 @@ ${userProfile.tvPreference ? `- TV-intressen: ${
 }` : ''}
 ${userProfile.streamingServices ? `- Använder streamingtjänster: ${userProfile.streamingServices.replace(/,/g, ', ')}` : ''}
 ${userProfile.speedTestResult ? `- Nuvarande hastighet: ${userProfile.speedTestResult.downloadMbps} Mbit/s ned, ${userProfile.speedTestResult.uploadMbps} Mbit/s upp` : ''}
+${userProfile.budget ? `- Budget: ${
+  userProfile.budget === 'low' ? 'Under 400 kr/mån (priset är viktigt)' :
+  userProfile.budget === 'medium' ? '400-600 kr/mån (balanserat)' :
+  userProfile.budget === 'high' ? '600-800 kr/mån (kan satsa mer för bättre kvalitet)' :
+  userProfile.budget === 'premium' ? 'Över 800 kr/mån (vill ha det bästa)' : userProfile.budget
+}` : ''}
+${userProfile.currentProvider ? `- Nuvarande situation: ${
+  userProfile.currentProvider === 'cheap' ? 'Har bredband, betalar under 300 kr' :
+  userProfile.currentProvider === 'medium' ? 'Har bredband, betalar 300-500 kr' :
+  userProfile.currentProvider === 'expensive' ? 'Har bredband, betalar över 500 kr (kan spara mycket!)' :
+  userProfile.currentProvider === 'first-time' ? 'Första gången som skaffar bredband' : userProfile.currentProvider
+}` : ''}
+${userProfile.priorities ? `- Prioriteringar: ${userProfile.priorities.replace(/,/g, ', ').replace(/price/g, 'Lägsta pris').replace(/speed/g, 'Högsta hastighet').replace(/support/g, 'Bästa supporten').replace(/flexibility/g, 'Ingen bindning').replace(/convenience/g, 'Allt-i-ett-lösning')}` : ''}
 
 TOPP 3 REKOMMENDATIONER MED DETALJER:
 ${recommendations.slice(0, 3).map((rec, i) => {

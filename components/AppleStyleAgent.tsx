@@ -6,7 +6,8 @@ import Image from 'next/image';
 import { 
   MapPin, BarChart3, User, Users, Play, Gamepad2, 
   Briefcase, Video, Router, Zap, ArrowRight, HelpCircle,
-  Tv, Wifi, Package, X, Brain, MessageCircle, Send, Download, Mail
+  Tv, Wifi, Package, X, Brain, MessageCircle, Send, Download, Mail,
+  PiggyBank, Home
 } from 'lucide-react';
 import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import RealUsagePermission from './RealUsagePermission';
@@ -338,6 +339,38 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
           { text: 'Längre för bättre pris', value: 'long', icon: 'zap' },
         ],
         helpText: 'Längre bindningstid ger ofta lägre månadspris, men ingen bindning ger mer flexibilitet.'
+      },
+      'budget': {
+        text: 'Vad är din ungefärliga budget per månad?',
+        replies: [
+          { text: 'Under 400 kr', value: 'low', icon: 'piggy' },
+          { text: '400-600 kr', value: 'medium', icon: 'piggy' },
+          { text: '600-800 kr', value: 'high', icon: 'piggy' },
+          { text: 'Över 800 kr', value: 'premium', icon: 'piggy' },
+        ],
+        helpText: 'Budget hjälper oss filtrera bort för dyra alternativ och hitta bästa värdet.'
+      },
+      'current-provider': {
+        text: 'Har du bredband idag? Vad betalar du ungefär?',
+        replies: [
+          { text: 'Ja, under 300 kr', value: 'cheap', icon: 'zap' },
+          { text: 'Ja, 300-500 kr', value: 'medium', icon: 'zap' },
+          { text: 'Ja, över 500 kr', value: 'expensive', icon: 'zap' },
+          { text: 'Nej, första gången', value: 'first-time', icon: 'zap' },
+        ],
+        helpText: 'Hjälper oss beräkna besparingar och om uppgradering är värt det.'
+      },
+      'priorities': {
+        text: 'Vad är viktigast för dig?',
+        multiSelect: true,
+        replies: [
+          { text: 'Lägsta pris', value: 'price', icon: 'piggy' },
+          { text: 'Högsta hastighet', value: 'speed', icon: 'zap' },
+          { text: 'Bästa supporten', value: 'support', icon: 'help' },
+          { text: 'Ingen bindning', value: 'flexibility', icon: 'calendar' },
+          { text: 'Allt-i-ett-lösning', value: 'convenience', icon: 'package' },
+        ],
+        helpText: 'Hjälper oss vikta olika faktorer i rekommendationen.'
       }
     };
     
@@ -434,15 +467,15 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     // Define question flow based on service type
     const getNextStep = () => {
       if (serviceType === 'broadband') {
-        const flow = ['household', 'streaming', 'gaming', 'meetings', 'router', 'contract'];
+        const flow = ['household', 'streaming', 'gaming', 'meetings', 'router', 'contract', 'budget', 'current-provider', 'priorities'];
         const currentIndex = flow.indexOf(currentStep);
         return currentIndex < flow.length - 1 ? flow[currentIndex + 1] : null;
       } else if (serviceType === 'tv') {
-        const flow = ['tv-type', 'streaming-services', 'tv-contract'];
+        const flow = ['tv-type', 'streaming-services', 'tv-contract', 'budget', 'current-provider', 'priorities'];
         const currentIndex = flow.indexOf(currentStep);
         return currentIndex < flow.length - 1 ? flow[currentIndex + 1] : null;
       } else { // both
-        const flow = ['household', 'streaming', 'gaming', 'meetings', 'tv-type', 'streaming-services', 'router', 'contract'];
+        const flow = ['household', 'streaming', 'gaming', 'meetings', 'tv-type', 'streaming-services', 'router', 'contract', 'budget', 'current-provider', 'priorities'];
         const currentIndex = flow.indexOf(currentStep);
         return currentIndex < flow.length - 1 ? flow[currentIndex + 1] : null;
       }
@@ -477,6 +510,15 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
         break;
       case 'tv-contract':
         profileUpdate['tvContractPreference'] = value;
+        break;
+      case 'budget':
+        profileUpdate['budget'] = value;
+        break;
+      case 'current-provider':
+        profileUpdate['currentProvider'] = value;
+        break;
+      case 'priorities':
+        profileUpdate['priorities'] = value;
         break;
     }
     
@@ -685,6 +727,10 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       case 'wifi': return Wifi;
       case 'tv': return Tv;
       case 'package': return Package;
+      case 'piggy': return PiggyBank;
+      case 'help': return HelpCircle;
+      case 'calendar': return ArrowRight;
+      case 'home': return Home;
       default: return ArrowRight;
     }
   };
