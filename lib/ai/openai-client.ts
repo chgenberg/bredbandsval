@@ -438,34 +438,35 @@ ${recommendations.slice(0, 3).map((rec, i) => {
    📊 Matchning: ${rec.matchScore}/100${badges}${trustInfo}`;
 }).join('\n\n')}
 
-🎯 SKAPA VÄRDE-FOKUSERAD REKOMMENDATION:
+• SKAPA PERSONLIG ANALYS:
 
-KRITISKA KRAV:
-✅ HTML-format: <div><p><strong>Titel</strong></p><p>Innehåll...</p></div>
-✅ MAX 4 meningar (kraftfulla, inte fluff)
-✅ KONKRETA siffror (pris, hastighet, besparingar)
-✅ Förklara VARFÖR detta val löser deras problem
-✅ Personligt och direkt (använd "du", "dina behov")
+KRAV:
+• HTML-format: <div><p><strong>Rubrik</strong></p><p>Text...</p></div>
+• 5-7 meningar (utförlig men koncis)
+• Konkreta siffror (pris, hastighet, besparingar)
+• Förklara VARFÖR detta löser deras specifika problem
+• Vardagligt språk som alla förstår
 
-🎯 STRUKTUR:
-1. 🏆 HUVUDREKOMMENDATION: "[Leverantör] för [totalpris]kr/mån är mitt val för dig"
-2. 🎯 VARFÖR DET PASSAR: "Eftersom du [specifik situation], ger detta [konkret fördel]"  
-3. 💎 VÄRDEPROPOSITION: "[Konkret besparing/fördel] jämfört med [alternativ/nuvarande]"
-4. 🚀 NÄSTA STEG/ALTERNATIV: "Om [scenario] skulle [alternativ] vara bättre"
+• STRUKTUR:
+1. Min rekommendation: "[Leverantör] för [pris]kr/mån passar dig bäst"
+2. Varför det passar: "Med din situation som [beskrivning] får du [konkret fördel]"
+3. Vad du sparar/får: "[Konkret besparing eller extra värde] jämfört med [alternativ]"
+4. Praktiska fördelar: "[Router/bindning/support] som gör det enkelt för dig"
+5. Alternativ: "Om du [scenario] kan [annat alternativ] vara bättre"
+6. Nästa steg: "För att komma igång [konkret action]"
 
-💡 VÄRDE-SKAPANDE FOKUS:
-- Om de betalar för mycket: Beräkna EXAKTA årliga besparingar
-- Om de har för låg hastighet: Förklara vad de MISSAR just nu
-- Om de har fel prioritering: Visa vad som VERKLIGEN spelar roll för dem
-- Om de överköper: Förklara hur de kan få samma värde billigare
-- Om de underköper: Visa vad de kan få för lite mer
+• FOKUSERA PÅ:
+- Exakta besparingar per år om de betalar för mycket
+- Vad de missar med nuvarande hastighet
+- Praktiska fördelar i vardagen
+- Enkla steg för att komma igång
+- Realistiska alternativ för olika behov
 
-🚫 UNDVIK:
-- Vaga fraser som "bra val", "passar dig"
-- Teknisk jargong utan förklaring
-- Säljsnack utan substans
-- Mer än 4 meningar
-- Information som redan finns i korten`;
+• UNDVIK:
+- Företagsjargong som "värdeproposition", "optimera"
+- Tekniska termer utan förklaring
+- Säljfraser som "bästa valet"
+- Information som redan syns i korten`;
 
   console.log('📝 GPT Prompt Length:', prompt.length);
   console.log('📝 GPT Prompt Preview:', prompt.substring(0, 200) + '...');
@@ -483,12 +484,12 @@ KRITISKA KRAV:
       messages: [
         { 
           role: 'system', 
-          content: 'Du är Valle - Sveriges mest erfarna bredbandsexpert som skapar maximal värde för kunder. Ge konkreta, problemlösande rekommendationer som sparar pengar eller ger betydligt mer värde. Fokusera på VARFÖR ett val löser deras specifika problem. Använd HTML-format och max 4 kraftfulla meningar.'
+          content: 'Du är Valle, en erfaren bredbandsrådgivare som hjälper människor hitta rätt lösning. Skriv i vardagligt språk utan företagsjargong. Fokusera på praktiska fördelar och vad kunden faktiskt sparar eller får. Använd HTML-format och 5-7 meningar för en utförlig analys.'
         },
         { role: 'user', content: prompt }
       ],
-      max_tokens: 800,
-      temperature: 0.8
+      max_tokens: 1200,
+      temperature: 0.7
     });
 
     const raw = completion.choices[0].message.content;
