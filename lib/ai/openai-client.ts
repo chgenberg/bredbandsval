@@ -441,19 +441,27 @@ ${recommendations.slice(0, 3).map((rec, i) => {
 • SKAPA PERSONLIG ANALYS:
 
 KRAV:
-• HTML-format: <div><p><strong>Rubrik</strong></p><p>Text...</p></div>
+• Svara ENDAST i HTML-format (INGEN ```html wrapper eller markdown)
+• Börja direkt med <div><p><strong>Rubrik</strong></p><p>Text...</p></div>
 • 5-7 meningar (utförlig men koncis)
 • Konkreta siffror (pris, hastighet, besparingar)
-• Förklara VARFÖR detta löser deras specifika problem
+• För serviceType 'both': rekommendera BÅDE bredband OCH TV
 • Vardagligt språk som alla förstår
 
-• STRUKTUR:
+• STRUKTUR FÖR ${serviceTypeText.toUpperCase()}:
+${serviceType === 'both' ? `
+1. Min rekommendation: "För bredband rekommenderar jag [leverantör] och för TV [leverantör/tjänst]"
+2. Varför det passar: "Med er situation som [beskrivning] får ni [konkret fördel för båda]"
+3. Totalkostnad: "Tillsammans kostar det [totalpris]kr/mån, vilket sparar [besparing] jämfört med [alternativ]"
+4. Bredbandsfördelar: "[Hastighet/router/bindning] för internetdelen"
+5. TV-fördelar: "[Kanaler/streaming/sport] för TV-delen"  
+6. Nästa steg: "För att komma igång [konkreta steg för båda tjänsterna]"` : `
 1. Min rekommendation: "[Leverantör] för [pris]kr/mån passar dig bäst"
 2. Varför det passar: "Med din situation som [beskrivning] får du [konkret fördel]"
 3. Vad du sparar/får: "[Konkret besparing eller extra värde] jämfört med [alternativ]"
 4. Praktiska fördelar: "[Router/bindning/support] som gör det enkelt för dig"
 5. Alternativ: "Om du [scenario] kan [annat alternativ] vara bättre"
-6. Nästa steg: "För att komma igång [konkret action]"
+6. Nästa steg: "För att komma igång [konkret action]"`}
 
 • FOKUSERA PÅ:
 - Exakta besparingar per år om de betalar för mycket
@@ -501,7 +509,14 @@ KRAV:
       return ensureHtmlParagraphs('Baserat på dina svar har jag hittat de bästa alternativen för dig. Dessa leverantörer erbjuder hastigheter och priser som passar ditt hushåll perfekt.');
     }
     
-    return ensureHtmlParagraphs(raw);
+    // Remove ```html wrapper if GPT added it
+    let cleanedRaw = raw.trim();
+    if (cleanedRaw.startsWith('```html')) {
+      cleanedRaw = cleanedRaw.replace(/^```html\s*/, '').replace(/```\s*$/, '').trim();
+      console.log('🧹 Removed ```html wrapper from GPT response');
+    }
+    
+    return ensureHtmlParagraphs(cleanedRaw);
   } catch (error) {
     console.error('❌ Error generating AI recommendation:', error);
     console.error('❌ Error details:', error.message);
