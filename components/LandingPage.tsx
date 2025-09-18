@@ -68,8 +68,8 @@ export default function LandingPage() {
             {/* CTA Card with soft corners */}
             <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl max-w-2xl mx-auto">
               <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                Hitta ditt perfekta<br />
-                bredband och TV-paket
+                Sveriges största jämförelse för<br />
+                bredband & TV – med personlig analys
               </h1>
 
               {/* Primary CTA - Pulsating button */}
