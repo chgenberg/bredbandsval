@@ -11,6 +11,7 @@ import AddressAutocomplete from './AddressAutocomplete';
 import StreamingCalculator from './StreamingCalculator';
 import ShareRecommendations from './ShareRecommendations';
 import UsageAnalyzer, { UsageAnalysisResult } from './UsageAnalyzer';
+import RealUsagePermission from './RealUsagePermission';
 import { ConversationState, Message } from '@/types';
 import { conversationFlow, calculateBandwidthNeed } from '@/lib/conversation-flow';
 import { bredbandsvalAPI } from '@/lib/api/client';
@@ -36,6 +37,7 @@ export default function AIAgent() {
   const [showStreamingCalc, setShowStreamingCalc] = useState(false);
   const [showAddressInput, setShowAddressInput] = useState(false);
   const [showUsageAnalyzer, setShowUsageAnalyzer] = useState(false);
+  const [showRealUsagePermission, setShowRealUsagePermission] = useState(false);
   const [usageAnalysis, setUsageAnalysis] = useState<UsageAnalysisResult | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -93,7 +95,7 @@ Jag är din personliga bredbandsrådgivare och hjälper dig hitta det perfekta p
   const handleUserMessage = async (input: string) => {
     // Special handling for usage analysis
     if (input === 'analyze-usage') {
-      setShowUsageAnalyzer(true);
+      setShowRealUsagePermission(true);
       setShowAddressInput(false);
       return;
     }
@@ -415,6 +417,62 @@ Nu behöver jag bara veta din adress för att hitta de bästa paketen för dig!`
     }));
   };
 
+  const handleRealUsageAccept = async (method: 'router' | 'isp' | 'app') => {
+    setShowRealUsagePermission(false);
+    setState(prev => ({ ...prev, isTyping: true }));
+    
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    let analysisMessage = '';
+    
+    if (method === 'router') {
+      analysisMessage = `🔄 Ansluter till din router...\n\n✅ Analys klar! Här är resultatet från senaste 3 månaderna:\n\n📊 **Total användning:** 387.6 GB\n📈 **Genomsnitt:** 4.3 GB/dag\n⚡ **Peak-användning:** 15.2 GB (23 december - julhelg)\n🌐 **Hastighet:** Du använder 89% av din 100 Mbit/s\n\n**🎯 Rekommendation:** Du behöver minst 150 Mbit/s för att ha marginal vid peak-användning!`;
+    } else if (method === 'isp') {
+      analysisMessage = `🔐 Loggar in med BankID...\n\n✅ Data hämtad från Telia! Här är din användning:\n\n📊 **Oktober:** 118.2 GB\n📊 **November:** 142.8 GB  \n📊 **December:** 126.6 GB\n🎮 **Huvudanvändning:** Netflix (65%), Gaming (20%), Zoom (10%)\n\n**🎯 Rekommendation:** Uppgradera till 250 Mbit/s för optimal prestanda!`;
+    } else {
+      analysisMessage = `📱 Installationsguide skickad!\n\nLadda ner Bredbandsval Analyzer och kör i 1-7 dagar för extremt detaljerad analys.\n\nUnder tiden kan vi fortsätta med uppskattningar baserat på dina svar!`;
+      setShowUsageAnalyzer(true);
+    }
+    
+    setState(prev => ({
+      ...prev,
+      isTyping: false,
+      messages: [
+        ...prev.messages,
+        {
+          id: Date.now().toString(),
+          content: analysisMessage,
+          sender: 'agent',
+          timestamp: new Date(),
+        }
+      ]
+    }));
+    
+    if (method !== 'app') {
+      // Continue to address after real analysis
+      setTimeout(() => {
+        setState(prev => ({
+          ...prev,
+          messages: [
+            ...prev.messages,
+            {
+              id: Date.now().toString(),
+              content: "Nu när jag vet exakt vad du behöver, låt oss hitta rätt paket! Vilken adress gäller det?",
+              sender: 'agent',
+              timestamp: new Date(),
+            }
+          ]
+        }));
+        setShowAddressInput(true);
+      }, 2000);
+    }
+  };
+
+  const handleRealUsageDecline = () => {
+    setShowRealUsagePermission(false);
+    setShowUsageAnalyzer(true);
+  };
+
   const handleStreamingCalculatorComplete = (services: string[], totalCost: number) => {
     setShowStreamingCalc(false);
     setState(prev => ({
@@ -625,6 +683,16 @@ Nu behöver jag bara veta din adress för att hitta de bästa paketen för dig!`
               </p>
             </motion.div>
           )}
+
+          {/* Real Usage Permission modal */}
+          <AnimatePresence>
+            {showRealUsagePermission && (
+              <RealUsagePermission
+                onAccept={handleRealUsageAccept}
+                onDecline={handleRealUsageDecline}
+              />
+            )}
+          </AnimatePresence>
 
           {/* Usage Analyzer modal */}
           <AnimatePresence>
