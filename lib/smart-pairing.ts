@@ -67,26 +67,28 @@ export function generateSmartPairs(
   if (topBroadband[0] && topTV[0]) {
     const broadband = topBroadband[0];
     const tv = topTV[0];
-    const bbPrice = broadband.package.pricing.campaign?.monthlyPrice || broadband.package.pricing.monthly;
-    const tvPrice = tv.package.pricing.campaign?.monthlyPrice || tv.package.pricing.monthly;
+    const bbPrice = broadband.package?.pricing?.campaign?.monthlyPrice || broadband.package?.pricing?.monthly || 0;
+    const tvPrice = tv.package?.pricing?.campaign?.monthlyPrice || tv.package?.pricing?.monthly || 0;
     const total = bbPrice + tvPrice;
+    
+    console.log('💰 Primary pair pricing:', { bbPrice, tvPrice, total });
     
     pairs.push({
       id: 'primary',
       title: 'Valle AI:s rekommendation',
       subtitle: 'Bästa matchningen för dina behov',
       broadband: {
-        provider: broadband.package.providerName,
-        package: broadband.package.name,
-        speed: broadband.package.speed.download,
+        provider: broadband.package?.providerName || 'Okänd',
+        package: broadband.package?.name || 'Okänt paket',
+        speed: broadband.package?.speed?.download || 0,
         price: bbPrice,
-        features: broadband.package.features || [],
+        features: broadband.package?.features || [],
       },
       tv: {
-        provider: tv.package.providerName,
-        package: tv.package.name,
+        provider: tv.package?.providerName || 'Okänd',
+        package: tv.package?.name || 'Okänt paket',
         price: tvPrice,
-        features: tv.package.tv?.channelPackages || [],
+        features: tv.package?.tv?.channelPackages || [],
       },
       totalPrice: total,
       savings: 0, // Reference point
@@ -97,37 +99,39 @@ export function generateSmartPairs(
 
   // Budget alternative - cheapest combination
   const budgetBroadband = topBroadband.find(pkg => {
-    const price = pkg.package.pricing.campaign?.monthlyPrice || pkg.package.pricing.monthly;
+    const price = pkg.package?.pricing?.campaign?.monthlyPrice || pkg.package?.pricing?.monthly || 0;
     return price < 350;
   }) || topBroadband[topBroadband.length - 1];
   
   const budgetTV = topTV.find(pkg => {
-    const price = pkg.package.pricing.campaign?.monthlyPrice || pkg.package.pricing.monthly;
+    const price = pkg.package?.pricing?.campaign?.monthlyPrice || pkg.package?.pricing?.monthly || 0;
     return price < 300;
   }) || topTV[topTV.length - 1];
 
   if (budgetBroadband && budgetTV) {
-    const bbPrice = budgetBroadband.package.pricing.campaign?.monthlyPrice || budgetBroadband.package.pricing.monthly;
-    const tvPrice = budgetTV.package.pricing.campaign?.monthlyPrice || budgetTV.package.pricing.monthly;
+    const bbPrice = budgetBroadband.package?.pricing?.campaign?.monthlyPrice || budgetBroadband.package?.pricing?.monthly || 0;
+    const tvPrice = budgetTV.package?.pricing?.campaign?.monthlyPrice || budgetTV.package?.pricing?.monthly || 0;
     const total = bbPrice + tvPrice;
     const savings = pairs[0] ? total - pairs[0].totalPrice : 0;
+    
+    console.log('💰 Budget pair pricing:', { bbPrice, tvPrice, total, savings });
     
     pairs.push({
       id: 'budget',
       title: 'Budgetalternativ',
       subtitle: 'Bästa värdet för pengarna',
       broadband: {
-        provider: budgetBroadband.package.providerName,
-        package: budgetBroadband.package.name,
-        speed: budgetBroadband.package.speed.download,
+        provider: budgetBroadband.package?.providerName || 'Okänd',
+        package: budgetBroadband.package?.name || 'Okänt paket',
+        speed: budgetBroadband.package?.speed?.download || 0,
         price: bbPrice,
-        features: budgetBroadband.package.features || [],
+        features: budgetBroadband.package?.features || [],
       },
       tv: {
-        provider: budgetTV.package.providerName,
-        package: budgetTV.package.name,
+        provider: budgetTV.package?.providerName || 'Okänd',
+        package: budgetTV.package?.name || 'Okänt paket',
         price: tvPrice,
-        features: budgetTV.package.tv?.channelPackages || [],
+        features: budgetTV.package?.tv?.channelPackages || [],
       },
       totalPrice: total,
       savings,
@@ -137,34 +141,36 @@ export function generateSmartPairs(
   }
 
   // Premium alternative - best performance/features
-  const premiumBroadband = topBroadband.find(pkg => pkg.package.speed.download >= 500) || topBroadband[0];
+  const premiumBroadband = topBroadband.find(pkg => (pkg.package?.speed?.download || 0) >= 500) || topBroadband[0];
   const premiumTV = topTV.find(pkg => {
-    const channels = pkg.package.tv?.channels || [];
+    const channels = pkg.package?.tv?.channels || [];
     return channels.some(ch => ch.toLowerCase().includes('sport') || ch.toLowerCase().includes('premium'));
   }) || topTV[0];
 
-  if (premiumBroadband && premiumTV && premiumBroadband.package.id !== pairs[0]?.broadband.provider) {
-    const bbPrice = premiumBroadband.package.pricing.campaign?.monthlyPrice || premiumBroadband.package.pricing.monthly;
-    const tvPrice = premiumTV.package.pricing.campaign?.monthlyPrice || premiumTV.package.pricing.monthly;
+  if (premiumBroadband && premiumTV && premiumBroadband.package?.id !== pairs[0]?.broadband?.provider) {
+    const bbPrice = premiumBroadband.package?.pricing?.campaign?.monthlyPrice || premiumBroadband.package?.pricing?.monthly || 0;
+    const tvPrice = premiumTV.package?.pricing?.campaign?.monthlyPrice || premiumTV.package?.pricing?.monthly || 0;
     const total = bbPrice + tvPrice;
     const savings = pairs[0] ? total - pairs[0].totalPrice : 0;
+    
+    console.log('💰 Premium pair pricing:', { bbPrice, tvPrice, total, savings });
     
     pairs.push({
       id: 'premium',
       title: 'Premiumalternativ',
       subtitle: 'Bästa prestanda och funktioner',
       broadband: {
-        provider: premiumBroadband.package.providerName,
-        package: premiumBroadband.package.name,
-        speed: premiumBroadband.package.speed.download,
+        provider: premiumBroadband.package?.providerName || 'Okänd',
+        package: premiumBroadband.package?.name || 'Okänt paket',
+        speed: premiumBroadband.package?.speed?.download || 0,
         price: bbPrice,
-        features: premiumBroadband.package.features || [],
+        features: premiumBroadband.package?.features || [],
       },
       tv: {
-        provider: premiumTV.package.providerName,
-        package: premiumTV.package.name,
+        provider: premiumTV.package?.providerName || 'Okänd',
+        package: premiumTV.package?.name || 'Okänt paket',
         price: tvPrice,
-        features: premiumTV.package.tv?.channelPackages || [],
+        features: premiumTV.package?.tv?.channelPackages || [],
       },
       totalPrice: total,
       savings,
@@ -177,7 +183,7 @@ export function generateSmartPairs(
 }
 
 function generatePrimaryReasoning(broadband: any, tv: any, userProfile: any): string {
-  const speed = broadband.package.speed.download;
+  const speed = broadband.package?.speed?.download || 0;
   const gaming = userProfile.onlineGaming ? 'gaming och ' : '';
   const streaming = userProfile.streamingLevel === 'heavy' ? 'mycket streaming' : 'streaming';
   
@@ -192,7 +198,7 @@ function generateBudgetReasoning(broadband: any, tv: any, savings: number): stri
 }
 
 function generatePremiumReasoning(broadband: any, tv: any, savings: number): string {
-  const speed = broadband.package.speed.download;
+  const speed = broadband.package?.speed?.download || 0;
   const extraCost = savings;
   
   return `${speed} Mbit/s och premium-kanaler för ${extraCost} kr/mån extra - värt det för bästa upplevelsen`;
