@@ -82,10 +82,24 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
   const [selectedStreamingServices, setSelectedStreamingServices] = useState<string[]>([]);
   const [speedTestResult, setSpeedTestResult] = useState<SpeedTestResult | null>(null);
   const [followUpQuestion, setFollowUpQuestion] = useState('');
+  const [loadingMessage, setLoadingMessage] = useState('Valle AI analyserar');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const getRandomLoadingMessage = () => {
+    const messages = [
+      'Valle AI analyserar',
+      'Analyserar dina svar',
+      'Räknar ut bästa lösning',
+      'Jämför leverantörer',
+      'Beräknar dina behov',
+      'Söker bästa priser',
+      'Matchar dina önskemål'
+    ];
+    return messages[Math.floor(Math.random() * messages.length)];
   };
 
   useEffect(() => {
@@ -139,6 +153,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     
     setMessages(prev => [...prev, userMsg]);
     setUserProfile(prev => ({ ...prev, address }));
+    setLoadingMessage(getRandomLoadingMessage());
     setIsTyping(true);
     
     // Brief pause
@@ -230,6 +245,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     if (currentStep === 'service-type') {
       setServiceType(value as 'broadband' | 'tv' | 'both');
       setUserProfile(prev => ({ ...prev, serviceType: value }));
+      setLoadingMessage(getRandomLoadingMessage());
       setIsTyping(true);
       
       await new Promise(resolve => setTimeout(resolve, 800));
@@ -265,6 +281,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
   };
 
   const askNextQuestion = async (step: string) => {
+    setLoadingMessage(getRandomLoadingMessage());
     setIsTyping(true);
     await new Promise(resolve => setTimeout(resolve, 600));
     
@@ -331,7 +348,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
           { text: 'Sport', value: 'sports', icon: 'tv' },
           { text: 'Film & serier', value: 'entertainment', icon: 'play' },
           { text: 'Nyheter & dokumentärer', value: 'news', icon: 'tv' },
-          { text: 'Allt ovan', value: 'all', icon: 'package' },
+          { text: 'Allt', value: 'all', icon: 'package' },
         ],
         helpText: 'Detta hjälper oss att hitta paket med rätt kanaler för dina intressen.'
       },
@@ -474,6 +491,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
   };
 
   const calculateRecommendations = async () => {
+    setLoadingMessage('Räknar ut bästa lösning');
     setIsTyping(true);
     
     const calcMsg: Message = {
@@ -688,6 +706,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       return;
     }
     
+    setLoadingMessage(getRandomLoadingMessage());
     setIsTyping(true);
     
     // Generate AI response based on question context
@@ -779,7 +798,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 sm:py-6">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <AnimatePresence>
             {messages.map((message, index) => (
               <motion.div
@@ -898,7 +917,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                             }}
                             className={`flex items-center justify-center gap-2 px-4 py-3 
                                      rounded-full text-sm font-medium transition-all
-                                     min-h-[48px] min-w-[140px] w-full whitespace-nowrap
+                                     min-h-[48px] min-w-[160px] w-full whitespace-nowrap
                                      ${isSelected 
                                        ? 'bg-blue-500 text-white border-blue-500' 
                                        : 'bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-100'
@@ -996,7 +1015,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                     </motion.div>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm font-medium text-gray-800">Valle AI analyserar</span>
+                    <span className="text-sm font-medium text-gray-800">{loadingMessage}</span>
                     <div className="flex items-center gap-2 mt-1">
                       <div className="flex gap-1">
                         {[0, 0.15, 0.3].map((delay, i) => (
@@ -1016,7 +1035,12 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                           />
                         ))}
                       </div>
-                      <span className="text-xs text-gray-500">Förbereder svar</span>
+                      <span className="text-xs text-gray-500">
+                        {loadingMessage.includes('analyserar') ? 'Förbereder svar' : 
+                         loadingMessage.includes('Räknar') ? 'Bearbetar data' : 
+                         loadingMessage.includes('Jämför') ? 'Kontrollerar priser' : 
+                         'Arbetar'}
+                      </span>
                     </div>
                   </div>
                   
