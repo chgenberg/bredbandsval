@@ -9,10 +9,13 @@ import {
 } from 'lucide-react';
 import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import RealUsagePermission from './RealUsagePermission';
+import SpeedTestModal from './SpeedTestModal';
 import { analytics } from '@/lib/analytics';
 import { bredbandsvalAPI } from '@/lib/api/client';
 import RecommendationCard from './RecommendationCard';
 import { generateAIRecommendation } from '@/lib/ai/openai-client';
+import { computeNeeds, scorePackageMatch } from '@/lib/decision/profile-model';
+import { SpeedTestResult } from '@/lib/network-analysis/webrtc-speed-test';
 
 interface Message {
   id: string;
@@ -65,11 +68,13 @@ export default function AppleStyleAgent() {
   const [userProfile, setUserProfile] = useState<any>({});
   const [showAddressInput, setShowAddressInput] = useState(false);
   const [showRealUsage, setShowRealUsage] = useState(false);
+  const [showSpeedTest, setShowSpeedTest] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [openHelpTooltip, setOpenHelpTooltip] = useState<string | null>(null);
   const [serviceType, setServiceType] = useState<'broadband' | 'tv' | 'both' | null>(null);
   const [selectedStreamingServices, setSelectedStreamingServices] = useState<string[]>([]);
+  const [speedTestResult, setSpeedTestResult] = useState<SpeedTestResult | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -421,6 +426,31 @@ export default function AppleStyleAgent() {
     setMessages(prev => [...prev, calcMsg]);
     
     try {
+      // Beräkna behov baserat på profil
+      const userSignals = {
+        householdSize: parseInt(userProfile.householdSize) || 1,
+        streamingLevel: userProfile.streamingLevel || 'moderate' as const,
+        onlineGaming: userProfile.onlineGaming || false,
+        videoMeetings: userProfile.videoMeetings ? 
+          (userProfile.workFromHome ? 'daily' : 'sometimes') as const : 
+          'none' as const,
+        smartDevices: (parseInt(userProfile.householdSize) || 1) * 5,
+        workFromHome: userProfile.workFromHome || false,
+        streamingServicesCount: userProfile.streamingServices ? 
+          userProfile.streamingServices.split(',').length : 0,
+        tvPreference: userProfile.tvPreference
+      };
+      
+      const needs = computeNeeds(userSignals);
+      
+      // Om vi har hastighetstestresultat, justera behov
+      if (speedTestResult) {
+        // Om faktisk hastighet är mycket lägre än behov, flagga det
+        if (speedTestResult.downloadMbps < needs.requiredDownloadMbps * 0.8) {
+          needs.priorityFeatures.push('Hastighetsuppgradering behövs');
+        }
+      }
+      
       // Call API
       const addressData = await bredbandsvalAPI.lookupAddress(userProfile.address || '');
       const preferences = {
@@ -446,7 +476,18 @@ export default function AppleStyleAgent() {
         },
       };
       
-      const recs = await bredbandsvalAPI.getRecommendations(preferences);
+      let recs = await bredbandsvalAPI.getRecommendations(preferences);
+      
+      // Sortera om baserat på behovsmodellen
+      recs = recs.map(rec => {
+        const { score, reasons } = scorePackageMatch(rec.package, needs);
+        return {
+          ...rec,
+          matchScore: score,
+          reasons: [...reasons, ...(rec.reasons || [])]
+        };
+      }).sort((a, b) => b.matchScore - a.matchScore);
+      
       setRecommendations(recs);
       
       // Generate AI recommendation
@@ -493,12 +534,46 @@ export default function AppleStyleAgent() {
   const handleRealUsageAccept = async (method: string) => {
     setShowRealUsage(false);
     
-    // Continue with questions after analysis
-    await askNextQuestion('household');
+    if (method === 'router') {
+      // Visa hastighetstestet
+      setShowSpeedTest(true);
+    } else {
+      // För ISP-metoden, fortsätt med frågor (BankID inte implementerat än)
+      const msg: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: 'BankID-inloggning kommer snart! Låt oss fortsätta med några frågor istället.',
+        sender: 'agent',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, msg]);
+      await askNextQuestion('household');
+    }
   };
 
   const handleRealUsageDecline = () => {
     setShowRealUsage(false);
+    askNextQuestion('household');
+  };
+
+  const handleSpeedTestComplete = async (result: SpeedTestResult) => {
+    setShowSpeedTest(false);
+    setSpeedTestResult(result);
+    
+    // Visa resultat i chatten
+    const msg: Message = {
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      content: `Utmärkt! Jag mätte din hastighet till ${result.downloadMbps} Mbit/s ned och ${result.uploadMbps} Mbit/s upp. Nu vet jag exakt vad du behöver.`,
+      sender: 'agent',
+      timestamp: new Date(),
+    };
+    setMessages(prev => [...prev, msg]);
+    
+    // Fortsätt med frågor
+    await askNextQuestion('household');
+  };
+
+  const handleSpeedTestSkip = () => {
+    setShowSpeedTest(false);
     askNextQuestion('household');
   };
 
@@ -828,6 +903,16 @@ export default function AppleStyleAgent() {
           <RealUsagePermission
             onAccept={handleRealUsageAccept}
             onDecline={handleRealUsageDecline}
+          />
+        )}
+      </AnimatePresence>
+      
+      {/* Speed test modal */}
+      <AnimatePresence>
+        {showSpeedTest && (
+          <SpeedTestModal
+            onComplete={handleSpeedTestComplete}
+            onSkip={handleSpeedTestSkip}
           />
         )}
       </AnimatePresence>
