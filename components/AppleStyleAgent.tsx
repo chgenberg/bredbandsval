@@ -728,9 +728,17 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       console.log('📦 recommendations:', serviceType === 'both' ? structured.combined : recs.slice(0, 3));
       console.log('🎯 serviceType:', serviceType || 'broadband');
       
+      // Ensure GPT always gets recommendations to work with
+      let recommendationsForGPT = recs.slice(0, 3);
+      if (serviceType === 'both' && structured.combined.length > 0) {
+        recommendationsForGPT = structured.combined;
+      }
+      
+      console.log('📦 Sending to GPT - recommendations count:', recommendationsForGPT.length);
+      
       const aiRecommendation = await generateAIRecommendation({
         userProfile: completeProfile,
-        recommendations: serviceType === 'both' ? structured.combined : recs.slice(0, 3),
+        recommendations: recommendationsForGPT,
         serviceType: serviceType || 'broadband'
       });
       
