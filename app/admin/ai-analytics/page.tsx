@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Bot, TrendingUp, Clock, Zap, Target, Brain, 
-  BarChart3, PieChart, Activity, AlertTriangle 
+  Users, TrendingUp, Clock, Zap, Target, BarChart2, 
+  BarChart3, PieChart, Activity, AlertCircle 
 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -113,7 +113,7 @@ export default function AIAnalyticsDashboard() {
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-12 h-12 bg-[#101929] rounded-xl flex items-center justify-center"
               >
-                <Bot className="w-6 h-6 text-white" />
+                <Users className="w-6 h-6 text-white" />
               </motion.div>
               <div>
                 <p className="text-sm font-medium text-gray-600">Totala sessioner</p>
@@ -165,7 +165,7 @@ export default function AIAnalyticsDashboard() {
                 transition={{ duration: 4, repeat: Infinity }}
                 className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center"
               >
-                <Target className="w-6 h-6 text-white" />
+                <BarChart2 className="w-6 h-6 text-white" />
               </motion.div>
               <div>
                 <p className="text-sm font-medium text-gray-600">Effektivitet</p>
@@ -190,7 +190,7 @@ export default function AIAnalyticsDashboard() {
                 transition={{ duration: 3, repeat: Infinity }}
                 className="w-12 h-12 bg-[#101929] rounded-xl flex items-center justify-center"
               >
-                <Brain className="w-6 h-6 text-white" />
+                <Monitor className="w-6 h-6 text-white" />
               </motion.div>
               <div>
                 <p className="text-sm font-medium text-gray-600">Mest aktiv</p>
@@ -385,7 +385,7 @@ export default function AIAnalyticsDashboard() {
               transition={{ duration: 3, repeat: Infinity }}
               className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center"
             >
-              <AlertTriangle className="w-5 h-5 text-white" />
+                <AlertCircle className="w-5 h-5 text-white" />
             </motion.div>
             AI Optimeringsrekommendationer
           </h3>

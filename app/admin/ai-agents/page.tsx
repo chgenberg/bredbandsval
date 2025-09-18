@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Bot, Activity, Clock, TrendingUp, Eye, MousePointer, ShoppingCart, ArrowLeft } from 'lucide-react';
+import { Users, BarChart, Clock, TrendingUp, Monitor, MousePointer, ShoppingBag, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -100,9 +100,9 @@ export default function AIAgentDashboard() {
                   boxShadow: ['0 0 0 0 rgba(16, 25, 41, 0.4)', '0 0 0 10px rgba(16, 25, 41, 0)', '0 0 0 0 rgba(16, 25, 41, 0)']
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-12 h-12 bg-[#101929] rounded-xl flex items-center justify-center"
+                className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
               >
-                <Bot className="w-6 h-6 text-white" />
+                <Users className="w-6 h-6 text-white" />
               </motion.div>
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Visits</p>
@@ -125,9 +125,9 @@ export default function AIAgentDashboard() {
                   backgroundColor: ['#10B981', '#059669', '#10B981']
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center"
+                className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
               >
-                <Activity className="w-6 h-6 text-white" />
+                <BarChart className="w-6 h-6 text-white" />
               </motion.div>
               <div>
                 <p className="text-sm font-medium text-gray-600">Idag</p>
@@ -150,9 +150,9 @@ export default function AIAgentDashboard() {
                   rotate: [0, 5, -5, 0]
                 }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center"
+                className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
               >
-                <Eye className="w-6 h-6 text-white" />
+                <Monitor className="w-6 h-6 text-white" />
               </motion.div>
               <div>
                 <p className="text-sm font-medium text-gray-600">ChatGPT</p>
@@ -175,9 +175,9 @@ export default function AIAgentDashboard() {
                   backgroundColor: ['#F97316', '#EA580C', '#F97316']
                 }}
                 transition={{ duration: 2.5, repeat: Infinity }}
-                className="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center"
+                className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
               >
-                <ShoppingCart className="w-6 h-6 text-white" />
+                <ShoppingBag className="w-6 h-6 text-white" />
               </motion.div>
               <div>
                 <p className="text-sm font-medium text-gray-600">Beställningar</p>
@@ -304,7 +304,7 @@ export default function AIAgentDashboard() {
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6"
               >
-                <Bot className="w-8 h-8 text-gray-400" />
+                <Users className="w-8 h-8 text-gray-400" />
               </motion.div>
               <p className="text-gray-600 font-medium">Inga AI-agent besök ännu</p>
               <p className="text-sm text-gray-400 mt-2">AI-agenter kommer att visas här när de besöker er sajt</p>
