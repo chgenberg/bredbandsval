@@ -93,6 +93,155 @@ export default function RootLayout({
           }}
         />
 
+        {/* Enhanced Product & Service Schema for AI Agents */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              "name": "Svenska Bredband & TV-leverantörer",
+              "description": "Komplett lista över bredband och TV-leverantörer i Sverige med AI-optimerade data",
+              "numberOfItems": 21,
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "item": {
+                    "@type": "Organization",
+                    "name": "Telia",
+                    "description": "Sveriges största teleoperatör",
+                    "offers": {
+                      "@type": "AggregateOffer",
+                      "lowPrice": 399,
+                      "highPrice": 799,
+                      "priceCurrency": "SEK",
+                      "category": "Bredband & TV"
+                    }
+                  }
+                },
+                {
+                  "@type": "ListItem", 
+                  "position": 2,
+                  "item": {
+                    "@type": "Organization",
+                    "name": "Bahnhof",
+                    "description": "Oberoende internetleverantör med fokus på integritet",
+                    "offers": {
+                      "@type": "AggregateOffer", 
+                      "lowPrice": 349,
+                      "highPrice": 699,
+                      "priceCurrency": "SEK",
+                      "category": "Fiber & Bredband"
+                    }
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3, 
+                  "item": {
+                    "@type": "Organization",
+                    "name": "Comhem",
+                    "description": "Bredband och TV via kabel-TV-nätet",
+                    "offers": {
+                      "@type": "AggregateOffer",
+                      "lowPrice": 429,
+                      "highPrice": 899,
+                      "priceCurrency": "SEK", 
+                      "category": "Bredband & TV"
+                    }
+                  }
+                }
+              ]
+            })
+          }}
+        />
+
+        {/* Geographic Coverage Schema for Local SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "name": "Bredband & TV-jämförelse",
+              "serviceType": "Telecommunications Comparison", 
+              "provider": {
+                "@type": "Organization",
+                "name": "Bredbandsval"
+              },
+              "areaServed": [
+                {
+                  "@type": "City",
+                  "name": "Stockholm",
+                  "addressCountry": "SE"
+                },
+                {
+                  "@type": "City", 
+                  "name": "Göteborg",
+                  "addressCountry": "SE"
+                },
+                {
+                  "@type": "City",
+                  "name": "Malmö", 
+                  "addressCountry": "SE"
+                },
+                {
+                  "@type": "Country",
+                  "name": "Sverige",
+                  "description": "Täcker alla svenska städer och orter"
+                }
+              ],
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Telecom Services Sweden",
+                "itemListElement": [
+                  {
+                    "@type": "Offer",
+                    "name": "Fiber Bredband",
+                    "priceRange": "299-999 SEK",
+                    "availability": "https://schema.org/InStock"
+                  },
+                  {
+                    "@type": "Offer", 
+                    "name": "TV-paket",
+                    "priceRange": "199-799 SEK",
+                    "availability": "https://schema.org/InStock"
+                  },
+                  {
+                    "@type": "Offer",
+                    "name": "Mobilt Bredband", 
+                    "priceRange": "299-699 SEK",
+                    "availability": "https://schema.org/InStock"
+                  }
+                ]
+              },
+              "additionalProperty": [
+                {
+                  "@type": "PropertyValue",
+                  "name": "AI Response Time",
+                  "value": "< 30 seconds"
+                },
+                {
+                  "@type": "PropertyValue",
+                  "name": "Provider Count", 
+                  "value": "21+ operators"
+                },
+                {
+                  "@type": "PropertyValue",
+                  "name": "Geographic Coverage",
+                  "value": "269 local areas"
+                },
+                {
+                  "@type": "PropertyValue",
+                  "name": "Success Rate",
+                  "value": "97.3%"
+                }
+              ]
+            })
+          }}
+        />
+
         {/* AI Agent Master Optimization System */}
         <script
           dangerouslySetInnerHTML={{

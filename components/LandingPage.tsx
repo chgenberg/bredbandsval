@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import AppleStyleAgent from './AppleStyleAgent';
 import AIAgentSocialProof from './AIAgentSocialProof';
+import { SchemaOrgGenerator, BroadbandProduct, LocalBusinessData } from '@/lib/schema-org-generator';
 
 interface LocalizedContent {
   headline?: string;
@@ -19,6 +20,72 @@ interface LocalizedContent {
 }
 
 export default function LandingPage({ localizedContent }: { localizedContent?: LocalizedContent } = {}) {
+  
+  // Generate structured data for AI agents
+  useEffect(() => {
+    const generateStructuredData = () => {
+      // Sample broadband products for schema
+      const sampleProducts: BroadbandProduct[] = [
+        {
+          name: "Bredband 250 + TV",
+          provider: "Telia",
+          speed: { download: 250, upload: 25 },
+          price: { monthly: 599, setupFee: 0 },
+          features: ["Router ingår", "TV-paket", "Streaming ingår"],
+          availability: { technology: 'fiber', coverage: 95 }
+        },
+        {
+          name: "SuperFiber 500",
+          provider: "Bahnhof", 
+          speed: { download: 500, upload: 50 },
+          price: { monthly: 449 },
+          features: ["Router ingår", "Fri installation"],
+          availability: { technology: 'fiber', coverage: 88 }
+        },
+        {
+          name: "Bredband 100 + TV Stor",
+          provider: "Comhem",
+          speed: { download: 100, upload: 10 },
+          price: { monthly: 529 },
+          features: ["TV-box ingår", "HBO Max ingår"],
+          availability: { technology: 'cable', coverage: 92 }
+        }
+      ];
+
+      // Local business data
+      const localBusiness: LocalBusinessData | undefined = localizedContent?.cityName ? {
+        name: localizedContent.cityName,
+        location: localizedContent.cityName,
+        region: localizedContent.region || 'Sverige',
+        services: ['Bredband', 'TV-paket', 'Mobilt bredband'],
+        coverage: localizedContent.fiberCoverage || 85
+      } : undefined;
+
+      // Generate complete schema
+      const schemaData = SchemaOrgGenerator.generateCompleteSchema({
+        products: sampleProducts,
+        localBusiness,
+        breadcrumb: localizedContent?.cityName ? 
+          ['Hem', 'Städer', localizedContent.cityName] : 
+          ['Hem'],
+        includeFAQ: true
+      });
+
+      // Add to page head
+      const existingSchema = document.querySelector('#structured-data');
+      if (existingSchema) {
+        existingSchema.remove();
+      }
+
+      const script = document.createElement('script');
+      script.id = 'structured-data';
+      script.type = 'application/ld+json';
+      script.textContent = schemaData;
+      document.head.appendChild(script);
+    };
+
+    generateStructuredData();
+  }, [localizedContent]);
   const [showAgent, setShowAgent] = useState(false);
   const [quickSearchMode, setQuickSearchMode] = useState(false);
 
