@@ -896,9 +896,9 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                                 handleQuickReply(reply.value);
                               }
                             }}
-                            className={`flex items-center justify-center gap-2 px-3 py-2.5 
+                            className={`flex items-center justify-center gap-2 px-4 py-3 
                                      rounded-full text-sm font-medium transition-all
-                                     min-h-[44px] w-full whitespace-nowrap
+                                     min-h-[48px] min-w-[140px] w-full whitespace-nowrap
                                      ${isSelected 
                                        ? 'bg-blue-500 text-white border-blue-500' 
                                        : 'bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-100'
