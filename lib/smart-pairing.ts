@@ -28,16 +28,38 @@ export function generateSmartPairs(
   tvPackages: any[],
   userProfile: any
 ): SmartPair[] {
+  console.log('🔍 generateSmartPairs input:', {
+    broadbandPackages: broadbandPackages.length,
+    tvPackages: tvPackages.length,
+    broadbandSample: broadbandPackages[0],
+    tvSample: tvPackages[0]
+  });
+
   // Filter to get best broadband and TV options
   const topBroadband = broadbandPackages
-    .filter(pkg => pkg.speed?.download > 0 && !pkg.tv)
+    .filter(pkg => {
+      const hasSpeed = (pkg.package?.speed?.download || pkg.speed?.download || 0) > 0;
+      const noTV = !pkg.package?.tv && !pkg.tv;
+      console.log('BB filter:', pkg.package?.providerName || pkg.providerName, 'hasSpeed:', hasSpeed, 'noTV:', noTV);
+      return hasSpeed && noTV;
+    })
     .sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0))
     .slice(0, 5);
     
   const topTV = tvPackages
-    .filter(pkg => pkg.tv && (pkg.speed?.download === 0 || pkg.isCombo))
+    .filter(pkg => {
+      const hasTV = !!(pkg.package?.tv || pkg.tv);
+      const isStreamingOrCombo = (pkg.package?.speed?.download || pkg.speed?.download || 0) === 0 || pkg.package?.isCombo || pkg.isCombo;
+      console.log('TV filter:', pkg.package?.providerName || pkg.providerName, 'hasTV:', hasTV, 'isStreamingOrCombo:', isStreamingOrCombo);
+      return hasTV;
+    })
     .sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0))
     .slice(0, 5);
+
+  console.log('🎯 Filtered results:', {
+    topBroadband: topBroadband.length,
+    topTV: topTV.length
+  });
 
   const pairs: SmartPair[] = [];
 
