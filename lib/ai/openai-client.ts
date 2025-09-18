@@ -443,7 +443,8 @@ ${recommendations.slice(0, 3).map((rec, i) => {
 KRAV:
 • Svara ENDAST i HTML-format (INGEN ```html wrapper eller markdown)
 • Börja direkt med <div><p><strong>Rubrik</strong></p><p>Text...</p></div>
-• 5-7 meningar (utförlig men koncis)
+• Använd SEPARATA <p>-taggar för varje stycke/mening
+• 5-7 meningar i OLIKA stycken för läsbarhet
 • Konkreta siffror (pris, hastighet, besparingar)
 • För serviceType 'both': rekommendera BÅDE bredband OCH TV
 • Vardagligt språk som alla förstår
@@ -474,7 +475,17 @@ ${serviceType === 'both' ? `
 - Företagsjargong som "värdeproposition", "optimera"
 - Tekniska termer utan förklaring
 - Säljfraser som "bästa valet"
-- Information som redan syns i korten`;
+- Information som redan syns i korten
+
+EXEMPEL PÅ KORREKT FORMATERING:
+<div>
+<p><strong>Min rekommendation:</strong> Telia för 599kr/mån passar dig bäst.</p>
+<p><strong>Varför det passar:</strong> Med ditt hushåll på 3-4 personer som streamar och jobbar hemifrån får du en stabil hastighet som räcker för alla.</p>
+<p><strong>Vad du sparar:</strong> Du sparar 400kr per år jämfört med din nuvarande plan.</p>
+<p><strong>Praktiska fördelar:</strong> Router ingår och ingen bindningstid ger dig flexibilitet.</p>
+<p><strong>Alternativ:</strong> Om du vill ha mer hastighet kan Bahnhof vara bättre.</p>
+<p><strong>Nästa steg:</strong> Kontakta Telia för att beställa.</p>
+</div>`;
 
   console.log('📝 GPT Prompt Length:', prompt.length);
   console.log('📝 GPT Prompt Preview:', prompt.substring(0, 200) + '...');
