@@ -257,15 +257,63 @@ export const dummyAIMetrics = [
 ];
 
 export const dummySummaryStats = {
-  total_sessions: 127,
-  avg_completion_time: 12.3, // seconds
+  total_sessions: 456,
+  avg_completion_time: 18.7, // seconds
   most_common_agent: 'chatgpt',
   peak_hours: [
-    ['14', 23], // 14:00 - 23 visits
-    ['10', 19], // 10:00 - 19 visits  
-    ['16', 17]  // 16:00 - 17 visits
+    ['14', 67], // 14:00 - 67 visits
+    ['10', 54], // 10:00 - 54 visits  
+    ['16', 48]  // 16:00 - 48 visits
   ]
 };
+
+// Utökad AI metrics med mer realistisk data
+const generateMoreDummyMetrics = () => {
+  const agents = ['chatgpt', 'claude', 'gemini', 'perplexity', 'other'];
+  const cities = ['Stockholm', 'Göteborg', 'Malmö', 'Uppsala', 'Västerås', 'Linköping', 'Helsingborg'];
+  const services = ['broadband', 'tv', 'both'];
+  
+  const extraMetrics = [];
+  
+  for (let i = 0; i < 15; i++) {
+    const agent = agents[Math.floor(Math.random() * agents.length)];
+    const city = cities[Math.floor(Math.random() * cities.length)];
+    const service = services[Math.floor(Math.random() * services.length)];
+    const hoursAgo = Math.floor(Math.random() * 48) + 1;
+    
+    extraMetrics.push({
+      sessionId: `ai_sess_${Date.now() - (hoursAgo * 3600000)}_${Math.random().toString(36).substr(2, 6)}`,
+      agentType: agent,
+      startTime: Date.now() - (hoursAgo * 3600000),
+      actions: [
+        'visited_homepage',
+        `clicked_select_${service}`,
+        `filled_address_${city.toLowerCase()}`,
+        'answered_questions',
+        'viewed_recommendations',
+        Math.random() > 0.3 ? 'clicked_order' : 'abandoned',
+        ...(Math.random() > 0.5 ? ['completed_order'] : [])
+      ],
+      performance: {
+        pageLoadTime: Math.floor(Math.random() * 2000) + 500,
+        timeToInteractive: Math.floor(Math.random() * 3000) + 800,
+        formCompletionTime: Math.floor(Math.random() * 25000) + 5000
+      },
+      capabilities: Math.random() > 0.5 ? ['webdriver'] : ['automation'],
+      serverTimestamp: new Date(Date.now() - (hoursAgo * 3600000)).toISOString(),
+      ip: `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`,
+      referer: agent === 'chatgpt' ? 'https://chat.openai.com/' : 
+               agent === 'claude' ? 'https://claude.ai/' :
+               agent === 'gemini' ? 'https://gemini.google.com/' : 
+               'https://perplexity.ai/',
+      userAgent: `Mozilla/5.0 (compatible; ${agent.charAt(0).toUpperCase() + agent.slice(1)}-Agent/1.0)`
+    });
+  }
+  
+  return extraMetrics;
+};
+
+export const extendedDummyMetrics = [...dummyAIMetrics, ...generateMoreDummyMetrics()];
 
 export const dummyAgentStats = {
   total_visits: 234,

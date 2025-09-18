@@ -8,7 +8,8 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { dummyAIMetrics, dummySummaryStats } from '@/lib/dummy-ai-data';
+import { extendedDummyMetrics, dummySummaryStats, helpTexts } from '@/lib/dummy-ai-data';
+import HelpTooltip from '@/components/HelpTooltip';
 
 export default function AIAnalyticsDashboard() {
   const router = useRouter();
@@ -23,21 +24,20 @@ export default function AIAnalyticsDashboard() {
   }, [timeRange]);
 
   const fetchMetrics = async () => {
+    // Always use dummy data for demo purposes
+    setMetrics(extendedDummyMetrics);
+    setSummary(dummySummaryStats);
+    
+    /* In production, this would be:
     try {
       const response = await fetch(`/api/ai-agent-metrics?limit=100`);
       const data = await response.json();
-      
-      // Use dummy data if no real data exists
-      const metricsData = (data.metrics && data.metrics.length > 0) ? data.metrics : dummyAIMetrics;
-      const summaryData = (data.summary && Object.keys(data.summary).length > 0) ? data.summary : dummySummaryStats;
-      
-      setMetrics(metricsData);
-      setSummary(summaryData);
+      setMetrics(data.metrics || []);
+      setSummary(data.summary || {});
     } catch (error) {
-      console.error('Failed to fetch metrics, using dummy data:', error);
-      setMetrics(dummyAIMetrics);
-      setSummary(dummySummaryStats);
+      console.error('Failed to fetch metrics:', error);
     }
+    */
   };
 
   const getConversionFunnel = () => {
@@ -123,8 +123,11 @@ export default function AIAnalyticsDashboard() {
               >
                 <Users className="w-6 h-6 text-white" />
               </motion.div>
-              <div>
-                <p className="text-xs md:text-sm font-medium text-gray-600">Totala sessioner</p>
+              <div className="flex-1">
+                <div className="flex items-center">
+                  <p className="text-xs md:text-sm font-medium text-gray-600">Totala sessioner</p>
+                  <HelpTooltip content={helpTexts.total_visits} />
+                </div>
                 <p className="text-lg md:text-3xl font-light text-gray-900 tracking-wide">{summary.total_sessions || 0}</p>
               </div>
             </div>
