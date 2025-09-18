@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Printer, MessageCircle, Wifi, Tv, Package, Star, Check, ChevronRight, Send } from 'lucide-react';
+import { X, Printer, MessageCircle, Wifi, Tv, Package, Star, Check, ChevronRight, Send, Mail } from 'lucide-react';
 import Image from 'next/image';
 import { ServiceType, UserProfile } from '@/types';
 import RecommendationCard from './RecommendationCard';
@@ -40,6 +40,13 @@ export function ResultsModal({
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{id: string, content: string, sender: 'user' | 'agent', timestamp: Date}>>([]);
   const [chatInput, setChatInput] = useState('');
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [emailForm, setEmailForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
 
   // Determine which tabs to show based on service type
   const tabs = serviceType === 'both' 
@@ -94,6 +101,27 @@ export function ResultsModal({
       };
       setChatMessages(prev => [...prev, errorResponse]);
     }
+  };
+
+  const handleSendEmail = async () => {
+    // Simulera email-skickande
+    console.log('Skickar email till kundtjänst:', emailForm);
+    
+    // Här skulle du integrera med er email-service
+    // await fetch('/api/customer-support-email', { method: 'POST', body: JSON.stringify(emailForm) });
+    
+    // Visa bekräftelse
+    const confirmationMessage = {
+      id: `msg-${Date.now()}`,
+      content: '<p><strong>Tack!</strong> Ditt meddelande har skickats till vår kundtjänst. Vi återkommer inom 24 timmar.</p>',
+      sender: 'agent' as const,
+      timestamp: new Date()
+    };
+    setChatMessages(prev => [...prev, confirmationMessage]);
+    
+    // Rensa formulär och stäng
+    setEmailForm({ name: '', email: '', subject: '', message: '' });
+    setShowEmailForm(false);
   };
 
   return (
@@ -297,7 +325,10 @@ export function ResultsModal({
                                     : 'bg-gray-100 text-gray-900 rounded-bl-sm'
                                 }`}
                               >
-                                <p className="text-sm">{message.content}</p>
+                                <div 
+                                  className="text-sm"
+                                  dangerouslySetInnerHTML={{ __html: message.content }}
+                                />
                               </div>
                             </div>
                           ))}
@@ -307,28 +338,95 @@ export function ResultsModal({
                     
                     {/* Chat input */}
                     <div className="p-4 border-t border-gray-200">
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={chatInput}
-                          onChange={(e) => setChatInput(e.target.value)}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                              e.preventDefault();
-                              handleSendChatMessage();
-                            }
-                          }}
-                          placeholder="Ställ en fråga till Valle..."
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#101929] focus:border-transparent text-sm"
-                        />
-                        <button
-                          onClick={handleSendChatMessage}
-                          disabled={!chatInput.trim()}
-                          className="px-3 py-2 bg-[#101929] text-white rounded-lg hover:bg-[#1a2332] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                          <Send className="w-4 h-4" />
-                        </button>
-                      </div>
+                      {!showEmailForm ? (
+                        <>
+                          <div className="flex gap-2 mb-3">
+                            <input
+                              type="text"
+                              value={chatInput}
+                              onChange={(e) => setChatInput(e.target.value)}
+                              onKeyPress={(e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                  e.preventDefault();
+                                  handleSendChatMessage();
+                                }
+                              }}
+                              placeholder="Ställ en fråga till Valle..."
+                              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#101929] focus:border-transparent text-sm"
+                            />
+                            <button
+                              onClick={handleSendChatMessage}
+                              disabled={!chatInput.trim()}
+                              className="px-3 py-2 bg-[#101929] text-white rounded-lg hover:bg-[#1a2332] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            >
+                              <Send className="w-4 h-4" />
+                            </button>
+                          </div>
+                          
+                          {/* Email customer service button */}
+                          <button
+                            onClick={() => setShowEmailForm(true)}
+                            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-colors border border-gray-200"
+                          >
+                            <Mail className="w-4 h-4" />
+                            Mejla kundtjänst
+                          </button>
+                        </>
+                      ) : (
+                        /* Email form */
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-medium text-gray-900">Kontakta kundtjänst</h4>
+                            <button
+                              onClick={() => setShowEmailForm(false)}
+                              className="text-gray-400 hover:text-gray-600"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-2">
+                            <input
+                              type="text"
+                              placeholder="Ditt namn"
+                              value={emailForm.name}
+                              onChange={(e) => setEmailForm(prev => ({ ...prev, name: e.target.value }))}
+                              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#101929]"
+                            />
+                            <input
+                              type="email"
+                              placeholder="Din email"
+                              value={emailForm.email}
+                              onChange={(e) => setEmailForm(prev => ({ ...prev, email: e.target.value }))}
+                              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#101929]"
+                            />
+                          </div>
+                          
+                          <input
+                            type="text"
+                            placeholder="Ämne"
+                            value={emailForm.subject}
+                            onChange={(e) => setEmailForm(prev => ({ ...prev, subject: e.target.value }))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#101929]"
+                          />
+                          
+                          <textarea
+                            placeholder="Ditt meddelande..."
+                            value={emailForm.message}
+                            onChange={(e) => setEmailForm(prev => ({ ...prev, message: e.target.value }))}
+                            rows={3}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#101929] resize-none"
+                          />
+                          
+                          <button
+                            onClick={handleSendEmail}
+                            disabled={!emailForm.name || !emailForm.email || !emailForm.message}
+                            className="w-full px-3 py-2 bg-[#101929] text-white rounded-lg hover:bg-[#1a2332] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                          >
+                            Skicka meddelande
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </motion.div>

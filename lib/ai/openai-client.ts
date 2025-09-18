@@ -269,24 +269,41 @@ export async function generateFollowUpAnswer(params: {
 }): Promise<string> {
   const { question, recommendations, userProfile, conversationContext } = params;
   
-  const systemPrompt = `Du är en expert på bredband och TV-paket i Sverige. Svara på användarens fråga baserat på:
-1. Deras profil och behov
-2. De rekommendationer de fått
-3. Aktuell marknadsinformation
+  const systemPrompt = `Du är världens mest serviceminded kundtjänstmedarbetare för bredband och TV i Sverige. Din enda uppgift är att hjälpa kunden på bästa möjliga sätt.
 
-VIKTIGT:
+DITT MÅL:
+- Lösa ALLA kundens frågor och bekymmer
+- Vara extremt hjälpsam, vänlig och lösningsorienterad
+- Ge konkreta, actionable råd som verkligen hjälper
+- Ställa smarta motfrågor för att förstå behoven bättre
+- Vara proaktiv och föreslå lösningar kunden inte tänkt på
+
+DITT SÄTT:
+- Prata som en vänlig, erfaren kollega (inte robot)
+- Använd svenska uttryck och var personlig
+- Erkänn om du inte vet något och erbjud alternativ
+- Fokusera på kundens ekonomi och praktiska situation
+- Var aldrig säljande - bara genuint hjälpsam
+
+FORMATERING:
 - Svara ALLTID på svenska
 - Använd HTML-formatering (<p>, <strong>, <br/>, <ul>, <li>)
-- Håll svaret kort och relevant (max 3-4 stycken)
-- Var specifik och använd leverantörsnamn när relevant
-- Ge praktiska råd och tips`;
+- Håll svaret kort men komplett (2-4 stycken)
+- Var specifik med leverantörer, priser och tekniska detaljer
+- Ge praktiska nästa steg`;
 
   const userContext = `
-ANVÄNDARPROFIL:
-- Hushåll: ${userProfile.householdSize || 'ej angivet'} personer
-- Användning: ${userProfile.streamingLevel || 'normal'} streaming, ${userProfile.onlineGaming ? 'spelar online' : 'spelar inte online'}
-- Hemarbete: ${userProfile.workFromHome ? 'Ja' : 'Nej'}
-- Nuvarande behov: ${userProfile.serviceType === 'both' ? 'Bredband & TV' : userProfile.serviceType || 'bredband'}
+KUNDPROFIL (från frågeformuläret):
+- 🏠 Hushåll: ${userProfile.householdSize || 'ej angivet'} personer
+- 📺 Streaming: ${userProfile.streamingLevel || 'normal'} (${userProfile.streamingServices || 'ej angivet'})
+- 🎮 Gaming: ${userProfile.onlineGaming ? 'Ja, spelar online' : 'Nej'}
+- 💻 Hemarbete: ${userProfile.workFromHome ? 'Ja, dagligen' : userProfile.videoMeetings ? 'Ibland videomöten' : 'Nej'}
+- 📱 Tjänst: ${userProfile.serviceType === 'both' ? 'Bredband & TV' : userProfile.serviceType || 'bredband'}
+- 💰 Budget: ${userProfile.budget || 'ej angiven'}
+- 📋 Prioriteringar: ${userProfile.priorities || 'ej angivna'}
+- 🏠 Router: ${userProfile.includeRouter === true ? 'Vill ha inkluderad' : userProfile.includeRouter === false ? 'Har redan' : 'ej angivet'}
+- ⏰ Bindning: ${userProfile.contractPreference || 'ej angiven'}
+- 📍 Adress: ${userProfile.address || 'ej angiven'}
 
 TOPP 3 REKOMMENDATIONER:
 ${recommendations.slice(0, 3).map((rec, i) => {
