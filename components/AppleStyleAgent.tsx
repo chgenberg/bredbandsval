@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, BarChart3, User, Users, Play, Gamepad2, 
   Briefcase, Video, Router, Zap, ArrowRight, HelpCircle,
-  Tv, Wifi, Package, X, Brain, MessageCircle, Send, Download
+  Tv, Wifi, Package, X, Brain, MessageCircle, Send, Download, Mail
 } from 'lucide-react';
 import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import RealUsagePermission from './RealUsagePermission';
@@ -675,6 +675,15 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     };
     
     setMessages(prev => [...prev, userMsg]);
+    
+    // Check if user wants to contact support
+    const lowerQ = question.toLowerCase();
+    if (lowerQ.includes('mejla') || lowerQ.includes('kontakta') || lowerQ.includes('kundtjänst') || 
+        lowerQ.includes('support') || lowerQ.includes('hjälp')) {
+      handleContactSupport();
+      return;
+    }
+    
     setIsTyping(true);
     
     // Generate AI response based on question context
@@ -726,6 +735,18 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     }));
     
     generateRecommendationPDF(pdfData, userProfile);
+  };
+
+  const handleContactSupport = () => {
+    // Add support message
+    const supportMsg: Message = {
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      content: '<p><strong>Kontaktuppgifter till vår kundtjänst:</strong></p><p>📧 E-post: support@bredbandsval.se<br/>📞 Telefon: 08-123 456 78<br/>⏰ Öppettider: Mån-Fre 9-17</p><p>Vi hjälper dig gärna med frågor om leverantörer, priser eller teknisk rådgivning!</p>',
+      sender: 'agent',
+      timestamp: new Date(),
+    };
+    
+    setMessages(prev => [...prev, supportMsg]);
   };
 
   return (
@@ -830,14 +851,16 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   {message.quickReplies && (
                     <div className={`mt-3 ${
                       message.quickReplies.length <= 2 
-                        ? 'flex flex-col sm:flex-row gap-2 justify-start' 
+                        ? 'flex flex-col sm:flex-row gap-2 justify-start flex-wrap' 
                         : message.quickReplies.length === 3
-                        ? 'flex flex-col sm:grid sm:grid-cols-3 gap-2'
+                        ? 'grid grid-cols-1 sm:grid-cols-3 gap-2'
                         : message.quickReplies.length === 4
-                        ? 'grid grid-cols-2 gap-2'
+                        ? 'grid grid-cols-2 lg:grid-cols-4 gap-2'
+                        : message.quickReplies.length === 5
+                        ? 'grid grid-cols-2 lg:grid-cols-5 gap-2'
                         : message.quickReplies.length === 6
-                        ? 'grid grid-cols-2 md:grid-cols-3 gap-2'
-                        : 'grid grid-cols-2 md:grid-cols-3 gap-2'
+                        ? 'grid grid-cols-2 lg:grid-cols-6 gap-2'
+                        : 'grid grid-cols-2 lg:grid-cols-4 gap-2'
                     }`}>
                       {message.quickReplies.map((reply) => {
                         const Icon = getIcon(reply.icon);
@@ -863,9 +886,9 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                                 handleQuickReply(reply.value);
                               }
                             }}
-                            className={`flex items-center justify-center gap-2 px-4 py-2.5 
+                            className={`flex items-center justify-center gap-2 px-3 py-2.5 
                                      rounded-full text-sm font-medium transition-all
-                                     min-h-[44px] w-full sm:w-auto
+                                     min-h-[44px] w-full whitespace-nowrap
                                      ${isSelected 
                                        ? 'bg-blue-500 text-white border-blue-500' 
                                        : 'bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-100'
@@ -941,58 +964,48 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                 transition={{ duration: 0.3 }}
                 className="flex justify-start mb-3 px-2 sm:px-0"
               >
-                <div className="relative px-5 py-4 bg-white rounded-[24px] rounded-bl-[4px] shadow-sm border border-gray-100 flex items-center gap-3 min-height-[48px] min-width-[140px] sm:min-width-[160px]">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  >
-                    <Brain size={20} className="text-blue-500" />
-                  </motion.div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">AI tänker</span>
-                    <div className="flex gap-1.5">
-                      <motion.div
-                        className="w-2 h-2 bg-gray-400 rounded-full"
-                        animate={{ 
-                          scale: [1, 1.3, 1],
-                          opacity: [0.5, 1, 0.5]
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          delay: 0
-                        }}
-                      />
-                      <motion.div
-                        className="w-2 h-2 bg-gray-400 rounded-full"
-                        animate={{ 
-                          scale: [1, 1.3, 1],
-                          opacity: [0.5, 1, 0.5]
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          delay: 0.2
-                        }}
-                      />
-                      <motion.div
-                        className="w-2 h-2 bg-gray-400 rounded-full"
-                        animate={{ 
-                          scale: [1, 1.3, 1],
-                          opacity: [0.5, 1, 0.5]
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          delay: 0.4
-                        }}
-                      />
+                <div className="relative px-5 py-4 bg-gradient-to-r from-blue-50 to-white rounded-[24px] rounded-bl-[4px] shadow-sm border border-blue-100 flex items-center gap-3 min-height-[48px] min-width-[180px]">
+                  <div className="relative">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-0 bg-blue-400 blur-xl opacity-30"
+                    />
+                    <motion.div
+                      animate={{ rotate: -360 }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Brain size={22} className="text-blue-600 relative z-10" />
+                    </motion.div>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium text-gray-800">Valle AI analyserar</span>
+                    <div className="flex items-center gap-2 mt-1">
+                      <div className="flex gap-1">
+                        {[0, 0.15, 0.3].map((delay, i) => (
+                          <motion.div
+                            key={i}
+                            className="w-1.5 h-1.5 bg-blue-500 rounded-full"
+                            animate={{ 
+                              y: [0, -6, 0],
+                              opacity: [0.3, 1, 0.3]
+                            }}
+                            transition={{
+                              duration: 1.2,
+                              repeat: Infinity,
+                              delay,
+                              ease: "easeInOut"
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-xs text-gray-500">Förbereder svar</span>
                     </div>
                   </div>
                   
                   {/* Message tail */}
                   <div className="absolute -left-[8px] bottom-0 w-4 h-4 overflow-hidden">
-                    <div className="absolute -right-[8px] bottom-0 w-4 h-4 bg-white border-r border-b border-gray-100 transform rotate-45"></div>
+                    <div className="absolute -right-[8px] bottom-0 w-4 h-4 bg-gradient-to-br from-blue-50 to-white border-r border-b border-blue-100 transform rotate-45"></div>
                   </div>
                 </div>
               </motion.div>
@@ -1060,9 +1073,22 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                 transition={{ delay: 0.5 }}
                 className="mt-8 p-4 bg-gray-50 rounded-2xl"
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <MessageCircle size={20} className="text-blue-500" />
-                  <h4 className="font-medium text-gray-900">Har du frågor?</h4>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <MessageCircle size={20} className="text-blue-500" />
+                    <h4 className="font-medium text-gray-900">Har du frågor?</h4>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleContactSupport()}
+                    className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-gray-600 
+                             hover:text-gray-900 bg-white rounded-xl border border-gray-200 
+                             hover:border-gray-300 transition-all"
+                  >
+                    <Mail size={14} />
+                    Kontakta kundtjänst
+                  </motion.button>
                 </div>
                 
                 {/* Suggested questions */}
