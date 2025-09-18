@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, BarChart3, User, Users, Play, Gamepad2, 
   Briefcase, Video, Router, Zap, ArrowRight, HelpCircle,
-  Tv, Wifi, Package, X, Brain, MessageCircle, Send
+  Tv, Wifi, Package, X, Brain, MessageCircle, Send, Download
 } from 'lucide-react';
 import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import RealUsagePermission from './RealUsagePermission';
@@ -16,6 +16,7 @@ import RecommendationCard from './RecommendationCard';
 import { generateAIRecommendation, generateFollowUpAnswer } from '@/lib/ai/openai-client';
 import { computeNeeds, scorePackageMatch } from '@/lib/decision/profile-model';
 import { SpeedTestResult } from '@/lib/network-analysis/webrtc-speed-test';
+import { generateRecommendationPDF } from '@/lib/pdf-generator';
 
 interface Message {
   id: string;
@@ -62,7 +63,11 @@ const HelpTooltip = ({ text, isOpen, onClose }: HelpTooltipProps) => {
   );
 };
 
-export default function AppleStyleAgent() {
+interface AppleStyleAgentProps {
+  quickSearchMode?: boolean;
+}
+
+export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleAgentProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentStep, setCurrentStep] = useState('service-type');
   const [userProfile, setUserProfile] = useState<any>({});
@@ -87,21 +92,38 @@ export default function AppleStyleAgent() {
   }, [messages]);
 
   useEffect(() => {
-    // Start with service type question
-    const initialMessage: Message = {
-      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      content: 'Hej! Vad kan jag hjälpa dig med idag?',
-      sender: 'agent',
-      timestamp: new Date(),
-      quickReplies: [
-        { text: 'Bredband', value: 'broadband', icon: 'wifi' },
-        { text: 'TV-paket', value: 'tv', icon: 'tv' },
-        { text: 'Bredband & TV', value: 'both', icon: 'package' },
-      ],
-      helpText: 'Välj vad du är intresserad av så kan jag hjälpa dig hitta det bästa alternativet för just dina behov.'
-    };
-    setMessages([initialMessage]);
-  }, []);
+    if (quickSearchMode) {
+      // Quick search mode - start with service type but different message
+      const initialMessage: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: 'Snabbsökning! Först behöver jag veta vad du letar efter:',
+        sender: 'agent',
+        timestamp: new Date(),
+        quickReplies: [
+          { text: 'Bredband', value: 'broadband', icon: 'wifi' },
+          { text: 'TV-paket', value: 'tv', icon: 'tv' },
+          { text: 'Bredband & TV', value: 'both', icon: 'package' },
+        ],
+        helpText: 'Efter detta behöver jag bara din adress för att visa de billigaste alternativen.'
+      };
+      setMessages([initialMessage]);
+    } else {
+      // Normal flow
+      const initialMessage: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: 'Hej! Vad kan jag hjälpa dig med idag?',
+        sender: 'agent',
+        timestamp: new Date(),
+        quickReplies: [
+          { text: 'Bredband', value: 'broadband', icon: 'wifi' },
+          { text: 'TV-paket', value: 'tv', icon: 'tv' },
+          { text: 'Bredband & TV', value: 'both', icon: 'package' },
+        ],
+        helpText: 'Välj vad du är intresserad av så kan jag hjälpa dig hitta det bästa alternativet för just dina behov.'
+      };
+      setMessages([initialMessage]);
+    }
+  }, [quickSearchMode]);
 
   const handleAddressSelect = async (address: string) => {
     setShowAddressInput(false);
@@ -121,22 +143,52 @@ export default function AppleStyleAgent() {
     // Brief pause
     await new Promise(resolve => setTimeout(resolve, 800));
     
-    // Ask about usage analysis
-    const analysisQuestion: Message = {
-      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      content: 'Vill du att jag ska analysera din nuvarande internetanvändning för att ge dig en mer precis rekommendation?',
-      sender: 'agent',
-      timestamp: new Date(),
-      quickReplies: [
-        { text: 'Ja, analysera', value: 'analyze', icon: 'chart' },
-        { text: 'Nej, fortsätt med frågor', value: 'skip', icon: 'arrow-right' },
-      ],
-      helpText: 'Genom att analysera din faktiska användning kan jag ge dig en mer träffsäker rekommendation. Detta kräver tillgång till din router.'
-    };
-    
-    setMessages(prev => [...prev, analysisQuestion]);
-    setIsTyping(false);
-    setCurrentStep('usage-choice');
+    if (quickSearchMode) {
+      // For quick search, go directly to recommendations with minimal profile
+      setUserProfile(prev => ({ 
+        ...prev, 
+        // Set defaults for quick search
+        householdSize: '2',
+        streamingLevel: 'moderate',
+        onlineGaming: false,
+        videoMeetings: false,
+        workFromHome: false,
+        includeRouter: true,
+        contractPreference: 'none'
+      }));
+      
+      // Show loading message
+      const loadingMsg: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: 'Söker efter de billigaste alternativen på din adress...',
+        sender: 'agent',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, loadingMsg]);
+      setIsTyping(true);
+      
+      // Calculate recommendations directly
+      setTimeout(() => {
+        calculateRecommendations();
+      }, 1000);
+    } else {
+      // Normal flow - ask about usage analysis
+      const analysisQuestion: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: 'Vill du att jag ska analysera din nuvarande internetanvändning för att ge dig en mer precis rekommendation?',
+        sender: 'agent',
+        timestamp: new Date(),
+        quickReplies: [
+          { text: 'Ja, analysera', value: 'analyze', icon: 'chart' },
+          { text: 'Nej, fortsätt med frågor', value: 'skip', icon: 'arrow-right' },
+        ],
+        helpText: 'Genom att analysera din faktiska användning kan jag ge dig en mer träffsäker rekommendation. Detta kräver tillgång till din router.'
+      };
+      
+      setMessages(prev => [...prev, analysisQuestion]);
+      setIsTyping(false);
+      setCurrentStep('usage-choice');
+    }
     
     analytics.trackFunnelStep('address_entered');
   };
@@ -552,7 +604,12 @@ export default function AppleStyleAgent() {
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, msg]);
-      await askNextQuestion('household');
+      setIsTyping(false); // Ensure typing is false
+      
+      // Add small delay before continuing
+      setTimeout(() => {
+        askNextQuestion(serviceType === 'tv' ? 'tv-type' : 'household');
+      }, 500);
     }
   };
 
@@ -655,6 +712,22 @@ export default function AppleStyleAgent() {
     });
   };
 
+  const handleDownloadPDF = () => {
+    const pdfData = recommendations.slice(0, 3).map(rec => ({
+      provider: rec.package.providerName,
+      packageName: rec.package.name,
+      speed: rec.package.speed.download,
+      price: rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly,
+      bindingTime: rec.package.contractLength,
+      features: rec.package.features || [],
+      badges: rec.badges || [],
+      trustScore: rec.trustScore || 70,
+      reasoning: rec.reasons?.[0] || 'Passar dina behov perfekt'
+    }));
+    
+    generateRecommendationPDF(pdfData, userProfile);
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* Chat Header */}
@@ -664,7 +737,7 @@ export default function AppleStyleAgent() {
             <span className="text-white font-semibold text-sm">AI</span>
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-gray-900">Bredbandsval AI</h3>
+            <h3 className="font-semibold text-gray-900">Valle AI</h3>
             <p className="text-xs text-green-600 flex items-center gap-1">
               <span className="w-2 h-2 bg-green-500 rounded-full"></span>
               Online
@@ -947,9 +1020,21 @@ export default function AppleStyleAgent() {
               animate={{ opacity: 1, y: 0 }}
               className="mt-8 space-y-4"
             >
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Här är de tre bästa alternativen för dig:
-              </h3>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Här är de tre bästa alternativen för dig:
+                </h3>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleDownloadPDF()}
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 
+                           rounded-xl text-sm font-medium text-gray-700 transition-colors"
+                >
+                  <Download size={18} />
+                  Ladda hem rekommendation
+                </motion.button>
+              </div>
               {recommendations.slice(0, 3).map((rec, index) => (
                 <RecommendationCard
                   key={rec.package.id}

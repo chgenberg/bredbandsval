@@ -7,6 +7,12 @@ import AppleStyleAgent from './AppleStyleAgent';
 
 export default function LandingPage() {
   const [showAgent, setShowAgent] = useState(false);
+  const [quickSearchMode, setQuickSearchMode] = useState(false);
+
+  const handleQuickSearch = () => {
+    setQuickSearchMode(true);
+    setShowAgent(true);
+  };
 
   return (
     <>
@@ -97,7 +103,7 @@ export default function LandingPage() {
               {/* Secondary CTA */}
               <div className="mt-4">
                 <button
-                  onClick={() => setShowAgent(true)}
+                  onClick={handleQuickSearch}
                   className="text-gray-600 hover:text-gray-900 underline text-sm transition-colors"
                 >
                   Eller sök via din adress
@@ -164,7 +170,7 @@ export default function LandingPage() {
               
               {/* AI Agent */}
               <div className="h-full">
-                <AppleStyleAgent />
+                <AppleStyleAgent quickSearchMode={quickSearchMode} />
               </div>
             </motion.div>
           </motion.div>
