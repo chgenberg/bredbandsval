@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { bredbandsvalScraper } from '@/lib/scraping/bredbandsval-scraper';
+// import { bredbandsvalScraper } from '@/lib/scraping/bredbandsval-scraper';
 
 // Cache for scraped data
 const cache = new Map<string, { data: any; timestamp: number }>();
@@ -30,10 +30,22 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    console.log(`🔍 Scraping fresh data for ${address}`);
+    console.log(`🔍 Would scrape fresh data for ${address} (temporarily disabled for deployment)`);
     
-    // Scrape fresh data
-    const packages = await bredbandsvalScraper.scrapePackagesForAddress(address);
+    // Temporarily return mock data for deployment
+    const packages = [
+      {
+        id: 'demo-telia-250',
+        providerName: 'Telia',
+        name: 'Bredband 250 + TV',
+        speed: { download: 250, upload: 25 },
+        pricing: { monthly: 599, setupFee: 0 },
+        contract: { bindingPeriod: 12, noticePeriod: 3 },
+        includes: { router: true, publicIP: true, emailAccounts: 5 },
+        features: ['Router ingår', 'TV-paket', 'Streaming ingår'],
+        availability: { address, available: true, technology: 'fiber' as const }
+      }
+    ];
     
     // Cache the results
     cache.set(cacheKey, {
