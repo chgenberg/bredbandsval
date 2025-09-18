@@ -95,6 +95,16 @@ export class AIAgentOptimizer {
   }
 
   private static optimizeForAIAgent() {
+    // Log AI agent visit
+    import('./ai-agent-notifications').then(({ AIAgentNotifications }) => {
+      AIAgentNotifications.logAgentVisit({
+        agentType: this.agentInfo?.agentType || 'unknown',
+        userAgent: navigator.userAgent,
+        ip: 'client-side', // Server-side would have real IP
+        path: window.location.pathname
+      });
+    });
+
     // Lägg till meta-data som AI-agenter kan läsa
     const meta = document.createElement('meta');
     meta.name = 'ai-agent-friendly';
