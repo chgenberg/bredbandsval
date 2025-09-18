@@ -6,7 +6,7 @@ import { Check, Zap, Tv, Gamepad2, Router, Calendar, Star, Shield, Award, Trendi
 interface RecommendationProps {
   provider: string;
   packageName: string;
-  speed: number;
+  speed?: number; // Optional for TV-only packages
   price: number;
   bindingTime?: number;
   features: string[];
@@ -131,10 +131,18 @@ export default function RecommendationCard({
 
       {/* Speed and Binding - Vertical */}
       <div className="text-center space-y-2 mb-4">
-        <div className="flex items-center justify-center gap-1">
-          <Zap size={16} className={isTopChoice ? 'text-yellow-300' : 'text-blue-500'} />
-          <span className="text-sm font-medium">{speed} Mbit/s</span>
-        </div>
+        {speed && speed > 0 && (
+          <div className="flex items-center justify-center gap-1">
+            <Zap size={16} className={isTopChoice ? 'text-yellow-300' : 'text-blue-500'} />
+            <span className="text-sm font-medium">{speed} Mbit/s</span>
+          </div>
+        )}
+        {!speed || speed === 0 && (
+          <div className="flex items-center justify-center gap-1">
+            <Tv size={16} className={isTopChoice ? 'text-blue-200' : 'text-purple-500'} />
+            <span className="text-sm font-medium">Streaming TV</span>
+          </div>
+        )}
         {bindingTime !== undefined && (
           <div className="flex items-center justify-center gap-1">
             <Calendar size={16} className={isTopChoice ? 'text-blue-200' : 'text-gray-500'} />

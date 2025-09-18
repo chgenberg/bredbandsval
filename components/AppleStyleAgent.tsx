@@ -1127,9 +1127,9 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
               animate={{ opacity: 1, y: 0 }}
               className="mt-8 space-y-4"
             >
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Här är de tre bästa alternativen för dig:
+                  Här är de bästa alternativen för dig:
                 </h3>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -1142,27 +1142,103 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   Ladda hem rekommendation
                 </motion.button>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {recommendations.slice(0, 3).map((rec, index) => (
-                  <RecommendationCard
-                    key={rec.package.id}
-                    provider={rec.package.providerName}
-                    packageName={rec.package.name}
-                    speed={rec.package.speed.download}
-                    price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
-                    bindingTime={rec.package.contractLength}
-                    features={rec.package.features || []}
-                    savings={rec.savings}
-                    matchScore={rec.matchScore}
-                    reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
-                    index={index}
-                    badges={rec.badges || []}
-                    trustScore={rec.trustScore || 70}
-                    isCombo={rec.package.isCombo}
-                    comboDetails={rec.package.comboDetails}
-                  />
-                ))}
-              </div>
+
+              {/* Separate Broadband and TV sections */}
+              {(serviceType === 'both' || serviceType === 'broadband') && (
+                <div className="mb-8">
+                  <h4 className="text-md font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <Wifi size={18} className="text-blue-500" />
+                    Bredbandsalternativ
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {recommendations
+                      .filter(rec => !rec.package.tv || rec.package.speed.download > 0)
+                      .slice(0, 3)
+                      .map((rec, index) => (
+                        <RecommendationCard
+                          key={rec.package.id}
+                          provider={rec.package.providerName}
+                          packageName={rec.package.name}
+                          speed={rec.package.speed.download}
+                          price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
+                          bindingTime={rec.package.contractLength}
+                          features={rec.package.features || []}
+                          savings={rec.savings}
+                          matchScore={rec.matchScore}
+                          reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
+                          index={index}
+                          badges={rec.badges || []}
+                          trustScore={rec.trustScore || 70}
+                        />
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {(serviceType === 'both' || serviceType === 'tv') && (
+                <div className="mb-8">
+                  <h4 className="text-md font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <Tv size={18} className="text-purple-500" />
+                    TV-alternativ
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {recommendations
+                      .filter(rec => rec.package.tv && (rec.package.speed.download === 0 || rec.package.isCombo))
+                      .slice(0, 3)
+                      .map((rec, index) => (
+                        <RecommendationCard
+                          key={rec.package.id}
+                          provider={rec.package.providerName}
+                          packageName={rec.package.name}
+                          speed={rec.package.speed.download > 0 ? rec.package.speed.download : undefined}
+                          price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
+                          bindingTime={rec.package.contractLength}
+                          features={rec.package.tv?.channelPackages || rec.package.features || []}
+                          savings={rec.savings}
+                          matchScore={rec.matchScore}
+                          reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
+                          index={index}
+                          badges={rec.badges || []}
+                          trustScore={rec.trustScore || 70}
+                        />
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* GPT Recommended Combinations for "both" service type */}
+              {serviceType === 'both' && (
+                <div className="mb-8">
+                  <h4 className="text-md font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <span className="text-green-600">🔗</span>
+                    GPT:s rekommenderade kombinationer
+                  </h4>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {recommendations
+                      .filter(rec => rec.package.isCombo)
+                      .slice(0, 2)
+                      .map((rec, index) => (
+                        <RecommendationCard
+                          key={rec.package.id}
+                          provider={rec.package.providerName}
+                          packageName={rec.package.name}
+                          speed={rec.package.speed.download}
+                          price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
+                          bindingTime={rec.package.contractLength}
+                          features={rec.package.features || []}
+                          savings={rec.savings}
+                          matchScore={rec.matchScore}
+                          reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
+                          index={index}
+                          badges={rec.badges || []}
+                          trustScore={rec.trustScore || 70}
+                          isCombo={rec.package.isCombo}
+                          comboDetails={rec.package.comboDetails}
+                        />
+                      ))}
+                  </div>
+                </div>
+              )}
               
               {/* Follow-up questions section */}
               <motion.div
