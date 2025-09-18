@@ -1,7 +1,7 @@
 // Realistic dummy data for AI agent dashboards
 export const dummyAIAgentVisits = [
   {
-    timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 min ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 2), // 2 min ago
     agentType: 'chatgpt',
     userAgent: 'Mozilla/5.0 (compatible; ChatGPT-User/1.0; +https://openai.com/bot)',
     ip: '157.240.12.35',
@@ -9,13 +9,32 @@ export const dummyAIAgentVisits = [
     actions: [
       'visited_homepage',
       'clicked_select_both_services', 
-      'filled_address_form',
+      'filled_address_stockholm',
       'completed_questionnaire',
       'viewed_recommendations',
       'clicked_order_button',
-      'reached_order_page'
+      'reached_order_page',
+      'filled_personal_details',
+      'completed_bankid'
     ],
-    sessionDuration: 45000, // 45 seconds
+    sessionDuration: 78000, // 1 min 18 sec
+    completedOrder: true
+  },
+  {
+    timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 min ago
+    agentType: 'chatgpt',
+    userAgent: 'Mozilla/5.0 (compatible; ChatGPT-User/1.0; +https://openai.com/bot)',
+    ip: '157.240.12.36',
+    path: '/',
+    actions: [
+      'visited_homepage',
+      'clicked_select_broadband', 
+      'filled_address_gothenburg',
+      'answered_household_questions',
+      'viewed_broadband_recommendations',
+      'clicked_order_bahnhof'
+    ],
+    sessionDuration: 52000, // 52 seconds
     completedOrder: false
   },
   {
@@ -104,6 +123,61 @@ export const dummyAIAgentVisits = [
     ],
     sessionDuration: 12000, // 12 seconds
     completedOrder: false
+  },
+  {
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 8), // 8 hours ago
+    agentType: 'gemini',
+    userAgent: 'Mozilla/5.0 (compatible; Gemini-Pro/1.0; Google)',
+    ip: '8.8.8.8',
+    path: '/',
+    actions: [
+      'visited_homepage',
+      'clicked_both_services',
+      'filled_address_malmo',
+      'completed_all_questions',
+      'viewed_recommendations',
+      'selected_telia_combo',
+      'completed_order'
+    ],
+    sessionDuration: 89000, // 1 min 29 sec
+    completedOrder: true
+  },
+  {
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12), // 12 hours ago
+    agentType: 'other',
+    userAgent: 'Mozilla/5.0 (compatible; AutomationBot/2.0)',
+    ip: '185.199.108.154',
+    path: '/',
+    actions: [
+      'visited_homepage',
+      'clicked_tv_only',
+      'filled_address_uppsala',
+      'answered_tv_questions',
+      'compared_tv_packages',
+      'abandoned_at_recommendations'
+    ],
+    sessionDuration: 34000, // 34 seconds
+    completedOrder: false
+  },
+  {
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 18), // 18 hours ago
+    agentType: 'chatgpt',
+    userAgent: 'Mozilla/5.0 (compatible; ChatGPT-User/1.0; +https://openai.com/bot)',
+    ip: '157.240.12.37',
+    path: '/',
+    actions: [
+      'visited_homepage',
+      'used_speed_test',
+      'clicked_broadband_only',
+      'filled_address_linkoping',
+      'completed_questionnaire',
+      'viewed_recommendations',
+      'clicked_order_comhem',
+      'filled_order_form',
+      'completed_purchase'
+    ],
+    sessionDuration: 156000, // 2 min 36 sec
+    completedOrder: true
   }
 ];
 
@@ -194,9 +268,23 @@ export const dummySummaryStats = {
 };
 
 export const dummyAgentStats = {
-  total_visits: 89,
-  today_visits: 12,
-  chatgpt_visits: 54,
-  completed_orders: 23,
-  conversion_rate: 25.8
+  total_visits: 234,
+  today_visits: 28,
+  chatgpt_visits: 142,
+  completed_orders: 67,
+  conversion_rate: 28.6
+};
+
+// Help text för admin-dashboards
+export const helpTexts = {
+  total_visits: "Totalt antal AI-agent besök på er sajt. Inkluderar ChatGPT, Claude, Gemini och andra AI-assistenter som hjälper användare hitta bredband.",
+  today_visits: "Antal AI-agent besök idag. Visar dagens aktivitet och kan indikera trender eller kampanjeffekter.",
+  chatgpt_visits: "Specifikt ChatGPT-agent besök. ChatGPT är ofta mest aktiv för bredbandsjämförelser.",
+  completed_orders: "Antal AI-agenter som slutfört hela beställningsprocessen inklusive BankID-autentisering.",
+  conversion_rate: "Procent av AI-agent besök som resulterar i slutförd beställning. Högre är bättre för er affär.",
+  conversion_funnel: "Visar var AI-agenter hoppar av i processen. Hjälper identifiera förbättringsområden i användarflödet.",
+  agent_types: "Fördelning av olika AI-assistenter. Olika agenter har olika beteenden och konverteringsgrader.",
+  recent_activity: "Senaste AI-agent sessioner med detaljer om vad de gjorde och hur länge det tog.",
+  performance_insights: "Mätvärden om hur snabbt AI-agenter navigerar er sajt och slutför uppgifter.",
+  optimization_tips: "Förslag på hur ni kan förbättra er sajt för att få fler AI-agenter att slutföra beställningar."
 };

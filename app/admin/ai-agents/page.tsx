@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { Users, BarChart, Clock, TrendingUp, Monitor, MousePointer, ShoppingBag, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { dummyAIAgentVisits, dummyAgentStats } from '@/lib/dummy-ai-data';
+import { dummyAIAgentVisits, dummyAgentStats, helpTexts } from '@/lib/dummy-ai-data';
+import HelpTooltip from '@/components/HelpTooltip';
 
 interface AIAgentVisit {
   timestamp: Date;
@@ -111,8 +112,11 @@ export default function AIAgentDashboard() {
               >
                 <Users className="w-6 h-6 text-white" />
               </motion.div>
-              <div>
-                <p className="text-xs md:text-sm font-medium text-gray-600">Total Visits</p>
+              <div className="flex-1">
+                <div className="flex items-center">
+                  <p className="text-xs md:text-sm font-medium text-gray-600">Total Visits</p>
+                  <HelpTooltip content={helpTexts.total_visits} />
+                </div>
                 <p className="text-xl md:text-3xl font-light text-gray-900 tracking-wide">{stats.total_visits}</p>
               </div>
             </div>
@@ -227,7 +231,10 @@ export default function AIAgentDashboard() {
           className="bg-white rounded-2xl shadow-lg border border-gray-100"
         >
           <div className="p-6 border-b border-gray-100">
-            <h2 className="text-2xl font-light text-gray-900 tracking-wide">Senaste AI-agent besök</h2>
+            <div className="flex items-center">
+              <h2 className="text-2xl font-light text-gray-900 tracking-wide">Senaste AI-agent besök</h2>
+              <HelpTooltip content={helpTexts.recent_activity} />
+            </div>
           </div>
           
           <div className="overflow-x-auto -mx-6 md:mx-0">
