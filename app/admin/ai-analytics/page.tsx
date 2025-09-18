@@ -236,7 +236,7 @@ export default function AIAnalyticsDashboard() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Agent Type Distribution */}
           <motion.div 
@@ -276,7 +276,7 @@ export default function AIAnalyticsDashboard() {
                 );
               })}
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Recent Activity */}

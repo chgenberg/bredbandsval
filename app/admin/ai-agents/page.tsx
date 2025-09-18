@@ -310,7 +310,7 @@ export default function AIAgentDashboard() {
               <p className="text-sm text-gray-400 mt-2">AI-agenter kommer att visas här när de besöker er sajt</p>
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
