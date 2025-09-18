@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Star } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import RecommendationCard from './RecommendationCard';
 
 interface SimpleCombinationViewProps {
@@ -18,6 +19,32 @@ export function SimpleCombinationView({
   totalPrice,
   reasoning
 }: SimpleCombinationViewProps) {
+  const router = useRouter();
+
+  const handleOrderClick = () => {
+    // Spara kombination info i sessionStorage
+    const orderData = {
+      type: 'combination',
+      broadband: {
+        provider: broadbandPackage.provider,
+        packageName: broadbandPackage.packageName,
+        speed: broadbandPackage.speed,
+        price: broadbandPackage.price,
+        features: broadbandPackage.features
+      },
+      tv: {
+        provider: tvPackage.provider,
+        packageName: tvPackage.packageName,
+        price: tvPackage.price,
+        features: tvPackage.features
+      },
+      totalPrice
+    };
+    sessionStorage.setItem('selectedPackage', JSON.stringify(orderData));
+    
+    // Navigera till beställningssidan
+    router.push('/order');
+  };
   return (
     <div className="space-y-6">
       {/* Combination header */}
@@ -74,6 +101,7 @@ export function SimpleCombinationView({
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
+          onClick={handleOrderClick}
           className="mt-4 px-8 py-3 bg-[#101929] text-white rounded-xl font-semibold hover:bg-[#1a2332] transition-colors shadow-lg"
         >
           Beställ denna kombination

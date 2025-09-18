@@ -57,6 +57,23 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
     wantNewsletter: false
   });
 
+  // Auto-fill router preference from user profile
+  useEffect(() => {
+    const storedProfile = sessionStorage.getItem('userProfile');
+    if (storedProfile) {
+      try {
+        const profile = JSON.parse(storedProfile);
+        if (profile.includeRouter === true) {
+          setFormData(prev => ({ ...prev, routerOption: 'rent' }));
+        } else if (profile.includeRouter === false) {
+          setFormData(prev => ({ ...prev, routerOption: 'own' }));
+        }
+      } catch (e) {
+        console.error('Could not parse stored user profile:', e);
+      }
+    }
+  }, []);
+
   const updateFormData = (field: keyof OrderFormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -144,8 +161,8 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                       className={`
                         w-10 h-10 rounded-full flex items-center justify-center
                         transition-all duration-200 relative z-10
-                        ${isActive ? 'bg-blue-600 text-white shadow-lg scale-110' : 
-                          isCompleted ? 'bg-green-600 text-white cursor-pointer hover:scale-105' : 
+                        ${isActive ? 'bg-[#101929] text-white shadow-lg scale-110' : 
+                          isCompleted ? 'bg-[#101929] text-white cursor-pointer hover:scale-105' : 
                           'bg-white border-2 border-gray-300 text-gray-400'}
                       `}
                     >
@@ -156,7 +173,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                       )}
                     </button>
                     <span className={`mt-2 text-xs font-medium ${
-                      isActive ? 'text-blue-600' : isCompleted ? 'text-green-600' : 'text-gray-400'
+                      isActive ? 'text-[#101929]' : isCompleted ? 'text-[#101929]' : 'text-gray-400'
                     }`}>
                       {step.title}
                     </span>
@@ -518,7 +535,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               className={`
                 px-8 py-3 rounded-lg font-medium transition-all flex items-center gap-2
                 ${isStepValid(currentStep)
-                  ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl'
+                  ? 'bg-[#101929] text-white hover:bg-[#1a2332] shadow-lg hover:shadow-xl'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
               `}
             >
@@ -532,7 +549,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               className={`
                 px-8 py-3 rounded-lg font-medium transition-all flex items-center gap-2
                 ${isStepValid(4) && !isProcessing
-                  ? 'bg-green-600 text-white hover:bg-green-700 shadow-lg hover:shadow-xl'
+                  ? 'bg-[#101929] text-white hover:bg-[#1a2332] shadow-lg hover:shadow-xl'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
               `}
             >
