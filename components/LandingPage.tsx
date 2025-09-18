@@ -68,9 +68,13 @@ export default function LandingPage() {
             {/* CTA Card with soft corners */}
             <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl max-w-2xl mx-auto">
               <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-                Sveriges jämförelsesajt för<br />
-                bredband & TV – med personlig analys
+                Sveriges mest omfattande jämförelse för<br />
+                bredband & TV
               </h1>
+              
+              <p className="text-lg md:text-xl text-gray-600 mb-6 font-medium">
+                Få din personliga analys på sekunder – helt gratis
+              </p>
 
               {/* Primary CTA - Pulsating button */}
               <motion.button
@@ -99,7 +103,7 @@ export default function LandingPage() {
                 {/* Button content */}
                 <div className="relative bg-[#101929] text-white px-8 py-4 rounded-2xl font-semibold text-lg
                                hover:bg-[#1a2332] transition-colors shadow-lg">
-                  Jämför och beställ direkt
+                  Starta din analys & beställ direkt
                 </div>
               </motion.button>
 

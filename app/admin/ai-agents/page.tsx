@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Bot, Activity, Clock, TrendingUp, Eye, MousePointer, ShoppingCart } from 'lucide-react';
+import { Bot, Activity, Clock, TrendingUp, Eye, MousePointer, ShoppingCart, ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface AIAgentVisit {
   timestamp: Date;
@@ -16,6 +18,7 @@ interface AIAgentVisit {
 }
 
 export default function AIAgentDashboard() {
+  const router = useRouter();
   const [visits, setVisits] = useState<AIAgentVisit[]>([]);
   const [stats, setStats] = useState({
     total_visits: 0,
@@ -62,12 +65,24 @@ export default function AIAgentDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">AI Agent Dashboard</h1>
-          <p className="text-gray-600">Monitor AI agent activity on Bredbandsval</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="max-w-7xl mx-auto p-6">
+        {/* Header med Valle */}
+        <div className="text-center mb-12">
+          <button
+            onClick={() => router.push('/')}
+            className="hover:scale-105 transition-transform mb-6"
+          >
+            <Image
+              src="/valle.png"
+              alt="Valle AI"
+              width={60}
+              height={60}
+              className="w-15 h-15 rounded-full mx-auto"
+            />
+          </button>
+          <h1 className="text-3xl font-light text-gray-900 tracking-wide mb-2">AI Agent Dashboard</h1>
+          <p className="text-gray-600">Spåra AI-agent aktivitet på Bredbandsval</p>
         </div>
 
         {/* Stats Cards */}
@@ -75,15 +90,23 @@ export default function AIAgentDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+            whileHover={{ scale: 1.02 }}
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Bot className="w-5 h-5 text-blue-600" />
-              </div>
+            <div className="flex items-center gap-4">
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  boxShadow: ['0 0 0 0 rgba(16, 25, 41, 0.4)', '0 0 0 10px rgba(16, 25, 41, 0)', '0 0 0 0 rgba(16, 25, 41, 0)']
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-12 h-12 bg-[#101929] rounded-xl flex items-center justify-center"
+              >
+                <Bot className="w-6 h-6 text-white" />
+              </motion.div>
               <div>
-                <p className="text-sm text-gray-600">Total Visits</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.total_visits}</p>
+                <p className="text-sm font-medium text-gray-600">Total Visits</p>
+                <p className="text-3xl font-light text-gray-900 tracking-wide">{stats.total_visits}</p>
               </div>
             </div>
           </motion.div>
@@ -92,15 +115,23 @@ export default function AIAgentDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+            whileHover={{ scale: 1.02 }}
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                <Activity className="w-5 h-5 text-green-600" />
-              </div>
+            <div className="flex items-center gap-4">
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.05, 1],
+                  backgroundColor: ['#10B981', '#059669', '#10B981']
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center"
+              >
+                <Activity className="w-6 h-6 text-white" />
+              </motion.div>
               <div>
-                <p className="text-sm text-gray-600">Today</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.today_visits}</p>
+                <p className="text-sm font-medium text-gray-600">Idag</p>
+                <p className="text-3xl font-light text-gray-900 tracking-wide">{stats.today_visits}</p>
               </div>
             </div>
           </motion.div>
@@ -109,15 +140,23 @@ export default function AIAgentDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+            whileHover={{ scale: 1.02 }}
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Eye className="w-5 h-5 text-purple-600" />
-              </div>
+            <div className="flex items-center gap-4">
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.08, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center"
+              >
+                <Eye className="w-6 h-6 text-white" />
+              </motion.div>
               <div>
-                <p className="text-sm text-gray-600">ChatGPT</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.chatgpt_visits}</p>
+                <p className="text-sm font-medium text-gray-600">ChatGPT</p>
+                <p className="text-3xl font-light text-gray-900 tracking-wide">{stats.chatgpt_visits}</p>
               </div>
             </div>
           </motion.div>
@@ -126,15 +165,23 @@ export default function AIAgentDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+            whileHover={{ scale: 1.02 }}
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                <ShoppingCart className="w-5 h-5 text-orange-600" />
-              </div>
+            <div className="flex items-center gap-4">
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.15, 1],
+                  backgroundColor: ['#F97316', '#EA580C', '#F97316']
+                }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+                className="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center"
+              >
+                <ShoppingCart className="w-6 h-6 text-white" />
+              </motion.div>
               <div>
-                <p className="text-sm text-gray-600">Orders</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.completed_orders}</p>
+                <p className="text-sm font-medium text-gray-600">Beställningar</p>
+                <p className="text-3xl font-light text-gray-900 tracking-wide">{stats.completed_orders}</p>
               </div>
             </div>
           </motion.div>
@@ -143,24 +190,37 @@ export default function AIAgentDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+            whileHover={{ scale: 1.02 }}
+            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-red-600" />
-              </div>
+            <div className="flex items-center gap-4">
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.12, 1],
+                  y: [0, -2, 0]
+                }}
+                transition={{ duration: 3.5, repeat: Infinity }}
+                className="w-12 h-12 bg-[#101929] rounded-xl flex items-center justify-center"
+              >
+                <TrendingUp className="w-6 h-6 text-white" />
+              </motion.div>
               <div>
-                <p className="text-sm text-gray-600">Conversion</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.conversion_rate.toFixed(1)}%</p>
+                <p className="text-sm font-medium text-gray-600">Konvertering</p>
+                <p className="text-3xl font-light text-gray-900 tracking-wide">{stats.conversion_rate.toFixed(1)}%</p>
               </div>
             </div>
           </motion.div>
         </div>
 
         {/* Recent Visits */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-white rounded-2xl shadow-lg border border-gray-100"
+        >
           <div className="p-6 border-b border-gray-100">
-            <h2 className="text-xl font-semibold text-gray-900">Recent AI Agent Visits</h2>
+            <h2 className="text-2xl font-light text-gray-900 tracking-wide">Senaste AI-agent besök</h2>
           </div>
           
           <div className="overflow-x-auto">
@@ -236,9 +296,18 @@ export default function AIAgentDashboard() {
           
           {visits.length === 0 && (
             <div className="p-12 text-center">
-              <Bot className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No AI agent visits detected yet</p>
-              <p className="text-sm text-gray-400 mt-1">AI agents will appear here when they visit your site</p>
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  opacity: [0.5, 1, 0.5]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6"
+              >
+                <Bot className="w-8 h-8 text-gray-400" />
+              </motion.div>
+              <p className="text-gray-600 font-medium">Inga AI-agent besök ännu</p>
+              <p className="text-sm text-gray-400 mt-2">AI-agenter kommer att visas här när de besöker er sajt</p>
             </div>
           )}
         </div>
