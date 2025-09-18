@@ -322,10 +322,35 @@ FORMATKRAV:
       temperature: 0.7
     });
 
-    return completion.choices[0].message.content || 
+    const raw = completion.choices[0].message.content || 
            'Baserat på dina svar har jag hittat de bästa alternativen för dig. Dessa leverantörer erbjuder hastigheter och priser som passar ditt hushåll perfekt.';
+    return ensureHtmlParagraphs(raw);
   } catch (error) {
     console.error('Error generating AI recommendation:', error);
-    return 'Baserat på dina svar har jag hittat de bästa alternativen för dig. Dessa leverantörer erbjuder hastigheter och priser som passar ditt hushåll perfekt.';
+    return ensureHtmlParagraphs('Baserat på dina svar har jag hittat de bästa alternativen för dig. Dessa leverantörer erbjuder hastigheter och priser som passar ditt hushåll perfekt.');
   }
+}
+
+// Wrap plain text into HTML paragraphs if needed
+function ensureHtmlParagraphs(raw: string): string {
+  if (!raw) return '';
+  // If the string already contains common HTML tags, assume it's formatted
+  if (/<\s*(p|strong|div|br|ul|ol|li)\b/i.test(raw)) {
+    return raw;
+  }
+  const trimmed = raw.trim();
+  // Prefer double newlines as paragraph separators
+  const blocks = trimmed.split(/\n{2,}|\r{2,}/).filter(Boolean);
+  if (blocks.length > 1) {
+    return blocks
+      .map(b => `<p>${b.replace(/\n+/g, '<br/>').trim()}</p>`)
+      .join('');
+  }
+  // Fallback: split by sentence boundaries (simple heuristic for sv)
+  const sentences = trimmed.split(/(?<=[.!?])\s+(?=[A-ZÅÄÖ])/);
+  if (sentences.length > 1) {
+    return sentences.map(s => `<p>${s.trim()}</p>`).join('');
+  }
+  // Last resort: one paragraph
+  return `<p>${trimmed}</p>`;
 }
