@@ -7,7 +7,7 @@ import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import TypingIndicator from './TypingIndicator';
 import RecommendationCard from './RecommendationCard';
-import AddressAutocomplete from './AddressAutocomplete';
+import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import StreamingCalculator from './StreamingCalculator';
 import ShareRecommendations from './ShareRecommendations';
 import UsageAnalyzer, { UsageAnalysisResult } from './UsageAnalyzer';
@@ -667,7 +667,7 @@ Nu behöver jag bara veta din adress för att hitta de bästa paketen för dig!`
               animate={{ opacity: 1, y: 0 }}
               className="mt-4"
             >
-              <AddressAutocomplete
+              <GoogleAddressAutocomplete
                 onAddressSelect={handleAddressSelect}
                 placeholder="Ange din adress"
               />

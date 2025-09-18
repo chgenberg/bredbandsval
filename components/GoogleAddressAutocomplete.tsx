@@ -28,6 +28,7 @@ export default function GoogleAddressAutocomplete({
   
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteService = useRef<any>(null);
+  const placesService = useRef<any>(null);
   const sessionToken = useRef<any>(null);
 
   useEffect(() => {
@@ -49,6 +50,10 @@ export default function GoogleAddressAutocomplete({
         autocompleteService.current = new placesNS.AutocompleteService();
       }
       sessionToken.current = new window.google.maps.places.AutocompleteSessionToken();
+      if (!placesService.current) {
+        // PlacesService requires a DOM node or map; we can pass a dummy div
+        placesService.current = new window.google.maps.places.PlacesService(document.createElement('div'));
+      }
     }
   };
 
@@ -97,15 +102,45 @@ export default function GoogleAddressAutocomplete({
   };
 
   const selectAddress = (prediction: any) => {
-    // Format the address nicely
-    const address = prediction.description;
-    setInput(address);
-    onAddressSelect(address);
-    setPredictions([]);
-    setShowSuggestions(false);
-    
-    // Create new session token for next search
-    sessionToken.current = new window.google.maps.places.AutocompleteSessionToken();
+    // Fetch place details to validate street number
+    const placeId = prediction.place_id;
+    if (placesService.current && placeId) {
+      placesService.current.getDetails({ placeId, fields: ['address_components','formatted_address'] }, (place: any, status: any) => {
+        const ok = status === window.google.maps.places.PlacesServiceStatus.OK;
+        const components = ok ? (place?.address_components || []) : [];
+        const hasStreetNumber = components.some((c: any) => c.types.includes('street_number'));
+        const formatted = ok ? (place?.formatted_address || prediction.description) : prediction.description;
+
+        if (!hasStreetNumber) {
+          // Require street number
+          setInput(formatted);
+          setShowSuggestions(false);
+          alert('Ange en fullständig adress med gatunummer.');
+          return;
+        }
+
+        setInput(formatted);
+        onAddressSelect(formatted);
+        setPredictions([]);
+        setShowSuggestions(false);
+        sessionToken.current = new window.google.maps.places.AutocompleteSessionToken();
+      });
+    } else {
+      // Fallback: simple check for a number in the address text
+      const address = prediction.description;
+      const hasNumber = /\d/.test(address);
+      if (!hasNumber) {
+        setInput(address);
+        setShowSuggestions(false);
+        alert('Ange en fullständig adress med gatunummer.');
+        return;
+      }
+      setInput(address);
+      onAddressSelect(address);
+      setPredictions([]);
+      setShowSuggestions(false);
+      sessionToken.current = new window.google.maps.places.AutocompleteSessionToken();
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
