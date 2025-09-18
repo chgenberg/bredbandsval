@@ -215,6 +215,12 @@ export default function LandingPage({ localizedContent }: { localizedContent?: L
           >
             analytics
           </a>
+          <a
+            href="/stader"
+            className="px-2 py-1 bg-black/10 text-gray-500 hover:text-gray-700 rounded transition-colors"
+          >
+            städer
+          </a>
         </div>
       </div>
 
