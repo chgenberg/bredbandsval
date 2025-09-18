@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./tailwind-built.css";
 
 export const metadata: Metadata = {
   title: "Bredbandsval AI - Din personliga bredbandsrådgivare",

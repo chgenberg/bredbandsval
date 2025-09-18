@@ -582,39 +582,32 @@ Nu behöver jag bara veta din adress för att hitta de bästa paketen för dig!`
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex flex-col h-full bg-gray-50">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <header className="bg-white shadow-sm border-b border-gray-200">
+        <div className="px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image
-              src="/bredbandsval-logo-with-text.svg"
-              alt="Bredbandsval"
-              width={150}
-              height={40}
-              className="dark:invert"
-            />
-            <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900 rounded-full">
-              <Sparkles size={14} className="text-blue-600 dark:text-blue-400" />
-              <span className="text-xs font-medium text-blue-600 dark:text-blue-400">AI Agent</span>
+            <div className="flex items-center gap-1 px-3 py-1.5 bg-blue-50 rounded-full">
+              <Sparkles size={16} className="text-blue-600" />
+              <span className="text-sm font-medium text-blue-600">AI-rådgivare</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowStreamingCalc(true)}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-300 
-                       hover:bg-gray-100 dark:hover:bg-gray-700 rounded-2xl transition-colors"
+              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 
+                       hover:bg-gray-100 rounded-xl transition-colors"
             >
               <Calculator size={16} />
-              Streamingkalkylator
+              <span className="hidden sm:inline">Streamingkalkylator</span>
             </button>
             <button
               onClick={handleReset}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-300 
-                       hover:bg-gray-100 dark:hover:bg-gray-700 rounded-2xl transition-colors"
+              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 
+                       hover:bg-gray-100 rounded-xl transition-colors"
             >
               <RotateCcw size={16} />
-              Börja om
+              <span className="hidden sm:inline">Börja om</span>
             </button>
           </div>
         </div>
@@ -622,15 +615,15 @@ Nu behöver jag bara veta din adress för att hitta de bästa paketen för dig!`
 
       {/* Progress bar */}
       {state.currentStep !== 'recommendations' && state.messages.length > 1 && (
-        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+        <div className="bg-white border-b border-gray-100 px-4 py-3">
           <div className="max-w-3xl mx-auto">
-            <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
               <span>Steg {getProgressStep()} av 8</span>
               <span>{getProgressPercent()}% klart</span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-100 rounded-full h-1.5">
               <div 
-                className="bg-blue-500 h-2 rounded-full transition-all duration-500"
+                className="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
                 style={{ width: `${getProgressPercent()}%` }}
               ></div>
             </div>

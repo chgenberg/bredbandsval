@@ -1,5 +1,5 @@
-import AIAgent from '@/components/AIAgent';
+import LandingPage from '@/components/LandingPage';
 
 export default function Home() {
-  return <AIAgent />;
+  return <LandingPage />;
 }
