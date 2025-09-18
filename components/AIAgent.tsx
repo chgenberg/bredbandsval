@@ -10,6 +10,7 @@ import RecommendationCard from './RecommendationCard';
 import AddressAutocomplete from './AddressAutocomplete';
 import StreamingCalculator from './StreamingCalculator';
 import ShareRecommendations from './ShareRecommendations';
+import UsageAnalyzer, { UsageAnalysisResult } from './UsageAnalyzer';
 import { ConversationState, Message } from '@/types';
 import { conversationFlow, calculateBandwidthNeed } from '@/lib/conversation-flow';
 import { bredbandsvalAPI } from '@/lib/api/client';
@@ -34,6 +35,8 @@ export default function AIAgent() {
   }>>([]);
   const [showStreamingCalc, setShowStreamingCalc] = useState(false);
   const [showAddressInput, setShowAddressInput] = useState(false);
+  const [showUsageAnalyzer, setShowUsageAnalyzer] = useState(false);
+  const [usageAnalysis, setUsageAnalysis] = useState<UsageAnalysisResult | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -66,9 +69,7 @@ export default function AIAgent() {
 
 Jag är din personliga bredbandsrådgivare och hjälper dig hitta det perfekta paketet för just dina behov.
 
-För att ge dig de bästa rekommendationerna behöver jag ställa några korta frågor. Det tar bara 2-3 minuter!
-
-Låt oss börja: **Vilken adress letar du bredband till?**`;
+**Låt oss börja med din adress:**`;
 
     setState(prev => ({
       ...prev,
@@ -78,10 +79,10 @@ Låt oss börja: **Vilken adress letar du bredband till?**`;
         sender: 'agent',
         timestamp: new Date(),
         quickReplies: [
-          { text: 'Stockholm', value: 'Stockholm' },
-          { text: 'Göteborg', value: 'Göteborg' },
-          { text: 'Malmö', value: 'Malmö' },
-          { text: 'Annan stad', value: 'other' },
+          { text: '🔍 Analysera min användning först', value: 'analyze-usage' },
+          { text: '📍 Stockholm', value: 'Stockholm' },
+          { text: '📍 Göteborg', value: 'Göteborg' },
+          { text: '📍 Malmö', value: 'Malmö' },
         ],
       }],
       isTyping: false,
@@ -90,6 +91,13 @@ Låt oss börja: **Vilken adress letar du bredband till?**`;
   };
 
   const handleUserMessage = async (input: string) => {
+    // Special handling for usage analysis
+    if (input === 'analyze-usage') {
+      setShowUsageAnalyzer(true);
+      setShowAddressInput(false);
+      return;
+    }
+
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -343,6 +351,70 @@ Detta tar bara några sekunder!`,
     analytics.trackFunnelStep('address_entered');
   };
 
+  const handleUsageAnalysisComplete = async (analysis: UsageAnalysisResult) => {
+    setUsageAnalysis(analysis);
+    setShowUsageAnalyzer(false);
+
+    // Add analysis result to conversation
+    const analysisMessage = `Fantastisk! 📊 Baserat på din användningsanalys rekommenderar jag **${analysis.estimatedSpeed} Mbit/s**.
+
+${analysis.insights.slice(0, 2).join('. ')}.
+
+Nu behöver jag bara veta din adress för att hitta de bästa paketen för dig!`;
+
+    const agentMessage: Message = {
+      id: Date.now().toString(),
+      content: analysisMessage,
+      sender: 'agent',
+      timestamp: new Date(),
+      quickReplies: [
+        { text: '📍 Stockholm', value: 'Stockholm' },
+        { text: '📍 Göteborg', value: 'Göteborg' },
+        { text: '📍 Malmö', value: 'Malmö' },
+      ],
+    };
+
+    setState(prev => ({
+      ...prev,
+      messages: [...prev.messages, agentMessage],
+      userProfile: {
+        ...prev.userProfile,
+        estimatedBandwidthNeed: analysis.estimatedSpeed,
+        analysisData: analysis,
+      },
+    }));
+
+    setShowAddressInput(true);
+    analytics.track('usage_analysis_completed', {
+      recommendedSpeed: analysis.estimatedSpeed,
+      devices: analysis.currentUsage.devices,
+      streamingHours: analysis.currentUsage.streaming,
+    });
+  };
+
+  const handleUsageAnalysisSkip = () => {
+    setShowUsageAnalyzer(false);
+    setShowAddressInput(true);
+    
+    const skipMessage = `Inga problem! Låt oss börja med din adress istället:`;
+    const agentMessage: Message = {
+      id: Date.now().toString(),
+      content: skipMessage,
+      sender: 'agent',
+      timestamp: new Date(),
+      quickReplies: [
+        { text: '📍 Stockholm', value: 'Stockholm' },
+        { text: '📍 Göteborg', value: 'Göteborg' },
+        { text: '📍 Malmö', value: 'Malmö' },
+      ],
+    };
+
+    setState(prev => ({
+      ...prev,
+      messages: [...prev.messages, agentMessage],
+    }));
+  };
+
   const handleStreamingCalculatorComplete = (services: string[], totalCost: number) => {
     setShowStreamingCalc(false);
     setState(prev => ({
@@ -553,6 +625,16 @@ Detta tar bara några sekunder!`,
               </p>
             </motion.div>
           )}
+
+          {/* Usage Analyzer modal */}
+          <AnimatePresence>
+            {showUsageAnalyzer && (
+              <UsageAnalyzer
+                onComplete={handleUsageAnalysisComplete}
+                onSkip={handleUsageAnalysisSkip}
+              />
+            )}
+          </AnimatePresence>
 
           {/* Streaming calculator modal */}
           <AnimatePresence>
