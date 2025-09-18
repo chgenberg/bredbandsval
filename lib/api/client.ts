@@ -59,17 +59,31 @@ export class BredbandsvalAPI {
         if (data.packages && data.packages.length > 0) {
           console.log(`✅ Got ${data.packages.length} real packages from ${data.source}`);
           
-          // Convert scraped data to our format
+          // Convert scraped data to our format with safe defaults
           const convertedPackages = data.packages.map((pkg: any) => ({
-            id: pkg.id,
-            providerId: pkg.providerName.toLowerCase().replace(/\s+/g, '-'),
-            providerName: pkg.providerName,
-            name: pkg.name,
-            speed: pkg.speed,
-            pricing: pkg.pricing,
-            contract: pkg.contract,
-            includes: pkg.includes,
-            availability: pkg.availability,
+            id: pkg.id || `scraped-${Date.now()}-${Math.random()}`,
+            providerId: pkg.providerName?.toLowerCase().replace(/\s+/g, '-') || 'unknown',
+            providerName: pkg.providerName || 'Okänd leverantör',
+            name: pkg.name || 'Okänt paket',
+            speed: pkg.speed || { download: 0, upload: 0 },
+            pricing: pkg.pricing || { monthly: 0, setupFee: 0 },
+            contract: pkg.contract || { bindingPeriod: 0, noticePeriod: 1, autoRenewal: false },
+            includes: pkg.includes || { 
+              router: false, 
+              publicIP: false, 
+              emailAccounts: 0, 
+              antiVirus: false 
+            },
+            availability: pkg.availability || { 
+              address, 
+              available: true, 
+              installationTime: 'Okänt', 
+              technology: 'fiber' 
+            },
+            tv: pkg.tv || undefined,
+            streaming: pkg.streaming || undefined,
+            isCombo: pkg.isCombo || false,
+            comboDetails: pkg.comboDetails || undefined,
           }));
 
           // Apply filters if provided
