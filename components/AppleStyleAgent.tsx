@@ -932,17 +932,20 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
   };
 
   const handleDownloadPDF = () => {
-    const pdfData = recommendations.slice(0, 3).map(rec => ({
-      provider: rec.package.providerName,
-      packageName: rec.package.name,
-      speed: rec.package.speed.download,
-      price: rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly,
-      bindingTime: rec.package.contractLength,
-      features: rec.package.features || [],
-      badges: rec.badges || [],
-      trustScore: rec.trustScore || 70,
-      reasoning: rec.reasons?.[0] || 'Passar dina behov perfekt'
-    }));
+    const pdfData = recommendations.slice(0, 3).map(rec => {
+      const pkg = rec?.package || {};
+      return ({
+        provider: pkg?.providerName || 'Okänd',
+        packageName: pkg?.name || 'Okänt paket',
+        speed: pkg?.speed?.download ?? 0,
+        price: pkg?.pricing?.campaign?.monthlyPrice ?? pkg?.pricing?.monthly ?? 0,
+        bindingTime: (pkg as any)?.contractLength ?? (pkg as any)?.contract?.bindingPeriod ?? 0,
+        features: pkg?.features || [],
+        badges: rec?.badges || [],
+        trustScore: rec?.trustScore || 70,
+        reasoning: rec?.reasons?.[0] || 'Passar dina behov perfekt'
+      });
+    });
     
     generateRecommendationPDF(pdfData, userProfile);
   };

@@ -289,11 +289,19 @@ ANVÄNDARPROFIL:
 - Nuvarande behov: ${userProfile.serviceType === 'both' ? 'Bredband & TV' : userProfile.serviceType || 'bredband'}
 
 TOPP 3 REKOMMENDATIONER:
-${recommendations.slice(0, 3).map((rec, i) => 
-  `${i + 1}. ${rec.package.providerName} - ${rec.package.speed.download} Mbit/s - ${rec.package.pricing.monthly} kr/mån
-   Badges: ${rec.badges?.join(', ') || 'inga'}
-   Förtroendepoäng: ${rec.trustScore || 70}/100`
-).join('\n')}`;
+${recommendations.slice(0, 3).map((rec, i) => {
+  const isPair = rec && rec.broadband && rec.tv;
+  if (isPair) {
+    const bb = rec.broadband || {};
+    const tv = rec.tv || {};
+    const total = rec.totalPrice ?? 0;
+    return `${i + 1}. ${bb.provider || 'Bredband'} + ${tv.provider || 'TV'}\n   ⚡ ${bb.speed || 0} Mbit/s | 💰 ${total} kr/mån\n   📋 BB: ${bb.package || 'Okänt'} | TV: ${tv.package || 'Okänt'}`;
+  }
+  const pkg = rec?.package || {};
+  const price = pkg?.pricing?.campaign?.monthlyPrice ?? pkg?.pricing?.monthly ?? 0;
+  const speed = pkg?.speed?.download ?? 0;
+  return `${i + 1}. ${pkg?.providerName || 'Okänd'} - ${speed} Mbit/s - ${price} kr/mån\n   Badges: ${rec?.badges?.join(', ') || 'inga'}\n   Förtroendepoäng: ${rec?.trustScore || 70}/100`;
+}).join('\n')}`;
 
   const prompt = `${userContext}
   
@@ -426,16 +434,22 @@ ${userProfile.priorities ? userProfile.priorities.replace(/,/g, ', ').replace(/p
 
 🎯 TOPP 3 MATCHADE ALTERNATIV:
 ${recommendations.slice(0, 3).map((rec, i) => {
-  const pkg = rec.package;
-  const price = pkg.pricing.campaign?.monthlyPrice || pkg.pricing.monthly;
-  const campaignInfo = pkg.pricing.campaign ? ` 🎉${pkg.pricing.campaign.description}` : '';
-  const badges = rec.badges ? ` | 🏆 ${rec.badges.join(', ')}` : '';
-  const trustInfo = rec.trustScore ? ` | ⭐ ${rec.trustScore}/100 kundnöjdhet` : '';
-  
-  return `${i + 1}. 🥇 ${pkg.providerName} - ${pkg.name}
-   ⚡ ${pkg.speed.download}/${pkg.speed.upload} Mbit/s | 💰 ${price}kr/mån${campaignInfo}
-   📋 ${pkg.contract?.bindingPeriod === 0 ? 'Ingen bindning' : `${pkg.contract?.bindingPeriod}mån bindning`} | ${pkg.includes?.router ? '📦 Router ingår' : '🚫 Router separat'}
-   📊 Matchning: ${rec.matchScore}/100${badges}${trustInfo}`;
+  const isPair = rec && rec.broadband && rec.tv;
+  if (isPair) {
+    const bb = rec.broadband || {};
+    const tv = rec.tv || {};
+    const total = rec.totalPrice ?? 0;
+    return `${i + 1}. 🥇 ${bb.provider || 'Bredband'} + ${tv.provider || 'TV'}\n   ⚡ ${bb.speed || 0} Mbit/s | 💰 ${total}kr/mån\n   📋 BB: ${bb.package || 'Okänt'} | TV: ${tv.package || 'Okänt'}`;
+  }
+  const pkg = rec.package || {};
+  const price = pkg?.pricing?.campaign?.monthlyPrice ?? pkg?.pricing?.monthly ?? 0;
+  const campaignInfo = pkg?.pricing?.campaign ? ` 🎉${pkg.pricing.campaign.description}` : '';
+  const badges = rec?.badges ? ` | 🏆 ${rec.badges.join(', ')}` : '';
+  const trustInfo = rec?.trustScore ? ` | ⭐ ${rec.trustScore}/100 kundnöjdhet` : '';
+  return `${i + 1}. 🥇 ${pkg?.providerName || 'Okänd'} - ${pkg?.name || ''}
+   ⚡ ${(pkg?.speed?.download ?? 0)}/${(pkg?.speed?.upload ?? 0)} Mbit/s | 💰 ${price}kr/mån${campaignInfo}
+   📋 ${pkg?.contract?.bindingPeriod === 0 ? 'Ingen bindning' : `${pkg?.contract?.bindingPeriod ?? '-'}mån bindning`} | ${pkg?.includes?.router ? '📦 Router ingår' : '🚫 Router separat'}
+   📊 Matchning: ${rec?.matchScore ?? 0}/100${badges}${trustInfo}`;
 }).join('\n\n')}
 
 SKAPA PERSONLIG ANALYS:
@@ -525,7 +539,7 @@ EXEMPEL PÅ KORREKT FORMATERING:
     }
     
     return ensureHtmlParagraphs(cleanedRaw);
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error generating AI recommendation:', error);
     console.error('❌ Error details:', error.message);
     console.error('❌ Error stack:', error.stack);

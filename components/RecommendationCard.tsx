@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Check, Zap, Tv, Gamepad2, Router, Calendar, Star, Shield, Award, TrendingUp } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface RecommendationProps {
   provider: string;
@@ -39,7 +40,24 @@ export default function RecommendationCard({
   isCombo = false,
   comboDetails,
 }: RecommendationProps) {
+  const router = useRouter();
   const isTopChoice = index === 0;
+
+  const handleOrderClick = () => {
+    // Spara vald produkt info i sessionStorage
+    const orderData = {
+      provider,
+      packageName,
+      speed,
+      price,
+      bindingTime,
+      features
+    };
+    sessionStorage.setItem('selectedPackage', JSON.stringify(orderData));
+    
+    // Navigera till beställningssidan
+    router.push('/order');
+  };
 
   const getIcon = (feature: string) => {
     const lower = feature.toLowerCase();
@@ -227,6 +245,7 @@ export default function RecommendationCard({
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
+        onClick={handleOrderClick}
         className={`w-full mt-auto py-2.5 px-4 rounded-xl font-medium transition-colors text-sm ${
           isTopChoice
             ? 'bg-white text-[#101929] hover:bg-gray-50'

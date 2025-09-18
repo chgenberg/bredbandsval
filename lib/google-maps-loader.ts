@@ -46,7 +46,13 @@ class GoogleMapsLoader {
 
       // Create and load script
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
+      // Use async loading per Google best practices
+      const params = new URLSearchParams({
+        key: String(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''),
+        libraries: 'places',
+        loading: 'async'
+      });
+      script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
       script.async = true;
       script.id = 'google-maps-script';
       

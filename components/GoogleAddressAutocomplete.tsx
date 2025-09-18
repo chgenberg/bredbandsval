@@ -41,7 +41,13 @@ export default function GoogleAddressAutocomplete({
 
   const initializeAutocomplete = () => {
     if (window.google && window.google.maps && window.google.maps.places) {
-      autocompleteService.current = new window.google.maps.places.AutocompleteService();
+      // Prefer new AutocompleteSuggestion API if available, fallback otherwise
+      const placesNS = window.google.maps.places as any;
+      if (typeof placesNS.AutocompleteSuggestion === 'function') {
+        autocompleteService.current = new placesNS.AutocompleteSuggestion();
+      } else {
+        autocompleteService.current = new placesNS.AutocompleteService();
+      }
       sessionToken.current = new window.google.maps.places.AutocompleteSessionToken();
     }
   };
@@ -64,22 +70,30 @@ export default function GoogleAddressAutocomplete({
 
     setIsLoading(true);
 
-    const request = {
+    const request: any = {
       input: input,
-      componentRestrictions: { country: 'se' }, // Restrict to Sweden
-      types: ['address'], // Focus on addresses
+      componentRestrictions: { country: 'se' },
+      types: ['address'],
       sessionToken: sessionToken.current,
     };
 
-    autocompleteService.current.getPlacePredictions(request, (predictions: any, status: any) => {
-      setIsLoading(false);
-      
-      if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
-        setPredictions(predictions.slice(0, 5)); // Max 5 suggestions
-      } else {
-        setPredictions([]);
-      }
-    });
+    // New API: AutocompleteSuggestion#suggest, fallback: AutocompleteService#getPlacePredictions
+    if (typeof autocompleteService.current.suggest === 'function') {
+      autocompleteService.current.suggest(request, (response: any) => {
+        setIsLoading(false);
+        const items = Array.isArray(response?.suggestions) ? response.suggestions : [];
+        setPredictions(items.slice(0, 5));
+      });
+    } else {
+      autocompleteService.current.getPlacePredictions(request, (predictions: any, status: any) => {
+        setIsLoading(false);
+        if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+          setPredictions(predictions.slice(0, 5));
+        } else {
+          setPredictions([]);
+        }
+      });
+    }
   };
 
   const selectAddress = (prediction: any) => {

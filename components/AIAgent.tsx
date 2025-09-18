@@ -775,9 +775,9 @@ Nu behöver jag bara veta din adress för att hitta de bästa paketen för dig!`
                     provider={rec.package.providerName}
                     packageName={rec.package.name}
                     speed={rec.package.speed.download}
-                    price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
-                    bindingTime={rec.package.contract.bindingPeriod}
-                    features={rec.package.includes.router ? ['Router ingår', ...rec.pros] : rec.pros}
+                    price={rec.package?.pricing?.campaign?.monthlyPrice ?? rec.package?.pricing?.monthly ?? 0}
+                    bindingTime={rec.package?.contract?.bindingPeriod}
+                    features={rec.package?.includes?.router ? ['Router ingår', ...(rec.pros || [])] : (rec.pros || [])}
                     savings={rec.savings.monthly}
                     matchScore={rec.score}
                     reasoning={rec.reasons.join('. ')}

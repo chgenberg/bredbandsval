@@ -5,10 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Share2, Mail, Download, Copy, Check, X } from 'lucide-react';
 
 interface ShareRecommendationsProps {
-  recommendations: Array<{
-    package: { providerName: string; name: string; speed: { download: number }; pricing: { monthly: number } };
-    savings: { monthly: number };
-  }>;
+  recommendations: Array<any>;
   userProfile: {
     address?: string;
     householdSize?: number;
@@ -37,12 +34,19 @@ export default function ShareRecommendations({ recommendations, userProfile }: S
 💻 Rekommenderad hastighet: ${userProfile.estimatedBandwidthNeed || 100} Mbit/s
 
 Top 3 rekommendationer:
-${recommendations.slice(0, 3).map((rec, i) => `
-${i + 1}. ${rec.package.providerName} - ${rec.package.name}
-   💰 ${rec.package.pricing.monthly} kr/mån
-   ⚡ ${rec.package.speed.download} Mbit/s
-   ${rec.savings?.monthly > 0 ? `💵 Sparar ${rec.savings.monthly} kr/mån på streaming` : ''}
-`).join('\n')}
+${recommendations.slice(0, 3).map((rec, i) => {
+  // Support both single packages and smart pairs
+  if (rec && rec.broadband && rec.tv) {
+    const total = rec.totalPrice ?? 0;
+    const speed = rec.broadband?.speed ?? 0;
+    return `\n${i + 1}. ${rec.broadband?.provider || 'Bredband'} + ${rec.tv?.provider || 'TV'}\n   💰 ${total} kr/mån\n   ⚡ ${speed} Mbit/s`;
+  }
+  const pkg = rec?.package || {};
+  const price = pkg?.pricing?.campaign?.monthlyPrice ?? pkg?.pricing?.monthly ?? 0;
+  const speed = pkg?.speed?.download ?? 0;
+  const savings = rec?.savings?.monthly;
+  return `\n${i + 1}. ${pkg?.providerName || 'Okänd'} - ${pkg?.name || ''}\n   💰 ${price} kr/mån\n   ⚡ ${speed} Mbit/s\n   ${savings > 0 ? `💵 Sparar ${savings} kr/mån på streaming` : ''}`;
+}).join('')}
 
 Se alla detaljer: ${generateShareableLink()}`;
 
