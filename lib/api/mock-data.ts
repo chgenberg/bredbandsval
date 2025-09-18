@@ -503,6 +503,605 @@ export function mockProviderPackages(
         savings: 50,
       },
     },
+    // Tele2 packages
+    {
+      id: 'tele2-100-basic',
+      providerId: 'tele2',
+      providerName: 'Tele2',
+      name: 'Bredband 100',
+      speed: { download: 100, upload: 100 },
+      pricing: {
+        monthly: 349,
+        setupFee: 0,
+        campaign: {
+          monthlyPrice: 299,
+          months: 3,
+          description: 'Kampanjpris första 3 månaderna',
+        },
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 1,
+        autoRenewal: true,
+      },
+      includes: {
+        router: true,
+        publicIP: false,
+        emailAccounts: 3,
+        antiVirus: false,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1-2 veckor',
+        technology: 'fiber',
+      },
+    },
+    {
+      id: 'tele2-250-tv',
+      providerId: 'tele2',
+      providerName: 'Tele2',
+      name: 'Bredband 250 + TV Silver',
+      speed: { download: 250, upload: 100 },
+      pricing: {
+        monthly: 599,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 3,
+        autoRenewal: true,
+      },
+      includes: {
+        router: true,
+        publicIP: false,
+        emailAccounts: 5,
+        antiVirus: true,
+      },
+      tv: {
+        channels: ['SVT1', 'SVT2', 'TV3', 'TV4', 'Kanal 5', 'TV6', 'Sjuan', 'TV8', 'Kanal 9', 'Discovery Channel', 'National Geographic', 'History Channel'],
+        channelPackages: ['Silver', 'Barn', 'Dokumentär'],
+        recordingHours: 100,
+        simultaneousStreams: 3,
+      },
+      streaming: {
+        included: ['HBO Max'],
+        discounted: [
+          { service: 'Netflix', normalPrice: 109, discountedPrice: 89 },
+        ],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1-2 veckor',
+        technology: 'fiber',
+      },
+    },
+    // Ownit packages
+    {
+      id: 'ownit-500-premium',
+      providerId: 'ownit',
+      providerName: 'Ownit',
+      name: 'Bredband 500/500',
+      speed: { download: 500, upload: 500 },
+      pricing: {
+        monthly: 399,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: false,
+      },
+      includes: {
+        router: false,
+        publicIP: true,
+        emailAccounts: 5,
+        antiVirus: false,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1-2 veckor',
+        technology: 'fiber',
+      },
+    },
+    {
+      id: 'ownit-1000-tv',
+      providerId: 'ownit',
+      providerName: 'Ownit',
+      name: 'Bredband 1000 + TV Standard',
+      speed: { download: 1000, upload: 1000 },
+      pricing: {
+        monthly: 749,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: false,
+      },
+      includes: {
+        router: false,
+        publicIP: true,
+        emailAccounts: 10,
+        antiVirus: false,
+      },
+      tv: {
+        channels: ['30+ kanaler', 'MTV', 'Comedy Central', 'Animal Planet'],
+        channelPackages: ['Standard', 'Underhållning'],
+        recordingHours: 50,
+        simultaneousStreams: 2,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1-2 veckor',
+        technology: 'fiber',
+      },
+    },
+    // Sappa packages
+    {
+      id: 'sappa-100-lagom',
+      providerId: 'sappa',
+      providerName: 'Sappa',
+      name: 'Bredband 100 + TV Lagom',
+      speed: { download: 100, upload: 100 },
+      pricing: {
+        monthly: 429,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: false,
+      },
+      includes: {
+        router: true,
+        publicIP: false,
+        emailAccounts: 3,
+        antiVirus: false,
+      },
+      tv: {
+        channels: ['18 kanaler', 'SVT', 'TV4', 'Kanal 5'],
+        channelPackages: ['Lagom'],
+        recordingHours: 25,
+        simultaneousStreams: 2,
+      },
+      streaming: {
+        included: ['Sappa Play'],
+        discounted: [],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1 vecka',
+        technology: 'fiber',
+      },
+    },
+    {
+      id: 'sappa-250-plus',
+      providerId: 'sappa',
+      providerName: 'Sappa',
+      name: 'Bredband 250 Plus',
+      speed: { download: 250, upload: 100 },
+      pricing: {
+        monthly: 379,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: false,
+      },
+      includes: {
+        router: true,
+        publicIP: true,
+        emailAccounts: 5,
+        antiVirus: false,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1 vecka',
+        technology: 'fiber',
+      },
+    },
+    // AllTele packages
+    {
+      id: 'alltele-100-smart',
+      providerId: 'alltele',
+      providerName: 'AllTele',
+      name: 'Smart 100/100',
+      speed: { download: 100, upload: 100 },
+      pricing: {
+        monthly: 295,
+        setupFee: 0,
+        campaign: {
+          monthlyPrice: 195,
+          months: 6,
+          description: '100 kr rabatt i 6 månader',
+        },
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 1,
+        autoRenewal: true,
+      },
+      includes: {
+        router: true,
+        publicIP: false,
+        emailAccounts: 3,
+        antiVirus: false,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '5-7 dagar',
+        technology: 'fiber',
+      },
+    },
+    {
+      id: 'alltele-250-family',
+      providerId: 'alltele',
+      providerName: 'AllTele',
+      name: 'Family 250/250',
+      speed: { download: 250, upload: 250 },
+      pricing: {
+        monthly: 395,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 1,
+        autoRenewal: true,
+      },
+      includes: {
+        router: true,
+        publicIP: true,
+        emailAccounts: 5,
+        antiVirus: true,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '5-7 dagar',
+        technology: 'fiber',
+      },
+    },
+    // IP-Only packages
+    {
+      id: 'iponly-100-basic',
+      providerId: 'iponly',
+      providerName: 'IP-Only',
+      name: 'Bredband 100/100',
+      speed: { download: 100, upload: 100 },
+      pricing: {
+        monthly: 279,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: false,
+      },
+      includes: {
+        router: false,
+        publicIP: true,
+        emailAccounts: 1,
+        antiVirus: false,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1-2 veckor',
+        technology: 'fiber',
+      },
+    },
+    {
+      id: 'iponly-500-pro',
+      providerId: 'iponly',
+      providerName: 'IP-Only',
+      name: 'Pro 500/500',
+      speed: { download: 500, upload: 500 },
+      pricing: {
+        monthly: 379,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: false,
+      },
+      includes: {
+        router: false,
+        publicIP: true,
+        emailAccounts: 3,
+        antiVirus: false,
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1-2 veckor',
+        technology: 'fiber',
+      },
+    },
+    // TV-only packages
+    {
+      id: 'viaplay-total-only',
+      providerId: 'viaplay',
+      providerName: 'Viaplay',
+      name: 'Viaplay Total',
+      speed: { download: 0, upload: 0 }, // Streaming only
+      pricing: {
+        monthly: 449,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: true,
+      },
+      tv: {
+        channels: ['Alla Viaplay-kanaler', 'Sport', 'Film', 'Serier'],
+        channelPackages: ['Sport', 'Film & Serier', 'Barn'],
+        recordingHours: 0, // Streaming only
+        simultaneousStreams: 4,
+      },
+      streaming: {
+        included: ['Viaplay Sport', 'Viaplay Film & Serier', 'Viaplay Barn'],
+        discounted: [],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: 'Omgående',
+        technology: 'streaming',
+      },
+    },
+    {
+      id: 'allente-tv-standard',
+      providerId: 'allente',
+      providerName: 'Allente',
+      name: 'TV Standard',
+      speed: { download: 0, upload: 0 },
+      pricing: {
+        monthly: 399,
+        setupFee: 99,
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 3,
+        autoRenewal: true,
+      },
+      tv: {
+        channels: ['30 kanaler', 'TV3', 'TV6', 'TV8', 'Kanal 5', 'Discovery Channel'],
+        channelPackages: ['Standard', 'Underhållning'],
+        recordingHours: 100,
+        simultaneousStreams: 3,
+      },
+      streaming: {
+        included: ['Viaplay Film & Serier'],
+        discounted: [
+          { service: 'Discovery+', normalPrice: 79, discountedPrice: 49 },
+        ],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1-2 veckor',
+        technology: 'streaming',
+      },
+    },
+    {
+      id: 'cmore-sport-only',
+      providerId: 'cmore',
+      providerName: 'C More',
+      name: 'C More Sport',
+      speed: { download: 0, upload: 0 },
+      pricing: {
+        monthly: 399,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: true,
+      },
+      tv: {
+        channels: ['Champions League', 'Europa League', 'SHL', 'Bundesliga'],
+        channelPackages: ['Sport'],
+        recordingHours: 0,
+        simultaneousStreams: 2,
+      },
+      streaming: {
+        included: ['C More Sport', 'C More Hits'],
+        discounted: [],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: 'Omgående',
+        technology: 'streaming',
+      },
+    },
+    {
+      id: 'discovery-family-tv',
+      providerId: 'discovery',
+      providerName: 'Discovery',
+      name: 'Family TV',
+      speed: { download: 0, upload: 0 },
+      pricing: {
+        monthly: 149,
+        setupFee: 0,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: true,
+      },
+      tv: {
+        channels: ['Discovery Channel', 'Animal Planet', 'TLC', 'Investigation Discovery', 'Discovery Science'],
+        channelPackages: ['Dokumentär', 'Familj'],
+        recordingHours: 0,
+        simultaneousStreams: 4,
+      },
+      streaming: {
+        included: ['Discovery+', 'Eurosport Player'],
+        discounted: [],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: 'Omgående',
+        technology: 'streaming',
+      },
+    },
+    // More combination packages
+    {
+      id: 'combo-tele2-viaplay',
+      providerId: 'combo',
+      providerName: 'Tele2 + Viaplay',
+      name: 'Bredband från Tele2 + Viaplay Total',
+      speed: { download: 250, upload: 100 },
+      pricing: {
+        monthly: 748, // 349 + 449 - 50 (combo discount)
+        setupFee: 0,
+        campaign: {
+          monthlyPrice: 648,
+          months: 6,
+          description: 'Kombinationsrabatt i 6 månader',
+        },
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 3,
+        autoRenewal: true,
+      },
+      includes: {
+        router: true,
+        publicIP: false,
+        emailAccounts: 3,
+        antiVirus: false,
+      },
+      tv: {
+        channels: ['Viaplay Sport', 'Viaplay Film & Serier'],
+        channelPackages: ['Sport', 'Film', 'Serier'],
+        recordingHours: 0,
+        simultaneousStreams: 4,
+      },
+      streaming: {
+        included: ['Viaplay Total'],
+        discounted: [],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1-2 veckor',
+        technology: 'combo',
+      },
+      isCombo: true,
+      comboDetails: {
+        broadbandProvider: 'Tele2',
+        tvProvider: 'Viaplay',
+        savings: 50,
+      },
+    },
+    {
+      id: 'combo-ownit-allente',
+      providerId: 'combo',
+      providerName: 'Ownit + Allente',
+      name: 'Bredband från Ownit + TV från Allente',
+      speed: { download: 500, upload: 500 },
+      pricing: {
+        monthly: 748, // 399 + 399 - 50 (combo discount)
+        setupFee: 99,
+      },
+      contract: {
+        bindingPeriod: 0,
+        noticePeriod: 1,
+        autoRenewal: false,
+      },
+      includes: {
+        router: false,
+        publicIP: true,
+        emailAccounts: 5,
+        antiVirus: false,
+      },
+      tv: {
+        channels: ['30 kanaler', 'Viaplay Film & Serier'],
+        channelPackages: ['Standard'],
+        recordingHours: 100,
+        simultaneousStreams: 3,
+      },
+      streaming: {
+        included: ['Viaplay Film & Serier'],
+        discounted: [
+          { service: 'Discovery+', normalPrice: 79, discountedPrice: 49 },
+        ],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '2-3 veckor',
+        technology: 'combo',
+      },
+      isCombo: true,
+      comboDetails: {
+        broadbandProvider: 'Ownit',
+        tvProvider: 'Allente',
+        savings: 50,
+      },
+    },
+    {
+      id: 'combo-alltele-cmore',
+      providerId: 'combo',
+      providerName: 'AllTele + C More',
+      name: 'Bredband från AllTele + C More Sport',
+      speed: { download: 250, upload: 250 },
+      pricing: {
+        monthly: 664, // 395 + 399 - 130 (combo discount)
+        setupFee: 0,
+        campaign: {
+          monthlyPrice: 564,
+          months: 3,
+          description: 'Extra 100 kr rabatt första 3 månaderna',
+        },
+      },
+      contract: {
+        bindingPeriod: 12,
+        noticePeriod: 1,
+        autoRenewal: true,
+      },
+      includes: {
+        router: true,
+        publicIP: true,
+        emailAccounts: 5,
+        antiVirus: true,
+      },
+      tv: {
+        channels: ['Champions League', 'Europa League', 'SHL', 'Bundesliga'],
+        channelPackages: ['Sport'],
+        recordingHours: 0,
+        simultaneousStreams: 2,
+      },
+      streaming: {
+        included: ['C More Sport', 'C More Hits'],
+        discounted: [],
+      },
+      availability: {
+        address,
+        available: true,
+        installationTime: '1 vecka',
+        technology: 'combo',
+      },
+      isCombo: true,
+      comboDetails: {
+        broadbandProvider: 'AllTele',
+        tvProvider: 'C More',
+        savings: 130,
+      },
+    },
   ];
 
   // Apply filters
