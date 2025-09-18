@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Circle, ChevronRight, Shield, Wifi, Router, Calendar, User, Mail, Phone, Home, CreditCard, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, Circle, ChevronRight, Shield, Wifi, Router, Calendar, User, Mail, Phone, Home, CreditCard, ArrowLeft, Scan } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import DriversLicenseScanner from './DriversLicenseScanner';
 
 interface OrderFormData {
   // Router val
@@ -42,9 +43,20 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
   const [currentStep, setCurrentStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showBankID, setShowBankID] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
 
   const handleBackToResults = () => {
     router.back(); // Går tillbaka till föregående sida (resultatsidan)
+  };
+
+  const handleScannedData = (data: { firstName: string; lastName: string; personalNumber: string }) => {
+    setFormData(prev => ({
+      ...prev,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      personalNumber: data.personalNumber
+    }));
+    setShowScanner(false);
   };
   
   const [formData, setFormData] = useState<OrderFormData>({
@@ -286,7 +298,16 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               exit={{ opacity: 0, x: -20 }}
               className="bg-white rounded-2xl shadow-sm p-8"
             >
-              <h2 className="text-xl font-semibold mb-6">Dina uppgifter</h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold">Dina uppgifter</h2>
+                <button
+                  onClick={() => setShowScanner(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
+                >
+                  <Scan className="w-4 h-4" />
+                  Scanna körkort
+                </button>
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -635,6 +656,16 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               </div>
             </motion.div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Drivers License Scanner */}
+      <AnimatePresence>
+        {showScanner && (
+          <DriversLicenseScanner
+            onDataScanned={handleScannedData}
+            onClose={() => setShowScanner(false)}
+          />
         )}
       </AnimatePresence>
     </div>

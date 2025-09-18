@@ -77,7 +77,7 @@ Svara ALLTID på svenska och håll svaren korta (max 2-3 meningar).`;
 
     try {
       const completion = await openai.chat.completions.create({
-        model: 'gpt-4o-mini', // Faster and cheaper than GPT-4
+        model: 'gpt-5-mini', // Latest mini model with improved performance
         messages: [
           { role: 'system', content: this.getSystemPrompt() },
           { role: 'assistant', content: `Nuvarande användarinfo: ${JSON.stringify(currentProfile, null, 2)}` },
@@ -192,7 +192,7 @@ Var personlig och förklara varför du frågar. Max 2 meningar på svenska.`;
 
     try {
       const completion = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'gpt-5-mini',
         messages: [
           { role: 'system', content: this.getSystemPrompt() },
           { role: 'user', content: prompt }
@@ -235,7 +235,7 @@ Fokusera på värde och besparingar. På svenska.`;
 
     try {
       const completion = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'gpt-5-mini',
         messages: [
           { role: 'system', content: this.getSystemPrompt() },
           { role: 'user', content: prompt }
