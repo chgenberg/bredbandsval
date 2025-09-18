@@ -469,6 +469,8 @@ KRITISKA KRAV:
 
   console.log('📝 GPT Prompt Length:', prompt.length);
   console.log('📝 GPT Prompt Preview:', prompt.substring(0, 200) + '...');
+  console.log('🔑 API Key exists:', !!process.env.NEXT_PUBLIC_OPENAI_API_KEY);
+  console.log('🔑 API Key length:', process.env.NEXT_PUBLIC_OPENAI_API_KEY?.length || 0);
   
   try {
     const openai = new OpenAI({
@@ -500,7 +502,9 @@ KRITISKA KRAV:
     
     return ensureHtmlParagraphs(raw);
   } catch (error) {
-    console.error('Error generating AI recommendation:', error);
+    console.error('❌ Error generating AI recommendation:', error);
+    console.error('❌ Error details:', error.message);
+    console.error('❌ Error stack:', error.stack);
     return ensureHtmlParagraphs('Baserat på dina svar har jag hittat de bästa alternativen för dig. Dessa leverantörer erbjuder hastigheter och priser som passar ditt hushåll perfekt.');
   }
 }

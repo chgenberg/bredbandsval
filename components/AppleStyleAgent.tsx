@@ -687,11 +687,18 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
         address: userProfile.address
       };
       
+      console.log('🔍 About to call generateAIRecommendation with:');
+      console.log('📊 completeProfile:', completeProfile);
+      console.log('📦 recommendations:', serviceType === 'both' ? structured.combined : recs.slice(0, 3));
+      console.log('🎯 serviceType:', serviceType || 'broadband');
+      
       const aiRecommendation = await generateAIRecommendation({
         userProfile: completeProfile,
         recommendations: serviceType === 'both' ? structured.combined : recs.slice(0, 3),
         serviceType: serviceType || 'broadband'
       });
+      
+      console.log('✅ generateAIRecommendation returned:', aiRecommendation);
       
       setAiRecommendationText(aiRecommendation || 'Baserat på dina svar har jag hittat de bästa alternativen för dig.');
       
