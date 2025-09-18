@@ -65,7 +65,7 @@ export default function RecommendationCard({
       className={`relative rounded-2xl p-4 sm:p-6 ${
         isTopChoice
           ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-xl'
-          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
+          : 'bg-white border border-gray-200 shadow-sm'
       }`}
     >
       {isTopChoice && (
@@ -87,13 +87,13 @@ export default function RecommendationCard({
               </span>
             </div>
           </div>
-          <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600 dark:text-gray-400'}`}>
+          <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600'}`}>
             {packageName}
           </p>
         </div>
         <div className="sm:text-right">
           <p className="text-xl sm:text-2xl font-bold">{price} kr</p>
-          <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600 dark:text-gray-400'}`}>
+          <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600'}`}>
             /månad
           </p>
         </div>
@@ -142,7 +142,7 @@ export default function RecommendationCard({
           isTopChoice ? 'bg-white/20' : 'bg-green-50 dark:bg-green-900/20'
         }`}>
           <p className={`text-sm font-medium ${
-            isTopChoice ? 'text-white' : 'text-green-700 dark:text-green-400'
+            isTopChoice ? 'text-white' : 'text-green-700'
           }`}>
             Du sparar {savings} kr/mån på streaming! 💰
           </p>
@@ -161,7 +161,7 @@ export default function RecommendationCard({
       </div>
 
       <div className={`text-sm italic ${
-        isTopChoice ? 'text-blue-100' : 'text-gray-600 dark:text-gray-400'
+        isTopChoice ? 'text-blue-100' : 'text-gray-600'
       }`}>
         &ldquo;{reasoning}&rdquo;
       </div>
