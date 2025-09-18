@@ -8,6 +8,7 @@ import { ServiceType, UserProfile } from '@/types';
 import RecommendationCard from './RecommendationCard';
 import SmartPairingCard from './SmartPairingCard';
 import { AnalysisCards } from './AnalysisCards';
+import { SimpleCombinationView } from './SimpleCombinationView';
 import { generateFollowUpAnswer } from '@/lib/ai/openai-client';
 
 interface ResultsModalProps {
@@ -197,21 +198,19 @@ export function ResultsModal({
                 <div className="max-w-6xl mx-auto">
                   <AnimatePresence mode="wait">
                     {/* Combined view for both services */}
-                    {activeTab === 'combined' && smartPairs && (
+                    {activeTab === 'combined' && broadbandPackages.length > 0 && tvPackages.length > 0 && (
                       <motion.div
                         key="combined"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        className="space-y-4"
                       >
-                        {smartPairs.map((pair, index) => (
-                          <SmartPairingCard
-                            key={index}
-                            {...pair}
-                            isPrimary={index === 0}
-                          />
-                        ))}
+                        <SimpleCombinationView
+                          broadbandPackage={broadbandPackages[0]}
+                          tvPackage={tvPackages[0]}
+                          totalPrice={(broadbandPackages[0]?.price || 0) + (tvPackages[0]?.price || 0)}
+                          reasoning="De bästa alternativen för bredband och TV baserat på dina svar"
+                        />
                       </motion.div>
                     )}
 
