@@ -63,15 +63,8 @@ export default function AIAgent() {
   }, []);
 
   const startProactiveConversation = async () => {
-    // Simulate thinking time
-    setState(prev => ({ ...prev, isTyping: true }));
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const welcomeMessage = `Välkommen till Bredbandsval
-
-Jag hjälper dig hitta det perfekta bredbands- och TV-paketet baserat på dina behov.
-
-Var befinner du dig?`;
+    // Minimal Apple-style welcome
+    const welcomeMessage = `Var befinner du dig?`;
 
     setState(prev => ({
       ...prev,
@@ -80,12 +73,6 @@ Var befinner du dig?`;
         content: welcomeMessage,
         sender: 'agent',
         timestamp: new Date(),
-        quickReplies: [
-          { text: 'Analysera min användning', value: 'analyze-usage', icon: 'chart' },
-          { text: 'Stockholm', value: 'Stockholm', icon: 'location' },
-          { text: 'Göteborg', value: 'Göteborg', icon: 'location' },
-          { text: 'Malmö', value: 'Malmö', icon: 'location' },
-        ],
       }],
       isTyping: false,
     }));
@@ -93,10 +80,36 @@ Var befinner du dig?`;
   };
 
   const handleUserMessage = async (input: string) => {
-    // Special handling for usage analysis
-    if (input === 'analyze-usage') {
+    // Special handling for analysis choice
+    if (input === 'analyze-real') {
       setShowRealUsagePermission(true);
-      setShowAddressInput(false);
+      return;
+    }
+    
+    if (input === 'skip-analysis') {
+      setState(prev => ({
+        ...prev,
+        currentStep: 'household-size',
+      }));
+      
+      // Jump straight to simplified questions
+      const nextMessage: Message = {
+        id: Date.now().toString(),
+        content: 'Hur många personer i hushållet?',
+        sender: 'agent',
+        timestamp: new Date(),
+        quickReplies: [
+          { text: '1', value: '1', icon: 'user' },
+          { text: '2', value: '2', icon: 'users' },
+          { text: '3-4', value: '3-4', icon: 'users' },
+          { text: '5+', value: '5+', icon: 'users' },
+        ],
+      };
+      
+      setState(prev => ({
+        ...prev,
+        messages: [...prev.messages, nextMessage],
+      }));
       return;
     }
 
@@ -197,99 +210,65 @@ Var befinner du dig?`;
     // Smart question generation based on what we know
     const questions = {
       'household-size': {
-        message: `Tack! Jag kollar vad som finns på ${profile.address || 'din adress'}. 
-
-Nästa fråga: **Hur många personer bor i ert hushåll?** 
-
-Detta hjälper mig förstå hur mycket bandbredd ni behöver.`,
+        message: `Hur många personer i hushållet?`,
         quickReplies: [
-          { text: '1 person', value: '1', icon: 'user' },
-          { text: '2 personer', value: '2', icon: 'users' },
-          { text: '3-4 personer', value: '3-4', icon: 'users' },
-          { text: '5+ personer', value: '5+', icon: 'users' },
+          { text: '1', value: '1', icon: 'user' },
+          { text: '2', value: '2', icon: 'users' },
+          { text: '3-4', value: '3-4', icon: 'users' },
+          { text: '5+', value: '5+', icon: 'users' },
         ]
       },
       
       'usage-streaming': {
-        message: `Bra att veta! ${profile.householdSize === 1 ? 'Som singel' : `Med ${profile.householdSize} personer`} är det viktigt att få rätt hastighet.
-
-**Streamar ni mycket film och serier?** (Netflix, HBO Max, Disney+ osv.)
-
-Detta påverkar vilken hastighet jag rekommenderar.`,
+        message: `Streamar ni mycket?`,
         quickReplies: [
-          { text: 'Ja, dagligen', value: 'heavy', icon: 'play' },
-          { text: 'Några gånger i veckan', value: 'moderate', icon: 'play' },
+          { text: 'Dagligen', value: 'heavy', icon: 'play' },
+          { text: 'Ibland', value: 'moderate', icon: 'play' },
           { text: 'Sällan', value: 'light', icon: 'play' },
         ]
       },
       
       'usage-gaming': {
-        message: `${profile.streamingHeavy ? 'Med mycket streaming behöver ni definitivt bra hastighet!' : 'Okej, inte så mycket streaming.'} 
-
-**Spelar någon i hushållet onlinespel?** 🎮
-
-Gaming kräver både hög hastighet och låg latens.`,
+        message: `Spelar någon online?`,
         quickReplies: [
-          { text: 'Ja, mycket gaming', value: 'yes', icon: 'gamepad' },
-          { text: 'Lite ibland', value: 'some', icon: 'gamepad' },
+          { text: 'Ja', value: 'yes', icon: 'gamepad' },
+          { text: 'Ibland', value: 'some', icon: 'gamepad' },
           { text: 'Nej', value: 'no', icon: 'x' },
         ]
       },
       
       'usage-meetings': {
-        message: `${profile.onlineGaming ? 'Gaming + streaming = ni behöver riktigt bra bredband!' : 'Okej, inget gaming att tänka på.'} 
-
-**Har ni ofta videomöten hemma?** (Teams, Zoom, Google Meet)
-
-Jobbar någon hemifrån eller studerar online?`,
+        message: `Videomöten hemifrån?`,
         quickReplies: [
-          { text: 'Ja, jobbar hemifrån', value: 'daily', icon: 'briefcase' },
-          { text: 'Studerar online', value: 'student', icon: 'graduation' },
-          { text: 'Ibland möten', value: 'sometimes', icon: 'video' },
-          { text: 'Sällan/aldrig', value: 'rarely', icon: 'x' },
+          { text: 'Jobbar hemifrån', value: 'daily', icon: 'briefcase' },
+          { text: 'Studerar', value: 'student', icon: 'graduation' },
+          { text: 'Ibland', value: 'sometimes', icon: 'video' },
+          { text: 'Nej', value: 'rarely', icon: 'x' },
         ]
       },
       
       'router-preference': {
-        message: `Perfekt! Jag börjar få en bild av era behov.
-
-**Vill ni ha router inkluderat i abonnemanget?**
-
-Många väljer detta för enkelhetens skull - då slipper ni köpa egen.`,
+        message: `Router inkluderad?`,
         quickReplies: [
-          { text: 'Ja, inkludera router', value: 'yes', icon: 'check' },
-          { text: 'Har egen router', value: 'no', icon: 'router' },
+          { text: 'Ja', value: 'yes', icon: 'check' },
+          { text: 'Har egen', value: 'no', icon: 'router' },
           { text: 'Spelar ingen roll', value: 'no-preference', icon: 'help' },
         ]
       },
       
       'contract-preference': {
-        message: `Bra! Nu till bindningstiden.
-
-**Föredrar ni kort eller lång bindningstid?**
-
-Längre bindning ger ofta bättre pris, men mindre flexibilitet.`,
+        message: `Bindningstid?`,
         quickReplies: [
-          { text: 'Ingen bindning', value: 'none', icon: 'zap' },
-          { text: 'Kort (3-6 mån)', value: 'short', icon: 'calendar' },
-          { text: 'Lång för bättre pris', value: 'long', icon: 'piggy' },
+          { text: 'Ingen', value: 'none', icon: 'zap' },
+          { text: '3-6 månader', value: 'short', icon: 'calendar' },
+          { text: 'Längre', value: 'long', icon: 'piggy' },
         ]
       },
       
-      'tv-channels': {
-        message: `Utmärkt! Nu har jag koll på bredbandsbehovet.
-
-Låt oss prata TV! **Vilka TV-kanaler är viktiga för er?**
-
-Skriv gärna några exempel, eller välj bland alternativen.`,
-        quickReplies: [
-          { text: 'Grundkanaler (SVT, TV4)', value: 'basic', icon: 'tv' },
-          { text: 'Film & serier', value: 'movies', icon: 'film' },
-          { text: 'Sport', value: 'sports', icon: 'trophy' },
-          { text: 'Barnkanaler', value: 'kids', icon: 'baby' },
-          { text: 'Ingen TV', value: 'none', icon: 'x' },
-        ]
-      },
+      'calculating': {
+        message: `Analyserar...`,
+        quickReplies: []
+      }
       
       'streaming-services': {
         message: `Bra att veta om TV-kanalerna!
@@ -347,9 +326,45 @@ Detta tar bara några sekunder.`,
     handleUserMessage(value);
   };
 
-  const handleAddressSelect = (address: string) => {
+  const handleAddressSelect = async (address: string) => {
     setShowAddressInput(false);
-    handleUserMessage(address);
+    
+    // Add user's address message
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: address,
+      sender: 'user',
+      timestamp: new Date(),
+    };
+    
+    setState(prev => ({
+      ...prev,
+      messages: [...prev.messages, userMessage],
+      userProfile: { ...prev.userProfile, address },
+      isTyping: true,
+    }));
+    
+    // Brief pause
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Ask about usage analysis
+    const analysisQuestion: Message = {
+      id: (Date.now() + 1).toString(),
+      content: 'Vill du att jag analyserar din faktiska användning från de senaste 3 månaderna?',
+      sender: 'agent',
+      timestamp: new Date(),
+      quickReplies: [
+        { text: 'Ja, analysera', value: 'analyze-real', icon: 'chart' },
+        { text: 'Nej, fortsätt', value: 'skip-analysis', icon: 'arrow-right' },
+      ],
+    };
+    
+    setState(prev => ({
+      ...prev,
+      messages: [...prev.messages, analysisQuestion],
+      isTyping: false,
+    }));
+    
     analytics.trackFunnelStep('address_entered');
   };
 
