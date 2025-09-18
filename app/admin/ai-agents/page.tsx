@@ -33,10 +33,8 @@ export default function AIAgentDashboard() {
   useEffect(() => {
     // Load data from localStorage and API, fallback to dummy data
     const loadData = () => {
-      const stored = JSON.parse(localStorage.getItem('ai_agent_visits') || '[]');
-      
-      // Use dummy data if no real data exists
-      const visitsData = stored.length > 0 ? stored : dummyAIAgentVisits;
+      // Always use dummy data for demo
+      const visitsData = dummyAIAgentVisits;
       setVisits(visitsData);
       
       // Calculate stats
@@ -47,16 +45,8 @@ export default function AIAgentDashboard() {
       const chatgptVisits = visitsData.filter((v: any) => v.agentType === 'chatgpt');
       const completedOrders = visitsData.filter((v: any) => v.completedOrder);
       
-      // Use dummy stats if no real data
-      const statsData = stored.length > 0 ? {
-        total_visits: visitsData.length,
-        today_visits: todayVisits.length,
-        chatgpt_visits: chatgptVisits.length,
-        completed_orders: completedOrders.length,
-        conversion_rate: visitsData.length > 0 ? (completedOrders.length / visitsData.length) * 100 : 0
-      } : dummyAgentStats;
-      
-      setStats(statsData);
+      // Always use dummy stats for demo
+      setStats(dummyAgentStats);
     };
 
     loadData();
@@ -133,7 +123,7 @@ export default function AIAgentDashboard() {
               <motion.div 
                 animate={{ 
                   scale: [1, 1.05, 1],
-                  backgroundColor: ['#10B981', '#059669', '#10B981']
+                  backgroundColor: ['#111827', '#1f2937', '#111827']
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
                 className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
@@ -183,7 +173,7 @@ export default function AIAgentDashboard() {
               <motion.div 
                 animate={{ 
                   scale: [1, 1.15, 1],
-                  backgroundColor: ['#F97316', '#EA580C', '#F97316']
+                  backgroundColor: ['#111827', '#1f2937', '#111827']
                 }}
                 transition={{ duration: 2.5, repeat: Infinity }}
                 className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"

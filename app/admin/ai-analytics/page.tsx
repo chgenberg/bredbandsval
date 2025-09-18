@@ -116,7 +116,7 @@ export default function AIAnalyticsDashboard() {
               <motion.div 
                 animate={{ 
                   scale: [1, 1.1, 1],
-                  backgroundColor: ['#101929', '#1a2332', '#101929']
+                  backgroundColor: ['#111827', '#1f2937', '#111827']
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
@@ -144,7 +144,7 @@ export default function AIAnalyticsDashboard() {
               <motion.div 
                 animate={{ 
                   scale: [1, 1.08, 1],
-                  backgroundColor: ['#10B981', '#059669', '#10B981']
+                  backgroundColor: ['#111827', '#1f2937', '#111827']
                 }}
                 transition={{ duration: 2.5, repeat: Infinity }}
                 className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center"
@@ -302,7 +302,7 @@ export default function AIAnalyticsDashboard() {
               <motion.div
                 animate={{ 
                   scale: [1, 1.2, 1],
-                  backgroundColor: ['#10B981', '#059669', '#10B981']
+                  backgroundColor: ['#111827', '#1f2937', '#111827']
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center"
