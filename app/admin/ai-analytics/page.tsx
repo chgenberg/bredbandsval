@@ -367,7 +367,7 @@ export default function AIAnalyticsDashboard() {
               </tbody>
             </table>
           </div>
-        </div>
+        </motion.div>
 
         {/* Optimization Recommendations */}
         <motion.div 
@@ -410,7 +410,7 @@ export default function AIAnalyticsDashboard() {
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
