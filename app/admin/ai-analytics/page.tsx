@@ -225,10 +225,12 @@ export default function AIAnalyticsDashboard() {
                     <span className="text-sm font-medium text-gray-700">{step.step}</span>
                     <span className="text-sm text-gray-500">{step.count} ({step.percentage.toFixed(1)}%)</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${step.percentage}%` }}
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${step.percentage}%` }}
+                      transition={{ duration: 1, delay: index * 0.2 }}
+                      className="bg-[#101929] h-3 rounded-full"
                     />
                   </div>
                 </div>
@@ -237,10 +239,24 @@ export default function AIAnalyticsDashboard() {
           </div>
 
           {/* Agent Type Distribution */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <PieChart className="w-5 h-5 text-purple-600" />
-              Agent Types
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6 }}
+            className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100"
+          >
+            <h3 className="text-xl font-light text-gray-900 tracking-wide mb-6 flex items-center gap-3">
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 180, 360]
+                }}
+                transition={{ duration: 6, repeat: Infinity }}
+                className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center"
+              >
+                <PieChart className="w-5 h-5 text-white" />
+              </motion.div>
+              Agent-typer
             </h3>
             <div className="space-y-3">
               {agentTypes.map((agent, index) => {
@@ -264,11 +280,25 @@ export default function AIAnalyticsDashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="p-6 border-b border-gray-100">
-            <h3 className="text-lg font-semibold flex items-center gap-2">
-              <Activity className="w-5 h-5 text-green-600" />
-              Recent AI Agent Activity
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="bg-white rounded-2xl shadow-lg border border-gray-100"
+        >
+          <div className="p-8 border-b border-gray-100">
+            <h3 className="text-xl font-light text-gray-900 tracking-wide flex items-center gap-3">
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  backgroundColor: ['#10B981', '#059669', '#10B981']
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center"
+              >
+                <Activity className="w-5 h-5 text-white" />
+              </motion.div>
+              Senaste AI-agent aktivitet
             </h3>
           </div>
           
@@ -340,10 +370,24 @@ export default function AIAnalyticsDashboard() {
         </div>
 
         {/* Optimization Recommendations */}
-        <div className="mt-8 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-orange-600" />
-            AI Optimization Recommendations
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="mt-8 bg-white rounded-2xl p-8 shadow-lg border border-gray-100"
+        >
+          <h3 className="text-xl font-light text-gray-900 tracking-wide mb-6 flex items-center gap-3">
+            <motion.div
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, -10, 10, 0]
+              }}
+              transition={{ duration: 3, repeat: Infinity }}
+              className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center"
+            >
+              <AlertTriangle className="w-5 h-5 text-white" />
+            </motion.div>
+            AI Optimeringsrekommendationer
           </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
