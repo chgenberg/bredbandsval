@@ -1010,16 +1010,14 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   {message.quickReplies && (
                     <div className={`mt-4 ${
                       message.quickReplies.length <= 2 
-                        ? 'grid grid-cols-2 gap-3 sm:gap-5' 
+                        ? 'grid grid-cols-1 sm:grid-cols-2 gap-3' 
                         : message.quickReplies.length === 3
-                        ? 'grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5'
+                        ? 'grid grid-cols-1 sm:grid-cols-3 gap-3'
                         : message.quickReplies.length === 4
-                        ? 'grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5'
-                        : message.quickReplies.length === 5
-                        ? 'grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5'
-                        : message.quickReplies.length === 6
-                        ? 'grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5'
-                        : 'grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5'
+                        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3'
+                        : message.quickReplies.length >= 5
+                        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3'
+                        : 'grid grid-cols-1 sm:grid-cols-2 gap-3'
                     }`}>
                       {message.quickReplies.map((reply) => {
                         const Icon = getIcon(reply.icon);
@@ -1045,9 +1043,9 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                                 handleQuickReply(reply.value);
                               }
                             }}
-                            className={`flex items-center justify-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 
-                                     rounded-full text-sm sm:text-sm font-medium transition-all
-                                     min-h-[46px] sm:min-h-[52px] min-w-[140px] sm:min-w-[200px] w-full whitespace-nowrap
+                            className={`flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-3 
+                                     rounded-full text-sm font-medium transition-all
+                                     min-h-[48px] sm:min-h-[52px] w-full text-center leading-tight
                                      ${isSelected 
                                        ? 'bg-blue-500 text-white border-blue-500' 
                                        : 'bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-100'
