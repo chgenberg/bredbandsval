@@ -438,18 +438,18 @@ ${recommendations.slice(0, 3).map((rec, i) => {
    📊 Matchning: ${rec.matchScore}/100${badges}${trustInfo}`;
 }).join('\n\n')}
 
-• SKAPA PERSONLIG ANALYS:
+SKAPA PERSONLIG ANALYS:
 
 KRAV:
-• Svara ENDAST i HTML-format (INGEN ```html wrapper eller markdown)
-• Börja direkt med <div><p><strong>Rubrik</strong></p><p>Text...</p></div>
-• Använd SEPARATA <p>-taggar för varje stycke/mening
-• 5-7 meningar i OLIKA stycken för läsbarhet
-• Konkreta siffror (pris, hastighet, besparingar)
-• För serviceType 'both': rekommendera BÅDE bredband OCH TV
-• Vardagligt språk som alla förstår
+- Svara ENDAST i HTML-format (INGEN markdown wrapper)
+- Börja direkt med <div><p><strong>Rubrik</strong></p><p>Text...</p></div>
+- Använd SEPARATA <p>-taggar för varje stycke/mening
+- 5-7 meningar i OLIKA stycken för läsbarhet
+- Konkreta siffror (pris, hastighet, besparingar)
+- För serviceType 'both': rekommendera BÅDE bredband OCH TV
+- Vardagligt språk som alla förstår
 
-• STRUKTUR FÖR ${serviceTypeText.toUpperCase()}:
+STRUKTUR FÖR ${serviceTypeText.toUpperCase()}:
 ${serviceType === 'both' ? `
 1. Min rekommendation: "För bredband rekommenderar jag [leverantör] och för TV [leverantör/tjänst]"
 2. Varför det passar: "Med er situation som [beskrivning] får ni [konkret fördel för båda]"
@@ -464,14 +464,14 @@ ${serviceType === 'both' ? `
 5. Alternativ: "Om du [scenario] kan [annat alternativ] vara bättre"
 6. Nästa steg: "För att komma igång [konkret action]"`}
 
-• FOKUSERA PÅ:
+FOKUSERA PÅ:
 - Exakta besparingar per år om de betalar för mycket
 - Vad de missar med nuvarande hastighet
 - Praktiska fördelar i vardagen
 - Enkla steg för att komma igång
 - Realistiska alternativ för olika behov
 
-• UNDVIK:
+UNDVIK:
 - Företagsjargong som "värdeproposition", "optimera"
 - Tekniska termer utan förklaring
 - Säljfraser som "bästa valet"
