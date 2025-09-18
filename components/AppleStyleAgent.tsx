@@ -348,6 +348,9 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
           { text: 'Prime Video', value: 'prime', icon: 'play' },
           { text: 'Apple TV+', value: 'appletv', icon: 'play' },
           { text: 'SkyShowtime', value: 'skyshowtime', icon: 'play' },
+          { text: 'Paramount+', value: 'paramount', icon: 'play' },
+          { text: 'Discovery+', value: 'discovery', icon: 'play' },
+          { text: 'YouTube Premium', value: 'youtube', icon: 'play' },
         ],
         helpText: 'Vissa TV-paket inkluderar streamingtjänster vilket kan ge bättre totalpris.'
       },
