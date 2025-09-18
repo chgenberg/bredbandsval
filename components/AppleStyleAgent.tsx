@@ -668,6 +668,12 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       // Separate broadband and TV packages (fix filters to use correct schema)
       const broadbandRecs = recs.filter(r => (r.package?.speed?.download || 0) > 0 && !r.package?.isCombo && !r.package?.tv);
       const tvRecs = recs.filter(r => !!r.package?.tv);
+      
+      console.log('📊 Package separation:', {
+        total: recs.length,
+        broadband: broadbandRecs.length,
+        tv: tvRecs.length
+      });
 
       // Helper: map a recommendation to RecommendationCard props shape
       const mapRecToCard = (rec: any) => {
@@ -708,7 +714,12 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       // Generate smart pairs for "both" service type
       let generatedPairs: any[] = [];
       if (serviceType === 'both') {
+        console.log('🔄 Generating smart pairs from:', {
+          broadbandRecs: broadbandRecs.length,
+          tvRecs: tvRecs.length
+        });
         generatedPairs = generateSmartPairs(broadbandRecs, tvRecs, userProfile);
+        console.log('✅ Generated smart pairs:', generatedPairs.length);
         setSmartPairs(generatedPairs);
         structured.combined = generatedPairs;
       }

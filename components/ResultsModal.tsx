@@ -31,7 +31,9 @@ export function ResultsModal({
   onPrint,
   onChatOpen
 }: ResultsModalProps) {
-  const [activeTab, setActiveTab] = useState<'broadband' | 'tv' | 'combined'>('broadband');
+  const [activeTab, setActiveTab] = useState<'broadband' | 'tv' | 'combined'>(
+    serviceType === 'both' ? 'combined' : serviceType === 'tv' ? 'tv' : 'broadband'
+  );
   const [showChat, setShowChat] = useState(false);
 
   // Determine which tabs to show based on service type

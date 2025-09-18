@@ -125,16 +125,19 @@ body {
 
 /* AI content styling with paragraph formatting */
 .ai-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: block !important;
 }
 
 .ai-content p {
-  margin: 0;
+  margin: 0 0 1rem 0 !important;
   line-height: 1.6;
-  white-space: pre-wrap;
+  white-space: normal !important;
   word-break: break-word;
+  display: block;
+}
+
+.ai-content p:last-child {
+  margin-bottom: 0 !important;
 }
 
 .ai-content p:first-child {
