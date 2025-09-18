@@ -858,16 +858,16 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   {message.quickReplies && (
                     <div className={`mt-3 ${
                       message.quickReplies.length <= 2 
-                        ? 'flex flex-col sm:flex-row gap-2 justify-start flex-wrap' 
+                        ? 'flex flex-col sm:flex-row gap-3 justify-start flex-wrap' 
                         : message.quickReplies.length === 3
-                        ? 'grid grid-cols-1 sm:grid-cols-3 gap-2'
+                        ? 'grid grid-cols-1 sm:grid-cols-3 gap-3'
                         : message.quickReplies.length === 4
-                        ? 'grid grid-cols-2 lg:grid-cols-4 gap-2'
+                        ? 'grid grid-cols-2 lg:grid-cols-4 gap-3'
                         : message.quickReplies.length === 5
-                        ? 'grid grid-cols-2 lg:grid-cols-5 gap-2'
+                        ? 'grid grid-cols-2 lg:grid-cols-5 gap-3'
                         : message.quickReplies.length === 6
-                        ? 'grid grid-cols-2 lg:grid-cols-6 gap-2'
-                        : 'grid grid-cols-2 lg:grid-cols-4 gap-2'
+                        ? 'grid grid-cols-2 lg:grid-cols-6 gap-3'
+                        : 'grid grid-cols-2 lg:grid-cols-4 gap-3'
                     }`}>
                       {message.quickReplies.map((reply) => {
                         const Icon = getIcon(reply.icon);
