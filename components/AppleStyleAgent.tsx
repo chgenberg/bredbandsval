@@ -132,21 +132,8 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       };
       setMessages([initialMessage]);
     } else {
-      // Normal flow
-      const initialMessage: Message = {
-        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        content: 'Hej! Vad kan jag hjälpa dig med idag?',
-        sender: 'agent',
-        timestamp: new Date(),
-        variant: 'welcome',
-        quickReplies: [
-          { text: 'Bredband', value: 'broadband', icon: 'wifi' },
-          { text: 'TV-paket', value: 'tv', icon: 'tv' },
-          { text: 'Bredband & TV', value: 'both', icon: 'package' },
-        ],
-        helpText: 'Välj vad du är intresserad av så kan jag hjälpa dig hitta det bästa alternativet för just dina behov.'
-      };
-      setMessages([initialMessage]);
+      // Normal flow - no initial message, just show welcome section
+      setMessages([]);
     }
   }, [quickSearchMode]);
 
@@ -1000,6 +987,55 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 sm:py-6">
         <div className="max-w-6xl mx-auto">
+          {/* Welcome section - only show if no messages and not quick search mode */}
+          {!quickSearchMode && messages.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-12"
+            >
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Hej! Vad kan jag hjälpa dig med idag?
+              </h2>
+              <p className="text-gray-600 mb-8 max-w-lg mx-auto">
+                Välj vad du är intresserad av så kan jag hjälpa dig hitta det bästa alternativet för just dina behov.
+              </p>
+              
+              {/* Service type buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleQuickReply('broadband')}
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all"
+                >
+                  <Wifi className="w-5 h-5 text-blue-600" />
+                  <span className="font-medium">Bredband</span>
+                </motion.button>
+                
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleQuickReply('tv')}
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all"
+                >
+                  <Tv className="w-5 h-5 text-purple-600" />
+                  <span className="font-medium">TV-paket</span>
+                </motion.button>
+                
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleQuickReply('both')}
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-[#101929] text-white rounded-xl hover:bg-[#1a2332] transition-all shadow-sm"
+                >
+                  <Package className="w-5 h-5" />
+                  <span className="font-medium">Bredband & TV</span>
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+          
           <AnimatePresence>
             {messages.map((message, index) => (
               <motion.div
