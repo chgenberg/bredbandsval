@@ -138,6 +138,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
         content: 'Hej! Vad kan jag hjälpa dig med idag?',
         sender: 'agent',
         timestamp: new Date(),
+        variant: 'welcome',
         quickReplies: [
           { text: 'Bredband', value: 'broadband', icon: 'wifi' },
           { text: 'TV-paket', value: 'tv', icon: 'tv' },

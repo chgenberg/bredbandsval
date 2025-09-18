@@ -16,6 +16,7 @@ interface ChatMessageProps {
 export default function ChatMessage({ message, onQuickReply }: ChatMessageProps) {
   const isUser = message.sender === 'user';
   const isShortMessage = message.content.length < 50; // Messages under 50 chars stay on one line
+  const isWelcome = message.variant === 'welcome';
 
   return (
     <motion.div
@@ -25,7 +26,9 @@ export default function ChatMessage({ message, onQuickReply }: ChatMessageProps)
       className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}
     >
       <div className={`message-bubble ${isUser ? 'user-message' : 'agent-message'}`}>
-        <p className={isShortMessage ? '' : 'wrap'}>{message.content}</p>
+        <p className={`${isShortMessage ? '' : 'wrap'} ${isWelcome ? 'text-center font-semibold text-gray-900' : ''}`}>
+          {message.content}
+        </p>
         
         {message.quickReplies && message.quickReplies.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">

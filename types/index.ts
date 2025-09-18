@@ -25,6 +25,7 @@ export interface Message {
   timestamp: Date;
   options?: string[];
   quickReplies?: QuickReply[];
+  variant?: 'welcome';
 }
 
 export interface QuickReply {
