@@ -164,15 +164,15 @@ export default function RecommendationCard({
 
       {isCombo && comboDetails && (
         <div className={`mb-4 p-3 rounded-2xl ${
-          isTopChoice ? 'bg-white/20' : 'bg-purple-50'
+          isTopChoice ? 'bg-white/20' : 'bg-blue-50'
         }`}>
           <p className={`text-sm font-medium ${
-            isTopChoice ? 'text-white' : 'text-purple-700'
+            isTopChoice ? 'text-white' : 'text-blue-700'
           }`}>
             🔗 Bredband: {comboDetails.broadbandProvider} • TV: {comboDetails.tvProvider}
           </p>
           <p className={`text-xs mt-1 ${
-            isTopChoice ? 'text-white/80' : 'text-purple-600'
+            isTopChoice ? 'text-white/80' : 'text-blue-600'
           }`}>
             Sparar {comboDetails.savings} kr/mån jämfört med separata avtal
           </p>

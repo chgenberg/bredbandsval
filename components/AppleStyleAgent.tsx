@@ -570,9 +570,16 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       setRecommendations(recs);
       
-      // Generate AI recommendation
+      // Generate AI recommendation with complete profile
+      const completeProfile = {
+        ...userProfile,
+        speedTestResult: speedTestResult,
+        calculatedNeeds: needs,
+        address: userProfile.address
+      };
+      
       const aiRecommendation = await generateAIRecommendation({
-        userProfile,
+        userProfile: completeProfile,
         recommendations: recs.slice(0, 3),
         serviceType: serviceType || 'broadband'
       });

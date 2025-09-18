@@ -369,21 +369,55 @@ export async function generateAIRecommendation(params: {
   
   const prompt = `Baserat på användarens svar, generera en personlig rekommendation för ${serviceTypeText}.
 
-ANVÄNDARPROFIL:
-- Servicetyp: ${serviceType}
-- Hushållsstorlek: ${userProfile.householdSize || 'ej angivet'}
-- Streaming: ${userProfile.streamingLevel || userProfile.streamingHeavy ? 'Ja' : 'Nej'}
-- Gaming: ${userProfile.onlineGaming ? 'Ja' : 'Nej'}
-- Videomöten: ${userProfile.videoMeetings ? 'Ja' : 'Nej'}
-- Router behövs: ${userProfile.includeRouter ? 'Ja' : 'Nej'}
-- Bindningstid: ${userProfile.contractPreference || 'ej angivet'}
-${userProfile.tvPreference ? `- TV-preferens: ${userProfile.tvPreference}` : ''}
-${userProfile.streamingServices ? `- Streamingtjänster: ${userProfile.streamingServices}` : ''}
+DETALJERAD ANVÄNDARPROFIL:
+- Adress: ${userProfile.address || 'ej angiven'}
+- Servicetyp: ${serviceType === 'broadband' ? 'Endast bredband' : serviceType === 'tv' ? 'Endast TV' : 'Både bredband och TV'}
+- Hushållsstorlek: ${userProfile.householdSize || '1'} personer
+- Streaming-användning: ${
+  userProfile.streamingLevel === 'heavy' ? 'Mycket (varje dag, flera tjänster)' :
+  userProfile.streamingLevel === 'moderate' ? 'Måttlig (några gånger i veckan)' :
+  userProfile.streamingLevel === 'light' ? 'Lite (sällan eller aldrig)' : 'Okänt'
+}
+- Online gaming: ${userProfile.onlineGaming ? 'Ja, spelar ofta online' : 'Nej, spelar inte online'}
+- Videomöten: ${
+  userProfile.workFromHome ? 'Ja, dagligen (jobbar hemifrån)' :
+  userProfile.videoMeetings ? 'Ja, ibland' : 'Nej'
+}
+- Router-behov: ${userProfile.includeRouter ? 'Vill ha router från leverantören' : 'Har redan router'}
+- Bindningstid-preferens: ${
+  userProfile.contractPreference === 'none' ? 'Ingen bindning (flexibilitet viktigast)' :
+  userProfile.contractPreference === 'short' ? '3-6 månader (kort bindning)' :
+  userProfile.contractPreference === 'long' ? 'Längre bindning för bättre pris' :
+  'Ingen preferens'
+}
+${userProfile.tvPreference ? `- TV-intressen: ${
+  userProfile.tvPreference === 'sports' ? 'Sport (fotboll, hockey, etc)' :
+  userProfile.tvPreference === 'entertainment' ? 'Film & serier' :
+  userProfile.tvPreference === 'news' ? 'Nyheter & dokumentärer' :
+  userProfile.tvPreference === 'all' ? 'Allt (sport, film, nyheter)' : userProfile.tvPreference
+}` : ''}
+${userProfile.streamingServices ? `- Använder streamingtjänster: ${userProfile.streamingServices.replace(/,/g, ', ')}` : ''}
+${userProfile.speedTestResult ? `- Nuvarande hastighet: ${userProfile.speedTestResult.downloadMbps} Mbit/s ned, ${userProfile.speedTestResult.uploadMbps} Mbit/s upp` : ''}
 
-TOPP 3 REKOMMENDATIONER:
-${recommendations.slice(0, 3).map((rec, i) => 
-  `${i + 1}. ${rec.package.providerName} - ${rec.package.speed.download} Mbit/s - ${rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly} kr/mån`
-).join('\n')}
+TOPP 3 REKOMMENDATIONER MED DETALJER:
+${recommendations.slice(0, 3).map((rec, i) => {
+  const pkg = rec.package;
+  const price = pkg.pricing.campaign?.monthlyPrice || pkg.pricing.monthly;
+  const campaignInfo = pkg.pricing.campaign ? ` (kampanj: ${pkg.pricing.campaign.description})` : '';
+  const bindingInfo = pkg.contract?.bindingPeriod === 0 ? 'Ingen bindning' : `${pkg.contract?.bindingPeriod} mån bindning`;
+  const routerInfo = pkg.includes?.router ? 'Router ingår' : 'Router ingår ej';
+  const comboInfo = pkg.isCombo ? ` | KOMBINATION: ${pkg.comboDetails?.broadbandProvider} bredband + ${pkg.comboDetails?.tvProvider} TV (sparar ${pkg.comboDetails?.savings}kr/mån)` : '';
+  const badges = rec.badges ? ` | Badges: ${rec.badges.join(', ')}` : '';
+  const trustInfo = rec.trustScore ? ` | Förtroendepoäng: ${rec.trustScore}/100` : '';
+  
+  return `${i + 1}. ${pkg.providerName}
+   - Paket: ${pkg.name}
+   - Hastighet: ${pkg.speed.download}/${pkg.speed.upload} Mbit/s
+   - Pris: ${price} kr/mån${campaignInfo}
+   - Bindning: ${bindingInfo}
+   - Router: ${routerInfo}
+   - Matchpoäng: ${rec.matchScore}/100${badges}${trustInfo}${comboInfo}`;
+}).join('\n\n')}
 
 FORMATKRAV:
 - Svara i ren HTML (ingen Markdown). Använd <strong> för rubrik och <p> för stycken.
@@ -426,8 +460,8 @@ FORMATKRAV:
         },
         { role: 'user', content: prompt }
       ],
-      max_tokens: 500,
-      temperature: 0.7
+      max_tokens: 800,
+      temperature: 0.8
     });
 
     const raw = completion.choices[0].message.content || 
