@@ -851,7 +851,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 sm:py-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <AnimatePresence>
             {messages.map((message, index) => (
               <motion.div
@@ -933,16 +933,16 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   {message.quickReplies && (
                     <div className={`mt-4 ${
                       message.quickReplies.length <= 2 
-                        ? 'flex flex-col sm:flex-row gap-4 justify-start flex-wrap' 
+                        ? 'flex flex-col sm:flex-row gap-5 justify-start flex-wrap' 
                         : message.quickReplies.length === 3
-                        ? 'grid grid-cols-1 sm:grid-cols-3 gap-4'
+                        ? 'grid grid-cols-1 sm:grid-cols-3 gap-5'
                         : message.quickReplies.length === 4
-                        ? 'grid grid-cols-2 lg:grid-cols-4 gap-4'
+                        ? 'grid grid-cols-2 lg:grid-cols-4 gap-5'
                         : message.quickReplies.length === 5
-                        ? 'grid grid-cols-2 lg:grid-cols-5 gap-4'
+                        ? 'grid grid-cols-2 lg:grid-cols-5 gap-5'
                         : message.quickReplies.length === 6
-                        ? 'grid grid-cols-2 lg:grid-cols-6 gap-4'
-                        : 'grid grid-cols-2 lg:grid-cols-4 gap-4'
+                        ? 'grid grid-cols-2 lg:grid-cols-6 gap-5'
+                        : 'grid grid-cols-2 lg:grid-cols-4 gap-5'
                     }`}>
                       {message.quickReplies.map((reply) => {
                         const Icon = getIcon(reply.icon);
@@ -968,9 +968,9 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                                 handleQuickReply(reply.value);
                               }
                             }}
-                            className={`flex items-center justify-center gap-2 px-5 py-3 
+                            className={`flex items-center justify-center gap-2 px-6 py-3 
                                      rounded-full text-sm font-medium transition-all
-                                     min-h-[52px] min-w-[180px] w-full whitespace-nowrap
+                                     min-h-[52px] min-w-[200px] w-full whitespace-nowrap
                                      ${isSelected 
                                        ? 'bg-blue-500 text-white border-blue-500' 
                                        : 'bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-100'
