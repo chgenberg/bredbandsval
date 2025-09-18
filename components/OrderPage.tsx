@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Circle, ChevronRight, Shield, Wifi, Router, Calendar, User, Mail, Phone, Home, CreditCard } from 'lucide-react';
+import { CheckCircle2, Circle, ChevronRight, Shield, Wifi, Router, Calendar, User, Mail, Phone, Home, CreditCard, ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface OrderFormData {
   // Router val
@@ -36,9 +38,14 @@ const steps = [
 ];
 
 export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { address: string, postalCode: string, city: string } }) {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showBankID, setShowBankID] = useState(false);
+
+  const handleBackToResults = () => {
+    router.back(); // Går tillbaka till föregående sida (resultatsidan)
+  };
   
   const [formData, setFormData] = useState<OrderFormData>({
     routerOption: 'own',
@@ -135,10 +142,31 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
       <div className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold text-gray-900">Slutför din beställning</h1>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Shield className="w-4 h-4" />
-              <span>Säker beställning</span>
+            <div className="flex items-center gap-4">
+              {/* Logo */}
+              <Image
+                src="/bredbandsval-logo-with-text.svg"
+                alt="Bredbandsval"
+                width={120}
+                height={32}
+                className="h-8 w-auto"
+              />
+              {/* Diskret tillbaka-knapp */}
+              <button
+                onClick={handleBackToResults}
+                className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Tillbaka</span>
+              </button>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <h1 className="text-2xl font-semibold text-gray-900">Slutför din beställning</h1>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Shield className="w-4 h-4" />
+                <span>Säker beställning</span>
+              </div>
             </div>
           </div>
           
