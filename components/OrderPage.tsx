@@ -152,25 +152,21 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       {/* Header */}
       <div className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-        {/* Logo row - längst upp */}
+        {/* Valle logo - centrerad */}
         <div className="border-b border-gray-100">
-          <div className="max-w-4xl mx-auto px-6 py-3">
-            <div className="flex items-center justify-between">
-              {/* Logo längst upp till vänster */}
-              <Image
-                src="/bredbandsval-logo-with-text.svg"
-                alt="Bredbandsval"
-                width={140}
-                height={36}
-                className="h-9 w-auto"
-              />
-              {/* Diskret tillbaka-knapp */}
+          <div className="max-w-4xl mx-auto px-6 py-4">
+            <div className="flex justify-center">
               <button
-                onClick={handleBackToResults}
-                className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                onClick={() => router.push('/')}
+                className="hover:scale-105 transition-transform"
               >
-                <ArrowLeft className="w-4 h-4" />
-                <span>Tillbaka</span>
+                <Image
+                  src="/valle.png"
+                  alt="Valle AI"
+                  width={80}
+                  height={80}
+                  className="w-20 h-20 rounded-full"
+                />
               </button>
             </div>
           </div>
@@ -179,7 +175,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
         {/* Title row - under logotypen */}
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-gray-900">Slutför din beställning</h1>
+            <h1 className="text-3xl font-light text-gray-900 tracking-wide">Slutför din beställning</h1>
             <div className="flex items-center gap-2 text-lg text-gray-600">
               <Shield className="w-5 h-5" />
               <span className="font-medium">Säker beställning</span>
