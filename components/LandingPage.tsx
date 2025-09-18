@@ -84,7 +84,7 @@ export default function LandingPage() {
               >
                 {/* Pulsating background */}
                 <motion.div
-                  className="absolute inset-0 bg-blue-500 rounded-2xl"
+                  className="absolute inset-0 bg-[#101929] rounded-2xl"
                   animate={{
                     scale: [1, 1.05, 1],
                     opacity: [0.7, 0.5, 0.7],
@@ -97,8 +97,8 @@ export default function LandingPage() {
                 />
                 
                 {/* Button content */}
-                <div className="relative bg-blue-500 text-white px-8 py-4 rounded-2xl font-semibold text-lg
-                               hover:bg-blue-600 transition-colors shadow-lg">
+                <div className="relative bg-[#101929] text-white px-8 py-4 rounded-2xl font-semibold text-lg
+                               hover:bg-[#1a2332] transition-colors shadow-lg">
                   Jämför och beställ direkt
                 </div>
               </motion.button>
