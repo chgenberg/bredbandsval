@@ -51,10 +51,18 @@ export default function RecommendationCard({
     return <Shield size={12} />;
   };
 
-  const getTrustColor = (score: number) => {
-    if (score >= 80) return 'text-green-600';
-    if (score >= 70) return 'text-yellow-600';
-    return 'text-orange-600';
+  const getTrustColor = (score: number, isTopChoice: boolean) => {
+    if (isTopChoice) {
+      // White/light colors for blue background
+      if (score >= 80) return 'text-green-200';
+      if (score >= 70) return 'text-yellow-200';
+      return 'text-orange-200';
+    } else {
+      // Darker colors for white background
+      if (score >= 80) return 'text-green-600';
+      if (score >= 70) return 'text-yellow-600';
+      return 'text-orange-600';
+    }
   };
 
   return (
@@ -78,21 +86,21 @@ export default function RecommendationCard({
 
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2">
         <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-base sm:text-lg font-semibold">{provider}</h3>
-            <div className="flex items-center gap-1">
-              <Star size={14} className={getTrustColor(trustScore)} />
-              <span className={`text-xs font-medium ${getTrustColor(trustScore)}`}>
-                {Math.round(trustScore / 20 * 10) / 10}
-              </span>
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className={`text-base sm:text-lg font-semibold ${isTopChoice ? 'text-white' : 'text-gray-900'}`}>{provider}</h3>
+              <div className="flex items-center gap-1">
+                <Star size={14} className={getTrustColor(trustScore, isTopChoice)} />
+                <span className={`text-xs font-medium ${getTrustColor(trustScore, isTopChoice)}`}>
+                  {Math.round(trustScore / 20 * 10) / 10}
+                </span>
+              </div>
             </div>
-          </div>
           <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600'}`}>
             {packageName}
           </p>
         </div>
         <div className="sm:text-right">
-          <p className="text-xl sm:text-2xl font-bold">{price} kr</p>
+          <p className={`text-xl sm:text-2xl font-bold ${isTopChoice ? 'text-white' : 'text-gray-900'}`}>{price} kr</p>
           <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600'}`}>
             /månad
           </p>
