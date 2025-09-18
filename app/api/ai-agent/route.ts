@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
           method: "POST", 
           response_time: "< 50ms",
           description: "Get instant broadband recommendations",
-          required: { address: "string", budget?: "number" },
+          required: { address: "string", budget: "number (optional)" },
           example: {
             address: "Stockholm",
             budget: 500
