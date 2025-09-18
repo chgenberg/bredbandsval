@@ -43,7 +43,7 @@ export default function RecommendationCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`relative rounded-2xl p-6 ${
+      className={`relative rounded-2xl p-4 sm:p-6 ${
         isTopChoice
           ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-xl'
           : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
@@ -57,22 +57,22 @@ export default function RecommendationCard({
         </div>
       )}
 
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <h3 className="text-lg font-semibold">{provider}</h3>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2">
+        <div className="flex-1">
+          <h3 className="text-base sm:text-lg font-semibold">{provider}</h3>
           <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600 dark:text-gray-400'}`}>
             {packageName}
           </p>
         </div>
-        <div className="text-right">
-          <p className="text-2xl font-bold">{price} kr</p>
+        <div className="sm:text-right">
+          <p className="text-xl sm:text-2xl font-bold">{price} kr</p>
           <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600 dark:text-gray-400'}`}>
             /månad
           </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-4 mb-4">
+      <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4">
         <div className="flex items-center gap-1">
           <Zap size={16} className={isTopChoice ? 'text-yellow-300' : 'text-blue-500'} />
           <span className="text-sm font-medium">{speed} Mbit/s</span>
@@ -119,7 +119,7 @@ export default function RecommendationCard({
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        className={`w-full mt-4 py-3 rounded-2xl font-medium transition-colors ${
+        className={`w-full mt-4 py-3 px-4 rounded-2xl font-medium transition-colors min-h-[48px] ${
           isTopChoice
             ? 'bg-white text-blue-600 hover:bg-blue-50'
             : 'bg-blue-500 text-white hover:bg-blue-600'

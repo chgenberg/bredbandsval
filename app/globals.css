@@ -68,15 +68,80 @@ body {
 
 /* Message bubble styles */
 .message-bubble {
-  @apply rounded-2xl px-5 py-3.5 max-w-[80%] shadow-sm;
+  @apply rounded-2xl px-5 py-3.5 shadow-sm;
+  min-width: fit-content;
+  width: fit-content;
 }
 
 .user-message {
   @apply bg-blue-500 text-white ml-auto;
+  max-width: 85%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .user-message {
+    max-width: 75%;
+  }
 }
 
 .agent-message {
   @apply bg-white text-gray-800 mr-auto border border-gray-100;
+  max-width: 85%;
+  min-width: 140px; /* Ensures consistent minimum width */
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .agent-message {
+    max-width: 75%;
+    min-width: 160px;
+  }
+}
+
+/* Ensure short messages stay on one line */
+.message-bubble p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Allow wrapping for longer messages */
+.message-bubble p.wrap {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* AI content styling with paragraph formatting */
+.ai-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ai-content p {
+  margin: 0;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ai-content p:first-child {
+  margin-top: 0;
+}
+
+.ai-content p:last-child {
+  margin-bottom: 0;
+}
+
+.ai-content strong {
+  font-weight: 600;
+  color: inherit;
 }
 
 /* Typing indicator */
