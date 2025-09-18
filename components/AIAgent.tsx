@@ -67,11 +67,11 @@ export default function AIAgent() {
     setState(prev => ({ ...prev, isTyping: true }));
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    const welcomeMessage = `Hej och välkommen till Bredbandsval! 👋
+    const welcomeMessage = `Välkommen till Bredbandsval
 
-Jag är din personliga bredbandsrådgivare och hjälper dig hitta det perfekta paketet för just dina behov.
+Jag hjälper dig hitta det perfekta bredbands- och TV-paketet baserat på dina behov.
 
-**Låt oss börja med din adress:**`;
+Var befinner du dig?`;
 
     setState(prev => ({
       ...prev,
@@ -81,10 +81,10 @@ Jag är din personliga bredbandsrådgivare och hjälper dig hitta det perfekta p
         sender: 'agent',
         timestamp: new Date(),
         quickReplies: [
-          { text: '🔍 Analysera min användning först', value: 'analyze-usage' },
-          { text: '📍 Stockholm', value: 'Stockholm' },
-          { text: '📍 Göteborg', value: 'Göteborg' },
-          { text: '📍 Malmö', value: 'Malmö' },
+          { text: 'Analysera min användning', value: 'analyze-usage', icon: 'chart' },
+          { text: 'Stockholm', value: 'Stockholm', icon: 'location' },
+          { text: 'Göteborg', value: 'Göteborg', icon: 'location' },
+          { text: 'Malmö', value: 'Malmö', icon: 'location' },
         ],
       }],
       isTyping: false,
@@ -203,10 +203,10 @@ Nästa fråga: **Hur många personer bor i ert hushåll?**
 
 Detta hjälper mig förstå hur mycket bandbredd ni behöver.`,
         quickReplies: [
-          { text: '1 person', value: '1' },
-          { text: '2 personer', value: '2' },
-          { text: '3-4 personer', value: '3-4' },
-          { text: '5+ personer', value: '5+' },
+          { text: '1 person', value: '1', icon: 'user' },
+          { text: '2 personer', value: '2', icon: 'users' },
+          { text: '3-4 personer', value: '3-4', icon: 'users' },
+          { text: '5+ personer', value: '5+', icon: 'users' },
         ]
       },
       
@@ -217,9 +217,9 @@ Detta hjälper mig förstå hur mycket bandbredd ni behöver.`,
 
 Detta påverkar vilken hastighet jag rekommenderar.`,
         quickReplies: [
-          { text: '🎬 Ja, dagligen', value: 'heavy' },
-          { text: '📺 Några gånger/vecka', value: 'moderate' },
-          { text: '📱 Sällan', value: 'light' },
+          { text: 'Ja, dagligen', value: 'heavy', icon: 'play' },
+          { text: 'Några gånger i veckan', value: 'moderate', icon: 'play' },
+          { text: 'Sällan', value: 'light', icon: 'play' },
         ]
       },
       
@@ -230,9 +230,9 @@ Detta påverkar vilken hastighet jag rekommenderar.`,
 
 Gaming kräver både hög hastighet och låg latens.`,
         quickReplies: [
-          { text: '🎮 Ja, mycket gaming', value: 'yes' },
-          { text: '🎯 Lite ibland', value: 'some' },
-          { text: '❌ Nej', value: 'no' },
+          { text: 'Ja, mycket gaming', value: 'yes', icon: 'gamepad' },
+          { text: 'Lite ibland', value: 'some', icon: 'gamepad' },
+          { text: 'Nej', value: 'no', icon: 'x' },
         ]
       },
       
@@ -243,10 +243,10 @@ Gaming kräver både hög hastighet och låg latens.`,
 
 Jobbar någon hemifrån eller studerar online?`,
         quickReplies: [
-          { text: '💼 Ja, jobbar hemifrån', value: 'daily' },
-          { text: '🎓 Studerar online', value: 'student' },
-          { text: '📞 Ibland möten', value: 'sometimes' },
-          { text: '❌ Sällan/aldrig', value: 'rarely' },
+          { text: 'Ja, jobbar hemifrån', value: 'daily', icon: 'briefcase' },
+          { text: 'Studerar online', value: 'student', icon: 'graduation' },
+          { text: 'Ibland möten', value: 'sometimes', icon: 'video' },
+          { text: 'Sällan/aldrig', value: 'rarely', icon: 'x' },
         ]
       },
       
@@ -257,9 +257,9 @@ Jobbar någon hemifrån eller studerar online?`,
 
 Många väljer detta för enkelhetens skull - då slipper ni köpa egen.`,
         quickReplies: [
-          { text: '✅ Ja, inkludera router', value: 'yes' },
-          { text: '🔧 Har egen router', value: 'no' },
-          { text: '🤷 Spelar ingen roll', value: 'no-preference' },
+          { text: 'Ja, inkludera router', value: 'yes', icon: 'check' },
+          { text: 'Har egen router', value: 'no', icon: 'router' },
+          { text: 'Spelar ingen roll', value: 'no-preference', icon: 'help' },
         ]
       },
       
@@ -270,9 +270,9 @@ Många väljer detta för enkelhetens skull - då slipper ni köpa egen.`,
 
 Längre bindning ger ofta bättre pris, men mindre flexibilitet.`,
         quickReplies: [
-          { text: '⚡ Ingen bindning', value: 'none' },
-          { text: '📅 Kort (3-6 mån)', value: 'short' },
-          { text: '💰 Lång för bättre pris', value: 'long' },
+          { text: 'Ingen bindning', value: 'none', icon: 'zap' },
+          { text: 'Kort (3-6 mån)', value: 'short', icon: 'calendar' },
+          { text: 'Lång för bättre pris', value: 'long', icon: 'piggy' },
         ]
       },
       
@@ -283,11 +283,11 @@ Låt oss prata TV! **Vilka TV-kanaler är viktiga för er?**
 
 Skriv gärna några exempel, eller välj bland alternativen.`,
         quickReplies: [
-          { text: '📺 Grundkanaler (SVT, TV4)', value: 'basic' },
-          { text: '🎬 Film & serier', value: 'movies' },
-          { text: '⚽ Sport', value: 'sports' },
-          { text: '👶 Barnkanaler', value: 'kids' },
-          { text: '❌ Ingen TV', value: 'none' },
+          { text: 'Grundkanaler (SVT, TV4)', value: 'basic', icon: 'tv' },
+          { text: 'Film & serier', value: 'movies', icon: 'film' },
+          { text: 'Sport', value: 'sports', icon: 'trophy' },
+          { text: 'Barnkanaler', value: 'kids', icon: 'baby' },
+          { text: 'Ingen TV', value: 'none', icon: 'x' },
         ]
       },
       
@@ -298,12 +298,12 @@ Skriv gärna några exempel, eller välj bland alternativen.`,
 
 Många paket inkluderar streaming - kan spara er pengar!`,
         quickReplies: [
-          { text: '🎬 Netflix', value: 'Netflix' },
-          { text: '🏠 HBO Max', value: 'HBO Max' },
-          { text: '🏰 Disney+', value: 'Disney+' },
-          { text: '⚽ Viaplay', value: 'Viaplay' },
-          { text: '📦 Prime Video', value: 'Prime Video' },
-          { text: '❌ Inga', value: 'none' },
+          { text: 'Netflix', value: 'Netflix', icon: 'play' },
+          { text: 'HBO Max', value: 'HBO Max', icon: 'play' },
+          { text: 'Disney+', value: 'Disney+', icon: 'play' },
+          { text: 'Viaplay', value: 'Viaplay', icon: 'play' },
+          { text: 'Prime Video', value: 'Prime Video', icon: 'play' },
+          { text: 'Inga', value: 'none', icon: 'x' },
         ]
       },
       
@@ -314,25 +314,25 @@ Sista frågan: **Följer ni någon särskild sport?**
 
 Många sportpaket är bundna till specifika leverantörer.`,
         quickReplies: [
-          { text: '⚽ Allsvenskan', value: 'Allsvenskan' },
-          { text: '🏆 Champions League', value: 'Champions League' },
-          { text: '🇬🇧 Premier League', value: 'Premier League' },
-          { text: '🏒 Hockey/NHL', value: 'NHL' },
-          { text: '❌ Ingen sport', value: 'none' },
+          { text: 'Allsvenskan', value: 'Allsvenskan', icon: 'trophy' },
+          { text: 'Champions League', value: 'Champions League', icon: 'trophy' },
+          { text: 'Premier League', value: 'Premier League', icon: 'trophy' },
+          { text: 'Hockey/NHL', value: 'NHL', icon: 'trophy' },
+          { text: 'Ingen sport', value: 'none', icon: 'x' },
         ]
       },
       
       'calculating': {
-        message: `Perfekt! 🎯
+        message: `Perfekt!
 
-Nu har jag all information jag behöver. Jag analyserar era behov och söker bland alla tillgängliga alternativ från våra 21 leverantörer...
+Nu har jag all information jag behöver. Jag analyserar era behov och söker bland alla tillgängliga alternativ från våra 21 leverantörer.
 
-⚡ Beräknar optimal hastighet
-💰 Jämför priser och kampanjer  
-📺 Kollar streaming-besparingar
-⚽ Matchar sport-önskemål
+• Beräknar optimal hastighet
+• Jämför priser och kampanjer  
+• Kollar streaming-besparingar
+• Matchar sport-önskemål
 
-Detta tar bara några sekunder!`,
+Detta tar bara några sekunder.`,
         quickReplies: []
       }
     };
@@ -567,17 +567,17 @@ Nu behöver jag bara veta din adress för att hitta de bästa paketen för dig!`
   const getInputPlaceholder = () => {
     switch (state.currentStep) {
       case 'welcome':
-        return 'Skriv din adress...';
+        return 'Ange din adress';
       case 'household-size':
-        return 'Ex: 3 personer';
+        return 'Antal personer';
       case 'tv-channels':
-        return 'Ex: SVT, TV4, Discovery';
+        return 'Vilka kanaler vill du ha?';
       case 'streaming-services':
-        return 'Ex: Netflix, HBO Max';
+        return 'Vilka tjänster använder du?';
       case 'sports':
-        return 'Ex: Allsvenskan, Premier League';
+        return 'Vilken sport följer du?';
       default:
-        return 'Skriv ditt svar...';
+        return 'Skriv ditt svar';
     }
   };
 
@@ -654,13 +654,8 @@ Nu behöver jag bara veta din adress för att hitta de bästa paketen för dig!`
             >
               <AddressAutocomplete
                 onAddressSelect={handleAddressSelect}
-                placeholder="Börja skriva din adress..."
+                placeholder="Ange din adress"
               />
-              <div className="mt-2 text-center">
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  💡 Exempel: "Vasagatan 12, Stockholm" eller bara "Stockholm"
-                </p>
-              </div>
             </motion.div>
           )}
 

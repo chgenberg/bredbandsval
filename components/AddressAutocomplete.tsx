@@ -131,9 +131,9 @@ export default function AddressAutocomplete({ onAddressSelect, placeholder = "Sk
           onFocus={() => setShowSuggestions(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 
+          className="w-full pl-10 pr-10 py-3 border border-gray-200 
                      rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                     bg-gray-50 text-gray-900 placeholder-gray-400"
         />
         <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
           {loading ? (
@@ -152,8 +152,8 @@ export default function AddressAutocomplete({ onAddressSelect, placeholder = "Sk
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 
-                       rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 
+            className="absolute z-50 w-full mt-2 bg-white 
+                       rounded-2xl shadow-lg border border-gray-100 
                        max-h-60 overflow-auto"
           >
             {suggestions.map((suggestion, index) => (
