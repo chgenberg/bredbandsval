@@ -20,11 +20,17 @@ export function AnalysisCards({ aiRecommendation }: AnalysisCardsProps) {
     while ((match = regex.exec(html)) !== null) {
       const title = match[1].trim();
       const content = match[2].trim();
+      const icon = getIconForSection(title);
+      
+      // Skip "Nästa steg" sections entirely
+      if (title.toLowerCase().includes('nästa steg') || icon === null) {
+        continue;
+      }
       
       sections.push({
         title,
         content,
-        icon: getIconForSection(title)
+        icon
       });
     }
     
@@ -38,19 +44,16 @@ export function AnalysisCards({ aiRecommendation }: AnalysisCardsProps) {
     if (lower.includes('sparar') || lower.includes('totalkostnad') || lower.includes('kostnad')) return DollarSign;
     if (lower.includes('bredband') || lower.includes('hastighet')) return Wifi;
     if (lower.includes('tv') || lower.includes('kanaler')) return Tv;
-    if (lower.includes('alternativ') || lower.includes('nästa')) return ArrowRight;
-    if (lower.includes('praktisk') || lower.includes('fördelar')) return TrendingUp;
-    return CheckCircle;
+    if (lower.includes('alternativ')) return TrendingUp;
+    if (lower.includes('praktisk') || lower.includes('fördelar')) return CheckCircle;
+    // Skip "Nästa steg" sections entirely
+    return null;
   };
   
   const getCardColor = (title: string, index: number) => {
     const lower = title.toLowerCase();
     if (lower.includes('rekommendation')) return 'bg-[#101929] text-white';
-    if (lower.includes('sparar') || lower.includes('kostnad')) return 'from-green-50 to-green-100 border border-green-200';
-    if (lower.includes('bredband')) return 'from-blue-50 to-blue-100 border border-blue-200';
-    if (lower.includes('tv')) return 'from-purple-50 to-purple-100 border border-purple-200';
-    if (lower.includes('alternativ')) return 'from-orange-50 to-orange-100 border border-orange-200';
-    return 'from-gray-50 to-gray-100 border border-gray-200';
+    return 'bg-white border border-gray-200';
   };
   
   const sections = parseAnalysis(aiRecommendation);
@@ -107,17 +110,11 @@ export function AnalysisCards({ aiRecommendation }: AnalysisCardsProps) {
                     : 'bg-white shadow-sm'
                   }
                 `}>
-                  <Icon className={`w-6 h-6 ${
+                  <Icon className={`w-5 h-5 ${
                     isMainRecommendation 
                       ? 'text-white' 
-                      : section.title.toLowerCase().includes('sparar') 
-                      ? 'text-green-600'
-                      : section.title.toLowerCase().includes('bredband')
-                      ? 'text-blue-600'
-                      : section.title.toLowerCase().includes('tv')
-                      ? 'text-purple-600'
-                      : 'text-gray-600'
-                  }`} />
+                      : 'text-gray-800'
+                  }`} strokeWidth={1.5} />
                 </div>
                 
                 <div className="flex-1">

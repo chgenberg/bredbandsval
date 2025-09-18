@@ -426,26 +426,16 @@ ${userProfile.priorities ? userProfile.priorities.replace(/,/g, ', ').replace(/p
 
 🎯 TOPP 3 MATCHADE ALTERNATIV:
 ${recommendations.slice(0, 3).map((rec, i) => {
-  // Handle both regular recommendations and smart pairs
-  if (rec.broadband && rec.tv) {
-    // Smart pair format
-    return `${i + 1}. 🥇 KOMBINATION: ${rec.broadband.provider} Bredband + ${rec.tv.provider} TV
-   ⚡ ${rec.broadband.speed} Mbit/s bredband | 📺 ${rec.tv.package} TV
-   💰 Totalt: ${rec.totalPrice}kr/mån (sparar ${rec.savings}kr/mån)
-   📝 ${rec.reasoning}`;
-  } else {
-    // Regular package format
-    const pkg = rec.package;
-    const price = pkg?.pricing?.campaign?.monthlyPrice || pkg?.pricing?.monthly || 0;
-    const campaignInfo = pkg?.pricing?.campaign ? ` 🎉${pkg.pricing.campaign.description}` : '';
-    const badges = rec.badges ? ` | 🏆 ${rec.badges.join(', ')}` : '';
-    const trustInfo = rec.trustScore ? ` | ⭐ ${rec.trustScore}/100 kundnöjdhet` : '';
-    
-    return `${i + 1}. 🥇 ${pkg?.providerName || 'Okänd'} - ${pkg?.name || 'Okänt paket'}
-   ⚡ ${pkg?.speed?.download || 0}/${pkg?.speed?.upload || 0} Mbit/s | 💰 ${price}kr/mån${campaignInfo}
-   📋 ${(pkg?.contract?.bindingPeriod || 0) === 0 ? 'Ingen bindning' : `${pkg?.contract?.bindingPeriod || 0}mån bindning`} | ${pkg?.includes?.router ? '📦 Router ingår' : '🚫 Router separat'}
-   📊 Matchning: ${rec.matchScore || 0}/100${badges}${trustInfo}`;
-  }
+  const pkg = rec.package;
+  const price = pkg.pricing.campaign?.monthlyPrice || pkg.pricing.monthly;
+  const campaignInfo = pkg.pricing.campaign ? ` 🎉${pkg.pricing.campaign.description}` : '';
+  const badges = rec.badges ? ` | 🏆 ${rec.badges.join(', ')}` : '';
+  const trustInfo = rec.trustScore ? ` | ⭐ ${rec.trustScore}/100 kundnöjdhet` : '';
+  
+  return `${i + 1}. 🥇 ${pkg.providerName} - ${pkg.name}
+   ⚡ ${pkg.speed.download}/${pkg.speed.upload} Mbit/s | 💰 ${price}kr/mån${campaignInfo}
+   📋 ${pkg.contract?.bindingPeriod === 0 ? 'Ingen bindning' : `${pkg.contract?.bindingPeriod}mån bindning`} | ${pkg.includes?.router ? '📦 Router ingår' : '🚫 Router separat'}
+   📊 Matchning: ${rec.matchScore}/100${badges}${trustInfo}`;
 }).join('\n\n')}
 
 SKAPA PERSONLIG ANALYS:
@@ -465,14 +455,12 @@ ${serviceType === 'both' ? `
 2. Varför det passar: "Med er situation som [beskrivning] får ni [konkret fördel för båda]"
 3. Totalkostnad: "Tillsammans kostar det [totalpris]kr/mån, vilket sparar [besparing] jämfört med [alternativ]"
 4. Bredbandsfördelar: "[Hastighet/router/bindning] för internetdelen"
-5. TV-fördelar: "[Kanaler/streaming/sport] för TV-delen"  
-6. Nästa steg: "För att komma igång [konkreta steg för båda tjänsterna]"` : `
+5. TV-fördelar: "[Kanaler/streaming/sport] för TV-delen"` : `
 1. Min rekommendation: "[Leverantör] för [pris]kr/mån passar dig bäst"
 2. Varför det passar: "Med din situation som [beskrivning] får du [konkret fördel]"
 3. Vad du sparar/får: "[Konkret besparing eller extra värde] jämfört med [alternativ]"
 4. Praktiska fördelar: "[Router/bindning/support] som gör det enkelt för dig"
-5. Alternativ: "Om du [scenario] kan [annat alternativ] vara bättre"
-6. Nästa steg: "För att komma igång [konkret action]"`}
+5. Alternativ: "Om du [scenario] kan [annat alternativ] vara bättre"`}
 
 FOKUSERA PÅ:
 - Exakta besparingar per år om de betalar för mycket
@@ -494,7 +482,6 @@ EXEMPEL PÅ KORREKT FORMATERING:
 <p><strong>Vad du sparar:</strong> Du sparar 400kr per år jämfört med din nuvarande plan.</p>
 <p><strong>Praktiska fördelar:</strong> Router ingår och ingen bindningstid ger dig flexibilitet.</p>
 <p><strong>Alternativ:</strong> Om du vill ha mer hastighet kan Bahnhof vara bättre.</p>
-<p><strong>Nästa steg:</strong> Kontakta Telia för att beställa.</p>
 </div>`;
 
   console.log('📝 GPT Prompt Length:', prompt.length);
