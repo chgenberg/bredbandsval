@@ -74,7 +74,10 @@ export default function LandingPage() {
 
               {/* Primary CTA - Pulsating button */}
               <motion.button
-                onClick={() => setShowAgent(true)}
+                onClick={() => {
+                  setQuickSearchMode(false);
+                  setShowAgent(true);
+                }}
                 className="relative group mb-4"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
