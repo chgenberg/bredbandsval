@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, BarChart3, User, Users, Play, Gamepad2, 
   Briefcase, Video, Router, Zap, ArrowRight, HelpCircle,
-  Tv, Wifi, Package, X, Brain
+  Tv, Wifi, Package, X, Brain, MessageCircle, Send
 } from 'lucide-react';
 import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import RealUsagePermission from './RealUsagePermission';
@@ -13,7 +13,7 @@ import SpeedTestModal from './SpeedTestModal';
 import { analytics } from '@/lib/analytics';
 import { bredbandsvalAPI } from '@/lib/api/client';
 import RecommendationCard from './RecommendationCard';
-import { generateAIRecommendation } from '@/lib/ai/openai-client';
+import { generateAIRecommendation, generateFollowUpAnswer } from '@/lib/ai/openai-client';
 import { computeNeeds, scorePackageMatch } from '@/lib/decision/profile-model';
 import { SpeedTestResult } from '@/lib/network-analysis/webrtc-speed-test';
 
@@ -75,6 +75,7 @@ export default function AppleStyleAgent() {
   const [serviceType, setServiceType] = useState<'broadband' | 'tv' | 'both' | null>(null);
   const [selectedStreamingServices, setSelectedStreamingServices] = useState<string[]>([]);
   const [speedTestResult, setSpeedTestResult] = useState<SpeedTestResult | null>(null);
+  const [followUpQuestion, setFollowUpQuestion] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -602,6 +603,58 @@ export default function AppleStyleAgent() {
     }
   };
 
+  const handleFollowUpQuestion = async (question: string) => {
+    if (!question.trim()) return;
+    
+    // Reset input
+    setFollowUpQuestion('');
+    
+    // Add user message
+    const userMsg: Message = {
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      content: question,
+      sender: 'user',
+      timestamp: new Date(),
+    };
+    
+    setMessages(prev => [...prev, userMsg]);
+    setIsTyping(true);
+    
+    // Generate AI response based on question context
+    setTimeout(async () => {
+      const response = await generateFollowUpResponse(question, recommendations, userProfile);
+      
+      const aiMsg: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: response,
+        sender: 'agent',
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, aiMsg]);
+      setIsTyping(false);
+    }, 1000);
+  };
+
+  const generateFollowUpResponse = async (
+    question: string, 
+    recommendations: any[], 
+    profile: any
+  ): Promise<string> => {
+    // Get conversation context from last few messages
+    const recentMessages = messages.slice(-6).map(m => 
+      `${m.sender === 'user' ? 'Användare' : 'AI'}: ${m.content.replace(/<[^>]*>/g, '')}`
+    ).join('\n');
+    
+    // Use the new AI function with OpenAI
+    return await generateFollowUpAnswer({
+      question,
+      recommendations,
+      userProfile: profile,
+      conversationContext: recentMessages
+    });
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* Chat Header */}
@@ -914,6 +967,63 @@ export default function AppleStyleAgent() {
                   trustScore={rec.trustScore || 70}
                 />
               ))}
+              
+              {/* Follow-up questions section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-8 p-4 bg-gray-50 rounded-2xl"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <MessageCircle size={20} className="text-blue-500" />
+                  <h4 className="font-medium text-gray-900">Har du frågor?</h4>
+                </div>
+                
+                {/* Suggested questions */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                  {[
+                    'Varför inte ' + (recommendations[0]?.package.providerName !== 'Telia' ? 'Telia' : 'Bahnhof') + '?',
+                    'Vad händer om jag flyttar?',
+                    'Hur byter jag leverantör?',
+                    'Vilken router är bäst?'
+                  ].map((question) => (
+                    <motion.button
+                      key={question}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handleFollowUpQuestion(question)}
+                      className="text-left px-3 py-2 bg-white rounded-xl text-sm text-gray-700 
+                               hover:bg-gray-100 transition-colors border border-gray-200"
+                    >
+                      {question}
+                    </motion.button>
+                  ))}
+                </div>
+                
+                {/* Custom question input */}
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={followUpQuestion}
+                    onChange={(e) => setFollowUpQuestion(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleFollowUpQuestion(followUpQuestion)}
+                    placeholder="Eller ställ din egen fråga..."
+                    className="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:border-blue-500 
+                             focus:outline-none transition-colors"
+                  />
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleFollowUpQuestion(followUpQuestion)}
+                    disabled={!followUpQuestion.trim()}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 
+                             disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <Send size={18} />
+                  </motion.button>
+                </div>
+              </motion.div>
             </motion.div>
           )}
           

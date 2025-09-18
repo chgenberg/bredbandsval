@@ -260,6 +260,100 @@ Fokusera på värde och besparingar. På svenska.`;
   }
 }
 
+// Generate follow-up responses for user questions
+export async function generateFollowUpAnswer(params: {
+  question: string;
+  recommendations: any[];
+  userProfile: any;
+  conversationContext?: string;
+}): Promise<string> {
+  const { question, recommendations, userProfile, conversationContext } = params;
+  
+  const systemPrompt = `Du är en expert på bredband och TV-paket i Sverige. Svara på användarens fråga baserat på:
+1. Deras profil och behov
+2. De rekommendationer de fått
+3. Aktuell marknadsinformation
+
+VIKTIGT:
+- Svara ALLTID på svenska
+- Använd HTML-formatering (<p>, <strong>, <br/>, <ul>, <li>)
+- Håll svaret kort och relevant (max 3-4 stycken)
+- Var specifik och använd leverantörsnamn när relevant
+- Ge praktiska råd och tips`;
+
+  const userContext = `
+ANVÄNDARPROFIL:
+- Hushåll: ${userProfile.householdSize || 'ej angivet'} personer
+- Användning: ${userProfile.streamingLevel || 'normal'} streaming, ${userProfile.onlineGaming ? 'spelar online' : 'spelar inte online'}
+- Hemarbete: ${userProfile.workFromHome ? 'Ja' : 'Nej'}
+- Nuvarande behov: ${userProfile.serviceType === 'both' ? 'Bredband & TV' : userProfile.serviceType || 'bredband'}
+
+TOPP 3 REKOMMENDATIONER:
+${recommendations.slice(0, 3).map((rec, i) => 
+  `${i + 1}. ${rec.package.providerName} - ${rec.package.speed.download} Mbit/s - ${rec.package.pricing.monthly} kr/mån
+   Badges: ${rec.badges?.join(', ') || 'inga'}
+   Förtroendepoäng: ${rec.trustScore || 70}/100`
+).join('\n')}`;
+
+  const prompt = `${userContext}
+  
+ANVÄNDARENS FRÅGA: ${question}
+
+${conversationContext ? `TIDIGARE KONVERSATION:\n${conversationContext}\n` : ''}
+
+Ge ett hjälpsamt, informativt svar som:
+1. Svarar direkt på frågan
+2. Refererar till specifika leverantörer/paket när relevant
+3. Ger konkreta råd baserat på användarens situation
+4. Avslutar med en följdfråga eller uppmuntran om lämpligt`;
+
+  try {
+    const openai = new OpenAI({
+      apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+      dangerouslyAllowBrowser: true,
+    });
+    
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: prompt }
+      ],
+      max_tokens: 400,
+      temperature: 0.7
+    });
+
+    const response = completion.choices[0].message.content || 
+      '<p>Jag förstår din fråga. Baserat på dina behov och våra rekommendationer kan jag säga att de valda alternativen passar dig bra.</p>';
+    
+    return ensureHtmlParagraphs(response);
+  } catch (error) {
+    console.error('Error generating follow-up answer:', error);
+    
+    // Fallback to pattern-based responses
+    const lowerQ = question.toLowerCase();
+    
+    if (lowerQ.includes('varför inte') && (lowerQ.includes('telia') || lowerQ.includes('bahnhof') || lowerQ.includes('comhem'))) {
+      const provider = lowerQ.includes('telia') ? 'Telia' : lowerQ.includes('bahnhof') ? 'Bahnhof' : 'Comhem';
+      return `<p><strong>${provider} jämfört med dina val:</strong></p>
+<p>${provider} är en solid leverantör, men ${recommendations[0]?.package.providerName} fick högre poäng för dig eftersom:</p>
+<ul>
+<li>${recommendations[0]?.badges?.includes('Bäst värde') ? 'Bättre pris per Mbit' : 'Bättre hastighetsalternativ'}</li>
+<li>${recommendations[0]?.package.contractLength === 0 ? 'Ingen bindningstid' : 'Flexiblare villkor'}</li>
+<li>${recommendations[0]?.badges?.includes('Router ingår') ? 'Router ingår i priset' : 'Bättre totalpaket'}</li>
+</ul>`;
+    }
+    
+    if (lowerQ.includes('flytta') || lowerQ.includes('flyttar')) {
+      return `<p><strong>Vid flytt:</strong></p>
+<p>De flesta leverantörer erbjuder kostnadsfri flytt om tjänsten finns på nya adressen. ${recommendations[0]?.package.providerName} har vanligtvis bra flyttvillkor.</p>
+<p>Tips: Meddela leverantören minst 30 dagar innan flytt för smidigast process.</p>`;
+    }
+    
+    return '<p>Tack för din fråga! Våra rekommendationer är baserade på dina specifika behov och den senaste marknadsinformationen.</p>';
+  }
+}
+
 // Export helper function for generating AI recommendations
 export async function generateAIRecommendation(params: {
   userProfile: any;
