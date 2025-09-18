@@ -109,7 +109,7 @@ export default function LandingPage() {
                   onClick={handleQuickSearch}
                   className="text-gray-600 hover:text-gray-900 underline text-sm transition-colors"
                 >
-                  Eller sök via din adress
+                  Eller snabbsök bästa pris här
                 </button>
               </div>
 
