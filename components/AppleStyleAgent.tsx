@@ -12,6 +12,7 @@ import {
 import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import RealUsagePermission from './RealUsagePermission';
 import SpeedTestModal from './SpeedTestModal';
+import { ResultsModal } from './ResultsModal';
 import { analytics } from '@/lib/analytics';
 import { bredbandsvalAPI } from '@/lib/api/client';
 import RecommendationCard from './RecommendationCard';
@@ -83,10 +84,14 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
   const [openHelpTooltip, setOpenHelpTooltip] = useState<string | null>(null);
   const [serviceType, setServiceType] = useState<'broadband' | 'tv' | 'both' | null>(null);
   const [selectedStreamingServices, setSelectedStreamingServices] = useState<string[]>([]);
+  const [selectedMultiValues, setSelectedMultiValues] = useState<string[]>([]);
   const [speedTestResult, setSpeedTestResult] = useState<SpeedTestResult | null>(null);
   const [followUpQuestion, setFollowUpQuestion] = useState('');
   const [loadingMessage, setLoadingMessage] = useState('Valle AI analyserar');
   const [smartPairs, setSmartPairs] = useState<any[]>([]);
+  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [aiRecommendationText, setAiRecommendationText] = useState('');
+  const [structuredRecommendations, setStructuredRecommendations] = useState<any>(null);
   const [showBuildYourOwn, setShowBuildYourOwn] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -616,11 +621,25 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       setRecommendations(recs);
       
+      // Separate broadband and TV packages
+      const broadbandPackages = recs.filter(r => r.package.speed > 0);
+      const tvPackages = recs.filter(r => r.package.channels?.length > 0 && (r.package.speed === 0 || r.package.speed === undefined));
+      
+      // Structure recommendations
+      const structured = {
+        broadband: broadbandPackages.slice(0, 3),
+        tv: tvPackages.slice(0, 3),
+        combined: []
+      };
+      
       // Generate smart pairs for "both" service type
       if (serviceType === 'both') {
-        const pairs = generateSmartPairs(recs, recs, userProfile);
+        const pairs = generateSmartPairs(broadbandPackages, tvPackages, userProfile);
         setSmartPairs(pairs);
+        structured.combined = pairs;
       }
+      
+      setStructuredRecommendations(structured);
       
       // Generate AI recommendation with complete profile
       const completeProfile = {
@@ -636,12 +655,14 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
         serviceType: serviceType || 'broadband'
       });
       
+      setAiRecommendationText(aiRecommendation || 'Baserat på dina svar har jag hittat de bästa alternativen för dig.');
+      
       // Show results
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       const resultsMsg: Message = {
         id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        content: aiRecommendation || 'Baserat på dina svar har jag hittat de bästa alternativen för dig.',
+        content: 'Perfekt! Jag har analyserat dina behov och hittat de bästa alternativen för dig. Klicka nedan för att se din personliga rekommendation.',
         sender: 'agent',
         timestamp: new Date(),
       };
@@ -649,9 +670,10 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       setMessages(prev => [...prev, resultsMsg]);
       setIsTyping(false);
       
-      // Show recommendations after a short delay
+      // Show modal after a short delay
       setTimeout(() => {
         setCurrentStep('results');
+        setShowResultsModal(true);
       }, 500);
       
       analytics.trackRecommendationsShown(recs, userProfile);
@@ -956,7 +978,10 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                     }`}>
                       {message.quickReplies.map((reply) => {
                         const Icon = getIcon(reply.icon);
-                        const isSelected = selectedStreamingServices.includes(reply.value);
+                        // Determine which state to use based on the question
+                        const isStreamingQuestion = message.content.includes('streamingtjänster');
+                        const currentSelection = isStreamingQuestion ? selectedStreamingServices : selectedMultiValues;
+                        const isSelected = currentSelection.includes(reply.value);
                         
                         return (
                           <motion.button
@@ -965,14 +990,11 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                             whileTap={{ scale: 0.98 }}
                             onClick={() => {
                               if (message.multiSelect) {
+                                const setter = isStreamingQuestion ? setSelectedStreamingServices : setSelectedMultiValues;
                                 if (isSelected) {
-                                  setSelectedStreamingServices(prev => 
-                                    prev.filter(s => s !== reply.value)
-                                  );
+                                  setter(prev => prev.filter(s => s !== reply.value));
                                 } else {
-                                  setSelectedStreamingServices(prev => 
-                                    [...prev, reply.value]
-                                  );
+                                  setter(prev => [...prev, reply.value]);
                                 }
                               } else {
                                 handleQuickReply(reply.value);
@@ -991,46 +1013,63 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                           </motion.button>
                         );
                       })}
-                      {message.multiSelect && (
-                        <div className="col-span-full mt-3 space-y-2">
-                          <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => {
-                              if (selectedStreamingServices.length > 0) {
-                                const displayText = selectedStreamingServices
-                                  .map(service => 
-                                    message.quickReplies?.find(r => r.value === service)?.text
-                                  )
-                                  .filter(Boolean)
-                                  .join(', ');
-                                processAnswer(selectedStreamingServices.join(','), displayText);
-                              }
-                            }}
-                            disabled={selectedStreamingServices.length === 0}
-                            className={`w-full py-3 px-6 rounded-full font-medium
-                                     transition-all ${
-                                       selectedStreamingServices.length > 0
-                                         ? 'bg-blue-500 text-white hover:bg-blue-600' 
-                                         : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                     }`}
-                          >
-                            {selectedStreamingServices.length > 0 
-                              ? `Fortsätt med ${selectedStreamingServices.length} val` 
-                              : 'Välj minst en tjänst'}
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => processAnswer('none', 'Inga tjänster')}
-                            className="w-full py-3 px-6 rounded-full font-medium
-                                     bg-gray-100 text-gray-700 border border-gray-300
-                                     hover:bg-gray-200 transition-all"
-                          >
-                            Jag använder inga streamingtjänster
-                          </motion.button>
-                        </div>
-                      )}
+                      {message.multiSelect && (() => {
+                        const isStreamingQuestion = message.content.includes('streamingtjänster');
+                        const currentSelection = isStreamingQuestion ? selectedStreamingServices : selectedMultiValues;
+                        
+                        return (
+                          <div className="col-span-full mt-3 space-y-2">
+                            <motion.button
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => {
+                                if (currentSelection.length > 0) {
+                                  const displayText = currentSelection
+                                    .map(value => 
+                                      message.quickReplies?.find(r => r.value === value)?.text
+                                    )
+                                    .filter(Boolean)
+                                    .join(', ');
+                                  processAnswer(currentSelection.join(','), displayText);
+                                  
+                                  // Reset the appropriate state
+                                  if (isStreamingQuestion) {
+                                    setSelectedStreamingServices([]);
+                                  } else {
+                                    setSelectedMultiValues([]);
+                                  }
+                                }
+                              }}
+                              disabled={currentSelection.length === 0}
+                              className={`w-full py-3 px-6 rounded-full font-medium
+                                       transition-all ${
+                                         currentSelection.length > 0
+                                           ? 'bg-blue-500 text-white hover:bg-blue-600' 
+                                           : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                       }`}
+                            >
+                              {currentSelection.length > 0 
+                                ? `Fortsätt med ${currentSelection.length} val` 
+                                : (isStreamingQuestion ? 'Välj minst en tjänst' : 'Välj minst ett alternativ')}
+                            </motion.button>
+                            {isStreamingQuestion && (
+                              <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => {
+                                  processAnswer('none', 'Inga tjänster');
+                                  setSelectedStreamingServices([]);
+                                }}
+                                className="w-full py-3 px-6 rounded-full font-medium
+                                         bg-gray-100 text-gray-700 border border-gray-300
+                                         hover:bg-gray-200 transition-all"
+                              >
+                                Jag använder inga streamingtjänster
+                              </motion.button>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </div>
                   )}
                   
@@ -1126,28 +1165,25 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
             </motion.div>
           )}
           
-          {/* Results view */}
-          {currentStep === 'results' && recommendations.length > 0 && (
+          {/* Results view - Show button to open modal */}
+          {currentStep === 'results' && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 space-y-4"
+              className="mt-8 flex justify-center"
             >
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Här är de bästa alternativen för dig:
-                </h3>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleDownloadPDF()}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 
-                           rounded-xl text-sm font-medium text-gray-700 transition-colors"
-                >
-                  <Download size={18} />
-                  Ladda hem rekommendation
-                </motion.button>
-              </div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowResultsModal(true)}
+                className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 
+                         hover:from-blue-700 hover:to-blue-800 text-white rounded-2xl 
+                         text-lg font-semibold shadow-lg transition-all"
+              >
+                <Package className="w-6 h-6" />
+                Visa dina personliga rekommendationer
+              </motion.button>
+            </motion.div>
 
               {/* Smart Pairing for "both" service type */}
               {serviceType === 'both' && smartPairs.length > 0 ? (
@@ -1379,6 +1415,31 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
           />
         )}
       </AnimatePresence>
+
+      {/* Results Modal */}
+      {structuredRecommendations && (
+        <ResultsModal
+          isOpen={showResultsModal}
+          onClose={() => setShowResultsModal(false)}
+          serviceType={serviceType || 'broadband'}
+          recommendations={structuredRecommendations}
+          smartPairs={smartPairs}
+          aiRecommendation={aiRecommendationText}
+          userProfile={{
+            address: userProfile.address,
+            householdSize: userProfile.householdSize,
+            serviceType: serviceType,
+            ...userProfile
+          }}
+          onPrint={() => {
+            generateRecommendationPDF(recommendations.slice(0, 3), userProfile);
+          }}
+          onChatOpen={() => {
+            setShowResultsModal(false);
+            // Focus on follow-up input or similar
+          }}
+        />
+      )}
     </div>
   );
 }
