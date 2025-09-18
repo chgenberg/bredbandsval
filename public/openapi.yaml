@@ -1,0 +1,161 @@
+openapi: 3.0.1
+info:
+  title: Bredbandsval Swedish Broadband API
+  description: AI-powered broadband and TV comparison for Sweden
+  version: 1.0.0
+servers:
+  - url: https://bredbandsval-production.up.railway.app
+paths:
+  /api/ai/broadband:
+    get:
+      operationId: searchBroadbandPackages
+      summary: Search broadband packages in Sweden
+      description: Find broadband packages available at a specific Swedish address
+      parameters:
+        - name: address
+          in: query
+          description: Swedish address (e.g., "Stockholmsgatan 1, Stockholm")
+          required: true
+          schema:
+            type: string
+        - name: budget
+          in: query
+          description: Monthly budget in SEK
+          required: false
+          schema:
+            type: integer
+        - name: speed
+          in: query
+          description: Minimum speed requirement in Mbit/s
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Available broadband packages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  recommendations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        provider:
+                          type: string
+                        package:
+                          type: string
+                        speed:
+                          type: string
+                        price:
+                          type: integer
+                        features:
+                          type: array
+                          items:
+                            type: string
+                        order_url:
+                          type: string
+  /api/ai/order:
+    post:
+      operationId: placeOrder
+      summary: Place broadband/TV order
+      description: Submit an order for broadband or TV package
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                package_selection:
+                  type: object
+                  properties:
+                    provider:
+                      type: string
+                    package:
+                      type: string
+                    price:
+                      type: integer
+                customer_details:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    address:
+                      type: string
+                    email:
+                      type: string
+                    phone:
+                      type: string
+      responses:
+        '200':
+          description: Order confirmation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  order_id:
+                    type: string
+                  status:
+                    type: string
+  /api/recommendations:
+    post:
+      operationId: getPersonalizedRecommendations
+      summary: Get AI-powered personalized recommendations
+      description: Get personalized broadband and TV recommendations based on household needs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                household:
+                  type: object
+                  properties:
+                    size:
+                      type: integer
+                    workFromHome:
+                      type: integer
+                usage:
+                  type: object
+                  properties:
+                    streaming:
+                      type: string
+                      enum: ["light", "moderate", "heavy"]
+                    gaming:
+                      type: boolean
+                    videoConferencing:
+                      type: boolean
+      responses:
+        '200':
+          description: Personalized recommendations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    provider:
+                      type: string
+                    packageName:
+                      type: string
+                    speed:
+                      type: integer
+                    price:
+                      type: integer
+                    matchScore:
+                      type: integer
+                    reasoning:
+                      type: string

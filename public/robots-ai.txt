@@ -1,0 +1,49 @@
+# Special robots.txt for AI agents
+# This file is specifically for AI crawlers and assistants
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /api/ai/
+Allow: /api/recommendations
+Allow: /order
+Crawl-delay: 1
+
+User-agent: Claude-Web
+Allow: /
+Allow: /api/claude/
+Allow: /api/recommendations  
+Allow: /order
+Crawl-delay: 1
+
+User-agent: Gemini-Pro
+Allow: /
+Allow: /api/ai/
+Allow: /api/recommendations
+Allow: /order
+Crawl-delay: 1
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /api/perplexity/
+Allow: /api/recommendations
+Allow: /order
+Crawl-delay: 1
+
+# General AI agents
+User-agent: *AI*
+User-agent: *Bot*
+User-agent: *Agent*
+Allow: /
+Allow: /api/ai/
+Allow: /api/recommendations
+Crawl-delay: 2
+
+# Sitemap for AI agents
+Sitemap: https://bredbandsval.se/sitemap-ai.xml
+
+# Special endpoints for AI discovery
+# /api/ai/broadband - Broadband search API
+# /api/ai/order - Order placement API  
+# /api/claude/tools - Claude tool definitions
+# /api/perplexity/source - Perplexity source info
+# /.well-known/ai-plugin.json - ChatGPT plugin manifest

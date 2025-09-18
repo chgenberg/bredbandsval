@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Swedish Broadband Finder",
+  "name_for_model": "bredbandsval_sweden",
+  "description_for_human": "Find and compare broadband and TV packages in Sweden with AI-powered recommendations",
+  "description_for_model": "Help users find the best broadband and TV packages in Sweden by comparing prices, speeds, and features from 21+ providers. Can search by address, analyze household needs, and provide personalized recommendations. Supports order placement with Swedish BankID.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://bredbandsval-production.up.railway.app/openapi.yaml"
+  },
+  "logo_url": "https://bredbandsval-production.up.railway.app/valle.png",
+  "contact_email": "support@bredbandsval.se",
+  "legal_info_url": "https://bredbandsval-production.up.railway.app"
+}
