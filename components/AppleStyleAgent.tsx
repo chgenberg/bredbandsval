@@ -984,8 +984,15 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                     <motion.div
                       animate={{ rotate: -360 }}
                       transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      className="w-6 h-6 rounded-full bg-white border border-blue-300 flex items-center justify-center relative z-10"
                     >
-                      <Brain size={22} className="text-blue-600 relative z-10" />
+                      <Image
+                        src="/valle.png"
+                        alt="Valle AI"
+                        width={16}
+                        height={16}
+                        className="object-contain"
+                      />
                     </motion.div>
                   </div>
                   <div className="flex flex-col">
