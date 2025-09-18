@@ -183,6 +183,24 @@ export default function LandingPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Diskret footer med admin-länkar */}
+      <div className="fixed bottom-4 left-4 z-10">
+        <div className="flex gap-2 text-xs">
+          <a
+            href="/admin/ai-agents"
+            className="px-2 py-1 bg-black/10 text-gray-500 hover:text-gray-700 rounded transition-colors"
+          >
+            agents
+          </a>
+          <a
+            href="/admin/ai-analytics"
+            className="px-2 py-1 bg-black/10 text-gray-500 hover:text-gray-700 rounded transition-colors"
+          >
+            analytics
+          </a>
+        </div>
+      </div>
     </>
   );
 }
