@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Printer, MessageCircle, Wifi, Tv, Package, Star, Check, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { ServiceType, UserProfile } from '@/types';
-import { RecommendationCard } from './RecommendationCard';
-import { SmartPairingCard } from './SmartPairingCard';
+import RecommendationCard from './RecommendationCard';
+import SmartPairingCard from './SmartPairingCard';
 
 interface ResultsModalProps {
   isOpen: boolean;

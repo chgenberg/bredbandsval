@@ -629,20 +629,49 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       setRecommendations(recs);
       
-      // Separate broadband and TV packages
-      const broadbandPackages = recs.filter(r => r.package.speed > 0);
-      const tvPackages = recs.filter(r => r.package.channels?.length > 0 && (r.package.speed === 0 || r.package.speed === undefined));
-      
-      // Structure recommendations
+      // Separate broadband and TV packages (fix filters to use correct schema)
+      const broadbandRecs = recs.filter(r => (r.package?.speed?.download || 0) > 0 && !r.package?.isCombo && !r.package?.tv);
+      const tvRecs = recs.filter(r => !!r.package?.tv && ((r.package?.speed?.download || 0) === 0 || r.package?.availability?.technology === 'streaming'));
+
+      // Helper: map a recommendation to RecommendationCard props shape
+      const mapRecToCard = (rec: any) => {
+        const pkg = rec.package;
+        const price = pkg?.pricing?.campaign?.monthlyPrice ?? pkg?.pricing?.monthly ?? 0;
+        const binding = pkg?.contract?.bindingPeriod;
+        const speed = pkg?.speed?.download;
+        const features: string[] = [];
+        if (pkg?.tv?.channelPackages?.length) {
+          features.push(...pkg.tv.channelPackages.slice(0, 3));
+        }
+        if (pkg?.includes?.router) features.push('Router ingår');
+        if (pkg?.availability?.technology) features.push(pkg.availability.technology.toUpperCase());
+        return {
+          provider: pkg?.providerName,
+          packageName: pkg?.name,
+          speed: speed && speed > 0 ? speed : undefined,
+          price,
+          bindingTime: typeof binding === 'number' ? binding : undefined,
+          features,
+          savings: rec?.savings?.streaming ?? rec?.savings?.monthly ?? 0,
+          matchScore: rec?.matchScore ?? rec?.score ?? 0,
+          reasoning: (rec?.reasons && rec.reasons[0]) || 'Passar dina behov',
+          badges: rec?.badges || [],
+          trustScore: rec?.trustScore || 70,
+          isCombo: pkg?.isCombo,
+          comboDetails: pkg?.comboDetails,
+        };
+      };
+
+      // Structure recommendations in a format ResultsModal/RecommendationCard expects
       const structured = {
-        broadband: broadbandPackages.slice(0, 3),
-        tv: tvPackages.slice(0, 3),
-        combined: []
+        broadband: broadbandRecs.slice(0, 3).map(mapRecToCard),
+        tv: tvRecs.slice(0, 3).map(mapRecToCard),
+        combined: [] as any[],
       };
       
       // Generate smart pairs for "both" service type
       if (serviceType === 'both') {
-        const pairs = generateSmartPairs(broadbandPackages, tvPackages, userProfile);
+        const pairs = generateSmartPairs(broadbandRecs, tvRecs, userProfile);
         setSmartPairs(pairs);
         structured.combined = pairs;
       }
