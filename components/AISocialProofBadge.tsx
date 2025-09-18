@@ -55,51 +55,51 @@ export default function AISocialProofBadge() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="fixed bottom-6 right-6 z-50 max-w-sm"
     >
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-4 shadow-2xl border border-white/20 backdrop-blur-sm">
+      <div className="bg-white/95 backdrop-blur-md text-gray-900 rounded-2xl p-4 shadow-2xl border border-gray-200">
         {/* Header */}
         <div className="flex items-center gap-3 mb-3">
-          <div className="bg-white/20 rounded-full p-2">
-            <Bot className="w-5 h-5" />
+          <div className="bg-gray-100 rounded-full p-2">
+            <Bot className="w-5 h-5 text-gray-700" />
           </div>
           <div>
-            <h3 className="font-semibold text-sm">AI-Verified Service</h3>
-            <p className="text-xs opacity-80">Trusted by leading AI agents</p>
+            <h3 className="font-semibold text-sm text-gray-900">AI-Verified Service</h3>
+            <p className="text-xs text-gray-600">Trusted by leading AI agents</p>
           </div>
         </div>
 
         {/* Live Stats */}
         <div className="grid grid-cols-2 gap-3 mb-3">
-          <div className="bg-white/10 rounded-lg p-2 text-center">
+          <div className="bg-gray-50 rounded-lg p-2 text-center border border-gray-100">
             <div className="flex items-center justify-center gap-1 mb-1">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-lg font-bold">{socialProofData.aiAgentsActiveNow}</span>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-lg font-bold text-gray-900">{socialProofData.aiAgentsActiveNow}</span>
             </div>
-            <div className="text-xs opacity-80">AI agents active</div>
+            <div className="text-xs text-gray-600">AI agents active</div>
           </div>
           
-          <div className="bg-white/10 rounded-lg p-2 text-center">
-            <div className="text-lg font-bold">{(socialProofData.totalAIQueries / 1000).toFixed(1)}k</div>
-            <div className="text-xs opacity-80">AI queries served</div>
+          <div className="bg-gray-50 rounded-lg p-2 text-center border border-gray-100">
+            <div className="text-lg font-bold text-gray-900">{(socialProofData.totalAIQueries / 1000).toFixed(1)}k</div>
+            <div className="text-xs text-gray-600">AI queries served</div>
           </div>
         </div>
 
         {/* Success Rate */}
         <div className="flex items-center gap-2 mb-3">
-          <CheckCircle className="w-4 h-4 text-green-400" />
-          <span className="text-sm font-medium">{socialProofData.successRate}% AI success rate</span>
+          <CheckCircle className="w-4 h-4 text-green-600" />
+          <span className="text-sm font-medium text-gray-900">{socialProofData.successRate}% AI success rate</span>
         </div>
 
         {/* Verified By */}
-        <div className="text-xs opacity-80 mb-3">
-          <div className="flex items-center gap-1 mb-1">
-            <Zap className="w-3 h-3" />
-            <span>Verified by:</span>
+        <div className="text-xs text-gray-600 mb-3">
+          <div className="flex items-center gap-1 mb-2">
+            <Zap className="w-3 h-3 text-gray-500" />
+            <span className="font-medium">Verified by:</span>
           </div>
           <div className="flex flex-wrap gap-1">
             {socialProofData.verifiedAgents.map((agent, index) => (
               <span 
                 key={agent}
-                className="bg-white/20 px-2 py-1 rounded text-xs"
+                className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs border border-gray-200 font-medium"
               >
                 {agent}
               </span>
@@ -111,7 +111,7 @@ export default function AISocialProofBadge() {
         <div className="text-center">
           <button 
             onClick={() => setIsVisible(false)}
-            className="text-xs opacity-60 hover:opacity-80 transition-opacity"
+            className="text-xs text-gray-500 hover:text-gray-700 transition-colors font-medium"
           >
             Dölj
           </button>
