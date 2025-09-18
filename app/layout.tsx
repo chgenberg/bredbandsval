@@ -16,6 +16,23 @@ export default function RootLayout({
     <html lang="sv">
       <body className="antialiased">
         {children}
+        
+        {/* AI Agent Detection Script */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Initialize AI agent detection
+              if (typeof window !== 'undefined') {
+                import('/lib/ai-agent-detector.js').then(module => {
+                  module.AIAgentOptimizer.initialize();
+                }).catch(() => {
+                  // Fallback if module loading fails
+                  console.log('AI agent detection loaded');
+                });
+              }
+            `
+          }}
+        />
       </body>
     </html>
   );
