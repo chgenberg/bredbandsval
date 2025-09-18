@@ -311,24 +311,59 @@ ${recs.slice(0, 3).map((rec, i) =>
   };
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-gray-50">
+      {/* Chat Header */}
+      <div className="bg-white border-b border-gray-200 px-4 py-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+            <span className="text-white font-semibold text-sm">AI</span>
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-900">Bredbandsval AI</h3>
+            <p className="text-xs text-green-600 flex items-center gap-1">
+              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+              Online
+            </p>
+          </div>
+        </div>
+      </div>
+      
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="max-w-2xl mx-auto space-y-4">
+        <div className="max-w-2xl mx-auto">
           <AnimatePresence>
-            {messages.map((message) => (
+            {messages.map((message, index) => (
               <motion.div
                 key={message.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 30,
+                  delay: index * 0.05 
+                }}
+                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-3`}
               >
-                <div className={`px-4 py-2.5 rounded-3xl max-w-[70%] ${
-                  message.sender === 'user' 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gray-100 text-gray-900'
-                }`}>
-                  <p className="text-[15px] leading-relaxed">{message.content}</p>
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
+                  className={`relative px-5 py-3 max-w-[70%] ${
+                    message.sender === 'user' 
+                      ? 'bg-blue-500 text-white rounded-[24px] rounded-br-[4px] shadow-sm' 
+                      : 'bg-white text-gray-900 rounded-[24px] rounded-bl-[4px] shadow-sm border border-gray-100'
+                  }`}
+                >
+                  <p className="text-[15px] leading-relaxed break-words">{message.content}</p>
+                  
+                  {/* Timestamp */}
+                  <div className={`text-[11px] mt-1 ${
+                    message.sender === 'user' ? 'text-blue-100' : 'text-gray-400'
+                  }`}>
+                    {message.timestamp.toLocaleTimeString('sv-SE', { 
+                      hour: '2-digit', 
+                      minute: '2-digit' 
+                    })}
+                  </div>
                   
                   {message.quickReplies && (
                     <div className="mt-3 flex flex-wrap gap-2">
@@ -340,10 +375,10 @@ ${recs.slice(0, 3).map((rec, i) =>
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => handleQuickReply(reply.value)}
-                            className="flex items-center gap-2 px-4 py-2 bg-white 
+                            className="flex items-center gap-2 px-4 py-2 bg-gray-50 
                                      rounded-full text-sm text-gray-700 font-medium 
                                      border border-gray-200 hover:border-gray-300 
-                                     transition-all"
+                                     hover:bg-gray-100 transition-all"
                           >
                             <Icon size={14} className="text-gray-500" />
                             {reply.text}
@@ -352,21 +387,70 @@ ${recs.slice(0, 3).map((rec, i) =>
                       })}
                     </div>
                   )}
-                </div>
+                  
+                  {/* Message tail */}
+                  {message.sender === 'user' ? (
+                    <div className="absolute -right-[8px] bottom-0 w-4 h-4 overflow-hidden">
+                      <div className="absolute -left-[8px] bottom-0 w-4 h-4 bg-blue-500 transform rotate-45"></div>
+                    </div>
+                  ) : (
+                    <div className="absolute -left-[8px] bottom-0 w-4 h-4 overflow-hidden">
+                      <div className="absolute -right-[8px] bottom-0 w-4 h-4 bg-white border-r border-b border-gray-100 transform rotate-45"></div>
+                    </div>
+                  )}
+                </motion.div>
               </motion.div>
             ))}
             
             {isTyping && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex justify-start"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex justify-start mb-3"
               >
-                <div className="px-4 py-3 bg-gray-100 rounded-3xl">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
+                <div className="relative px-5 py-4 bg-white rounded-[24px] rounded-bl-[4px] shadow-sm border border-gray-100">
+                  <div className="flex gap-1.5">
+                    <motion.div
+                      className="w-2.5 h-2.5 bg-gray-400 rounded-full"
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        opacity: [0.5, 1, 0.5]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        delay: 0
+                      }}
+                    />
+                    <motion.div
+                      className="w-2.5 h-2.5 bg-gray-400 rounded-full"
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        opacity: [0.5, 1, 0.5]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        delay: 0.2
+                      }}
+                    />
+                    <motion.div
+                      className="w-2.5 h-2.5 bg-gray-400 rounded-full"
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        opacity: [0.5, 1, 0.5]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        delay: 0.4
+                      }}
+                    />
+                  </div>
+                  
+                  {/* Message tail */}
+                  <div className="absolute -left-[8px] bottom-0 w-4 h-4 overflow-hidden">
+                    <div className="absolute -right-[8px] bottom-0 w-4 h-4 bg-white border-r border-b border-gray-100 transform rotate-45"></div>
                   </div>
                 </div>
               </motion.div>
