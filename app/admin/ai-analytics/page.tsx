@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { dummyAIMetrics, dummySummaryStats } from '@/lib/dummy-ai-data';
 
 export default function AIAnalyticsDashboard() {
   const router = useRouter();
@@ -25,10 +26,17 @@ export default function AIAnalyticsDashboard() {
     try {
       const response = await fetch(`/api/ai-agent-metrics?limit=100`);
       const data = await response.json();
-      setMetrics(data.metrics || []);
-      setSummary(data.summary || {});
+      
+      // Use dummy data if no real data exists
+      const metricsData = (data.metrics && data.metrics.length > 0) ? data.metrics : dummyAIMetrics;
+      const summaryData = (data.summary && Object.keys(data.summary).length > 0) ? data.summary : dummySummaryStats;
+      
+      setMetrics(metricsData);
+      setSummary(summaryData);
     } catch (error) {
-      console.error('Failed to fetch metrics:', error);
+      console.error('Failed to fetch metrics, using dummy data:', error);
+      setMetrics(dummyAIMetrics);
+      setSummary(dummySummaryStats);
     }
   };
 

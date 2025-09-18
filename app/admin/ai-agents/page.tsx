@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Users, BarChart, Clock, TrendingUp, Monitor, MousePointer, ShoppingBag, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { dummyAIAgentVisits, dummyAgentStats } from '@/lib/dummy-ai-data';
 
 interface AIAgentVisit {
   timestamp: Date;
@@ -29,26 +30,32 @@ export default function AIAgentDashboard() {
   });
 
   useEffect(() => {
-    // Load data from localStorage and API
+    // Load data from localStorage and API, fallback to dummy data
     const loadData = () => {
       const stored = JSON.parse(localStorage.getItem('ai_agent_visits') || '[]');
-      setVisits(stored);
+      
+      // Use dummy data if no real data exists
+      const visitsData = stored.length > 0 ? stored : dummyAIAgentVisits;
+      setVisits(visitsData);
       
       // Calculate stats
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      const todayVisits = stored.filter((v: any) => new Date(v.timestamp) >= today);
-      const chatgptVisits = stored.filter((v: any) => v.agentType === 'chatgpt');
-      const completedOrders = stored.filter((v: any) => v.completedOrder);
+      const todayVisits = visitsData.filter((v: any) => new Date(v.timestamp) >= today);
+      const chatgptVisits = visitsData.filter((v: any) => v.agentType === 'chatgpt');
+      const completedOrders = visitsData.filter((v: any) => v.completedOrder);
       
-      setStats({
-        total_visits: stored.length,
+      // Use dummy stats if no real data
+      const statsData = stored.length > 0 ? {
+        total_visits: visitsData.length,
         today_visits: todayVisits.length,
         chatgpt_visits: chatgptVisits.length,
         completed_orders: completedOrders.length,
-        conversion_rate: stored.length > 0 ? (completedOrders.length / stored.length) * 100 : 0
-      });
+        conversion_rate: visitsData.length > 0 ? (completedOrders.length / visitsData.length) * 100 : 0
+      } : dummyAgentStats;
+      
+      setStats(statsData);
     };
 
     loadData();
