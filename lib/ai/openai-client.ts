@@ -467,6 +467,9 @@ KRITISKA KRAV:
 - Mer än 4 meningar
 - Information som redan finns i korten`;
 
+  console.log('📝 GPT Prompt Length:', prompt.length);
+  console.log('📝 GPT Prompt Preview:', prompt.substring(0, 200) + '...');
+  
   try {
     const openai = new OpenAI({
       apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
@@ -486,8 +489,15 @@ KRITISKA KRAV:
       temperature: 0.8
     });
 
-    const raw = completion.choices[0].message.content || 
-           'Baserat på dina svar har jag hittat de bästa alternativen för dig. Dessa leverantörer erbjuder hastigheter och priser som passar ditt hushåll perfekt.';
+    const raw = completion.choices[0].message.content;
+    console.log('🤖 GPT Raw Response:', raw);
+    console.log('🤖 GPT Response Length:', raw?.length || 0);
+    
+    if (!raw || raw.trim().length === 0) {
+      console.warn('⚠️ GPT returned empty response, using fallback');
+      return ensureHtmlParagraphs('Baserat på dina svar har jag hittat de bästa alternativen för dig. Dessa leverantörer erbjuder hastigheter och priser som passar ditt hushåll perfekt.');
+    }
+    
     return ensureHtmlParagraphs(raw);
   } catch (error) {
     console.error('Error generating AI recommendation:', error);
