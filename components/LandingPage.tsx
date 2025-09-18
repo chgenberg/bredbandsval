@@ -6,7 +6,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AppleStyleAgent from './AppleStyleAgent';
 import AIAgentSocialProof from './AIAgentSocialProof';
 
-export default function LandingPage() {
+interface LocalizedContent {
+  headline?: string;
+  subtext?: string;
+  cta?: string;
+  cityName?: string;
+  region?: string;
+  fiberCoverage?: number;
+  avgPrice?: number;
+  topProviders?: string[];
+  population?: number;
+}
+
+export default function LandingPage({ localizedContent }: { localizedContent?: LocalizedContent } = {}) {
   const [showAgent, setShowAgent] = useState(false);
   const [quickSearchMode, setQuickSearchMode] = useState(false);
 
@@ -69,12 +81,15 @@ export default function LandingPage() {
             {/* CTA Card with soft corners */}
             <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl max-w-2xl mx-auto">
               <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-                Sveriges mest omfattande<br />
-                jämförelse för bredband & TV
+                {localizedContent?.headline ? (
+                  <span dangerouslySetInnerHTML={{ __html: localizedContent.headline }} />
+                ) : (
+                  <>Sveriges mest omfattande<br />jämförelse för bredband & TV</>
+                )}
               </h1>
               
               <p className="text-lg md:text-xl text-gray-600 mb-6 font-medium">
-                Få din personliga analys på sekunder – helt gratis
+                {localizedContent?.subtext || "Få din personliga analys på sekunder – helt gratis"}
               </p>
 
               {/* Primary CTA - Pulsating button */}
@@ -104,7 +119,7 @@ export default function LandingPage() {
                 {/* Button content */}
                 <div className="relative bg-[#101929] text-white px-8 py-4 rounded-2xl font-semibold text-lg
                                hover:bg-[#1a2332] transition-colors shadow-lg">
-                  Starta din analys & beställ direkt
+                  {localizedContent?.cta || "Starta din analys & beställ direkt"}
                 </div>
               </motion.button>
 
