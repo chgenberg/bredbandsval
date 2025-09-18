@@ -291,6 +291,9 @@ export default function AppleStyleAgent() {
           { text: 'Viaplay', value: 'viaplay', icon: 'play' },
           { text: 'SVT Play', value: 'svtplay', icon: 'tv' },
           { text: 'TV4 Play', value: 'tv4play', icon: 'tv' },
+          { text: 'Prime Video', value: 'prime', icon: 'play' },
+          { text: 'Apple TV+', value: 'appletv', icon: 'play' },
+          { text: 'SkyShowtime', value: 'skyshowtime', icon: 'play' },
         ],
         helpText: 'Vissa TV-paket inkluderar streamingtjänster vilket kan ge bättre totalpris.'
       },
