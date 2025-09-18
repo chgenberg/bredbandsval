@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { ServiceType, UserProfile } from '@/types';
 import RecommendationCard from './RecommendationCard';
 import SmartPairingCard from './SmartPairingCard';
+import { AnalysisCards } from './AnalysisCards';
 
 interface ResultsModalProps {
   isOpen: boolean;
@@ -117,31 +118,18 @@ export function ResultsModal({
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto">
-              {/* AI Recommendation */}
-              <div className="px-6 py-8 bg-gradient-to-b from-gray-50 to-white">
-                <div className="max-w-4xl mx-auto">
-                  <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <div className="flex items-start gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                        <Star className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Valle's analys</h3>
-                        <div 
-                          className="ai-content text-gray-700 leading-relaxed"
-                          dangerouslySetInnerHTML={{ __html: aiRecommendation }}
-                        />
-                      </div>
-                    </div>
-                  </div>
+              {/* AI Recommendation - Card Layout */}
+              <div className="px-6 py-12 bg-gradient-to-b from-gray-50 to-white">
+                <div className="max-w-6xl mx-auto">
+                  <AnalysisCards aiRecommendation={aiRecommendation} />
                 </div>
               </div>
 
               {/* Tabs */}
               {tabs.length > 1 && (
-                <div className="px-6 -mt-4">
+                <div className="px-6 py-8">
                   <div className="max-w-4xl mx-auto">
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-2 flex gap-2">
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-3 flex gap-3">
                       {tabs.map((tab) => {
                         const Icon = tab.icon;
                         return (
@@ -167,8 +155,8 @@ export function ResultsModal({
               )}
 
               {/* Recommendations */}
-              <div className="px-6 py-8">
-                <div className="max-w-4xl mx-auto">
+              <div className="px-6 py-12">
+                <div className="max-w-6xl mx-auto">
                   <AnimatePresence mode="wait">
                     {/* Combined view for both services */}
                     {activeTab === 'combined' && smartPairs && (
