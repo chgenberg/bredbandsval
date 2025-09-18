@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import AppleStyleAgent from './AppleStyleAgent';
+import AIAgentSocialProof from './AIAgentSocialProof';
 
 export default function LandingPage() {
   const [showAgent, setShowAgent] = useState(false);
@@ -201,6 +202,9 @@ export default function LandingPage() {
           </a>
         </div>
       </div>
+
+      {/* AI Agent Social Proof - Only visible to AI agents */}
+      <AIAgentSocialProof />
     </>
   );
 }

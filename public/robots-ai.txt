@@ -1,12 +1,16 @@
-# Special robots.txt for AI agents
+# Special robots.txt for AI agents  
 # This file is specifically for AI crawlers and assistants
+# Updated for maximum AI-agent optimization
 
 User-agent: ChatGPT-User
 Allow: /
 Allow: /api/ai/
 Allow: /api/recommendations
 Allow: /order
-Crawl-delay: 1
+Allow: /api/claude/
+Allow: /api/perplexity/
+Crawl-delay: 0.5
+Request-rate: 10/1m
 
 User-agent: Claude-Web
 Allow: /
