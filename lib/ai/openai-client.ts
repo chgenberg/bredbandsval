@@ -467,16 +467,21 @@ FORMATKRAV:
 - Var SPECIFIK med leverantörsnamn, priser och tekniska detaljer
 - Förklara VARFÖR ett val är bättre (inte bara att det är bra)
 - Nämn konkreta besparingar eller fördelar
-- Skriv på svenska, personligt och övertygande
-- 4-8 meningar totalt, avsluta alltid meningar helt
+- Skriv på svenska, personligt och direkt
+- MAX 4 meningar totalt (kortfattat och kraftfullt)
+- Fokusera på de 2-3 viktigaste fördelarna
 
-KRITISKA INSTRUKTIONER - ANVÄND ALL KUNDDATA:
-1. HASTIGHETSANALYS: Jämför uppmätt hastighet med rekommenderad hastighet
-2. BESPARINGSBERÄKNING: Om nuvarande kostnad finns, beräkna exakta besparingar (kr/mån och kr/år)
-3. PRIORITERINGSANPASSNING: Anpassa rekommendationen efter kundens prioriteringar (pris/hastighet/support/flexibilitet)
-4. TEKNISK MATCHNING: För gaming = nämn ping, för hemarbete = nämn stabilitet och upp-hastighet
-5. PERSONLIG TON: Använd "eftersom du jobbar hemifrån", "med dina X streamingtjänster", "i ditt Y-personshushåll"
-6. KONKRETA SIFFROR: Referera till exakta hastigheter, priser och besparingar från kunddata`;
+KRITISKA INSTRUKTIONER - KONCIS REKOMMENDATION:
+1. FÖRSTA MENINGEN: Huvudrekommendation med leverantör och totalpris
+2. ANDRA MENINGEN: Varför det passar (hastighet/behov/prioriteringar)  
+3. TREDJE MENINGEN: Konkret fördel (besparing/feature/support)
+4. FJÄRDE MENINGEN: Kort alternativ eller slutsats
+
+UNDVIK:
+- Långa utsvävningar om tekniska detaljer
+- Upprepningar av samma information
+- Mer än 4 meningar
+- Vaga formuleringar som "kan hjälpa dig"`;
 
   try {
     const openai = new OpenAI({

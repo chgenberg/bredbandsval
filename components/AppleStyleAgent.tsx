@@ -15,10 +15,12 @@ import SpeedTestModal from './SpeedTestModal';
 import { analytics } from '@/lib/analytics';
 import { bredbandsvalAPI } from '@/lib/api/client';
 import RecommendationCard from './RecommendationCard';
+import SmartPairingCard from './SmartPairingCard';
 import { generateAIRecommendation, generateFollowUpAnswer } from '@/lib/ai/openai-client';
 import { computeNeeds, scorePackageMatch } from '@/lib/decision/profile-model';
 import { SpeedTestResult } from '@/lib/network-analysis/webrtc-speed-test';
 import { generateRecommendationPDF } from '@/lib/pdf-generator';
+import { generateSmartPairs } from '@/lib/smart-pairing';
 
 interface Message {
   id: string;
@@ -84,6 +86,8 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
   const [speedTestResult, setSpeedTestResult] = useState<SpeedTestResult | null>(null);
   const [followUpQuestion, setFollowUpQuestion] = useState('');
   const [loadingMessage, setLoadingMessage] = useState('Valle AI analyserar');
+  const [smartPairs, setSmartPairs] = useState<any[]>([]);
+  const [showBuildYourOwn, setShowBuildYourOwn] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -612,6 +616,12 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       setRecommendations(recs);
       
+      // Generate smart pairs for "both" service type
+      if (serviceType === 'both') {
+        const pairs = generateSmartPairs(recs, recs, userProfile);
+        setSmartPairs(pairs);
+      }
+      
       // Generate AI recommendation with complete profile
       const completeProfile = {
         ...userProfile,
@@ -622,7 +632,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       const aiRecommendation = await generateAIRecommendation({
         userProfile: completeProfile,
-        recommendations: recs.slice(0, 3),
+        recommendations: serviceType === 'both' ? smartPairs : recs.slice(0, 3),
         serviceType: serviceType || 'broadband'
       });
       
@@ -939,9 +949,9 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                         : message.quickReplies.length === 4
                         ? 'grid grid-cols-2 lg:grid-cols-4 gap-5'
                         : message.quickReplies.length === 5
-                        ? 'grid grid-cols-2 lg:grid-cols-5 gap-5'
+                        ? 'grid grid-cols-2 lg:grid-cols-3 gap-5'
                         : message.quickReplies.length === 6
-                        ? 'grid grid-cols-2 lg:grid-cols-6 gap-5'
+                        ? 'grid grid-cols-2 lg:grid-cols-3 gap-5'
                         : 'grid grid-cols-2 lg:grid-cols-4 gap-5'
                     }`}>
                       {message.quickReplies.map((reply) => {
@@ -1053,11 +1063,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                       transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                       className="absolute inset-0 bg-blue-400 blur-xl opacity-30"
                     />
-                    <motion.div
-                      animate={{ rotate: -360 }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                      className="w-6 h-6 rounded-full bg-white border border-blue-300 flex items-center justify-center relative z-10"
-                    >
+                    <div className="w-6 h-6 rounded-full bg-white border border-blue-300 flex items-center justify-center relative z-10">
                       <Image
                         src="/valle.png"
                         alt="Valle AI"
@@ -1065,7 +1071,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                         height={16}
                         className="object-contain"
                       />
-                    </motion.div>
+                    </div>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-sm font-medium text-gray-800">{loadingMessage}</span>
@@ -1143,100 +1149,138 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                 </motion.button>
               </div>
 
-              {/* Separate Broadband and TV sections */}
-              {(serviceType === 'both' || serviceType === 'broadband') && (
-                <div className="mb-8">
-                  <h4 className="text-md font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                    <Wifi size={18} className="text-blue-500" />
-                    Bredbandsalternativ
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {recommendations
-                      .filter(rec => !rec.package.tv || rec.package.speed.download > 0)
-                      .slice(0, 3)
-                      .map((rec, index) => (
-                        <RecommendationCard
-                          key={rec.package.id}
-                          provider={rec.package.providerName}
-                          packageName={rec.package.name}
-                          speed={rec.package.speed.download}
-                          price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
-                          bindingTime={rec.package.contractLength}
-                          features={rec.package.features || []}
-                          savings={rec.savings}
-                          matchScore={rec.matchScore}
-                          reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
-                          index={index}
-                          badges={rec.badges || []}
-                          trustScore={rec.trustScore || 70}
-                        />
-                      ))}
-                  </div>
+              {/* Smart Pairing for "both" service type */}
+              {serviceType === 'both' && smartPairs.length > 0 ? (
+                <div className="space-y-6">
+                  {smartPairs.map((pair, index) => (
+                    <SmartPairingCard
+                      key={pair.id}
+                      title={pair.title}
+                      subtitle={pair.subtitle}
+                      broadbandProvider={pair.broadband.provider}
+                      broadbandPackage={pair.broadband.package}
+                      broadbandSpeed={pair.broadband.speed}
+                      broadbandPrice={pair.broadband.price}
+                      tvProvider={pair.tv.provider}
+                      tvPackage={pair.tv.package}
+                      tvPrice={pair.tv.price}
+                      totalPrice={pair.totalPrice}
+                      savings={pair.savings}
+                      reasoning={pair.reasoning}
+                      index={index}
+                      isPrimary={pair.type === 'primary'}
+                    />
+                  ))}
+                  
+                  {/* Expandable "Build your own" section */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-8 p-4 bg-gray-50 rounded-2xl"
+                  >
+                    <motion.button
+                      onClick={() => setShowBuildYourOwn(!showBuildYourOwn)}
+                      className="w-full text-left flex items-center justify-between p-2"
+                    >
+                      <span className="font-medium text-gray-700">
+                        Vill du välja bredband och TV separat?
+                      </span>
+                      <span className="text-gray-400">
+                        {showBuildYourOwn ? '▲' : '▼'}
+                      </span>
+                    </motion.button>
+                    
+                    {showBuildYourOwn && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        className="mt-4 space-y-6"
+                      >
+                        {/* Broadband section */}
+                        <div>
+                          <h5 className="text-md font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <Wifi size={18} className="text-blue-500" />
+                            Bredbandsalternativ
+                          </h5>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {recommendations
+                              .filter(rec => !rec.package.tv || rec.package.speed.download > 0)
+                              .slice(0, 3)
+                              .map((rec, index) => (
+                                <RecommendationCard
+                                  key={rec.package.id}
+                                  provider={rec.package.providerName}
+                                  packageName={rec.package.name}
+                                  speed={rec.package.speed.download}
+                                  price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
+                                  bindingTime={rec.package.contractLength}
+                                  features={rec.package.features || []}
+                                  savings={rec.savings}
+                                  matchScore={rec.matchScore}
+                                  reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
+                                  index={index}
+                                  badges={rec.badges || []}
+                                  trustScore={rec.trustScore || 70}
+                                />
+                              ))}
+                          </div>
+                        </div>
+                        
+                        {/* TV section */}
+                        <div>
+                          <h5 className="text-md font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <Tv size={18} className="text-purple-500" />
+                            TV-alternativ
+                          </h5>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {recommendations
+                              .filter(rec => rec.package.tv && (rec.package.speed.download === 0 || rec.package.isCombo))
+                              .slice(0, 3)
+                              .map((rec, index) => (
+                                <RecommendationCard
+                                  key={rec.package.id}
+                                  provider={rec.package.providerName}
+                                  packageName={rec.package.name}
+                                  speed={rec.package.speed.download > 0 ? rec.package.speed.download : undefined}
+                                  price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
+                                  bindingTime={rec.package.contractLength}
+                                  features={rec.package.tv?.channelPackages || rec.package.features || []}
+                                  savings={rec.savings}
+                                  matchScore={rec.matchScore}
+                                  reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
+                                  index={index}
+                                  badges={rec.badges || []}
+                                  trustScore={rec.trustScore || 70}
+                                />
+                              ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.div>
                 </div>
-              )}
-
-              {(serviceType === 'both' || serviceType === 'tv') && (
-                <div className="mb-8">
-                  <h4 className="text-md font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                    <Tv size={18} className="text-purple-500" />
-                    TV-alternativ
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {recommendations
-                      .filter(rec => rec.package.tv && (rec.package.speed.download === 0 || rec.package.isCombo))
-                      .slice(0, 3)
-                      .map((rec, index) => (
-                        <RecommendationCard
-                          key={rec.package.id}
-                          provider={rec.package.providerName}
-                          packageName={rec.package.name}
-                          speed={rec.package.speed.download > 0 ? rec.package.speed.download : undefined}
-                          price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
-                          bindingTime={rec.package.contractLength}
-                          features={rec.package.tv?.channelPackages || rec.package.features || []}
-                          savings={rec.savings}
-                          matchScore={rec.matchScore}
-                          reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
-                          index={index}
-                          badges={rec.badges || []}
-                          trustScore={rec.trustScore || 70}
-                        />
-                      ))}
-                  </div>
-                </div>
-              )}
-
-              {/* GPT Recommended Combinations for "both" service type */}
-              {serviceType === 'both' && (
-                <div className="mb-8">
-                  <h4 className="text-md font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                    <span className="text-green-600">🔗</span>
-                    GPT:s rekommenderade kombinationer
-                  </h4>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {recommendations
-                      .filter(rec => rec.package.isCombo)
-                      .slice(0, 2)
-                      .map((rec, index) => (
-                        <RecommendationCard
-                          key={rec.package.id}
-                          provider={rec.package.providerName}
-                          packageName={rec.package.name}
-                          speed={rec.package.speed.download}
-                          price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
-                          bindingTime={rec.package.contractLength}
-                          features={rec.package.features || []}
-                          savings={rec.savings}
-                          matchScore={rec.matchScore}
-                          reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
-                          index={index}
-                          badges={rec.badges || []}
-                          trustScore={rec.trustScore || 70}
-                          isCombo={rec.package.isCombo}
-                          comboDetails={rec.package.comboDetails}
-                        />
-                      ))}
-                  </div>
+              ) : (
+                // For single service type (broadband or tv only)
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {recommendations.slice(0, 3).map((rec, index) => (
+                    <RecommendationCard
+                      key={rec.package.id}
+                      provider={rec.package.providerName}
+                      packageName={rec.package.name}
+                      speed={rec.package.speed.download > 0 ? rec.package.speed.download : undefined}
+                      price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
+                      bindingTime={rec.package.contractLength}
+                      features={rec.package.features || []}
+                      savings={rec.savings}
+                      matchScore={rec.matchScore}
+                      reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
+                      index={index}
+                      badges={rec.badges || []}
+                      trustScore={rec.trustScore || 70}
+                      isCombo={rec.package.isCombo}
+                      comboDetails={rec.package.comboDetails}
+                    />
+                  ))}
                 </div>
               )}
               
