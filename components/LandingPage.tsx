@@ -61,8 +61,9 @@ export default function LandingPage() {
           >
             {/* CTA Card with soft corners */}
             <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl max-w-2xl mx-auto">
-              <h1 className="text-4xl md:text-6xl font-light text-gray-900 mb-8 leading-tight tracking-tight">
-                Bredband som passar dig.
+              <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Hitta ditt perfekta<br />
+                bredband och TV-paket
               </h1>
 
               {/* Primary CTA - Pulsating button */}
@@ -87,11 +88,21 @@ export default function LandingPage() {
                 />
                 
                 {/* Button content */}
-                <div className="relative bg-blue-500 text-white px-10 py-5 rounded-full font-normal text-lg
-                               hover:bg-blue-600 transition-all shadow-lg">
-                  Kom igång
+                <div className="relative bg-blue-500 text-white px-8 py-4 rounded-2xl font-semibold text-lg
+                               hover:bg-blue-600 transition-colors shadow-lg">
+                  Jämför och beställ direkt
                 </div>
               </motion.button>
+
+              {/* Secondary CTA */}
+              <div className="mt-4">
+                <button
+                  onClick={() => setShowAgent(true)}
+                  className="text-gray-600 hover:text-gray-900 underline text-sm transition-colors"
+                >
+                  Eller sök via din adress
+                </button>
+              </div>
 
             </div>
 
