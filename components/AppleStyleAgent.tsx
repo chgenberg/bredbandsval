@@ -933,7 +933,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   {message.quickReplies && (
                     <div className={`mt-4 ${
                       message.quickReplies.length <= 2 
-                        ? 'flex flex-col sm:flex-row gap-5 justify-start flex-wrap' 
+                        ? 'grid grid-cols-2 gap-5' 
                         : message.quickReplies.length === 3
                         ? 'grid grid-cols-1 sm:grid-cols-3 gap-5'
                         : message.quickReplies.length === 4
