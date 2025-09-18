@@ -86,8 +86,20 @@ export default function GoogleAddressAutocomplete({
   const fetchPredictions = () => {
     console.log('GoogleAddressAutocomplete: fetchPredictions called with input:', input);
     if (!autocompleteService.current) {
-      console.error('GoogleAddressAutocomplete: autocompleteService not initialized');
-      return;
+      console.log('GoogleAddressAutocomplete: autocompleteService not initialized yet, waiting for Google Maps...');
+      // Try to initialize if Google Maps is now available
+      if (window.google?.maps?.places) {
+        console.log('GoogleAddressAutocomplete: Google Maps now available, initializing...');
+        initializeAutocomplete();
+        // Retry after initialization
+        if (!autocompleteService.current) {
+          console.error('GoogleAddressAutocomplete: Still failed to initialize after retry');
+          return;
+        }
+      } else {
+        console.error('GoogleAddressAutocomplete: Google Maps not available yet');
+        return;
+      }
     }
 
     setIsLoading(true);

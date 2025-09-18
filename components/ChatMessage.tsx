@@ -26,7 +26,7 @@ export default function ChatMessage({ message, onQuickReply }: ChatMessageProps)
       className={`flex ${isUser ? 'justify-end' : isWelcome ? 'justify-center' : 'justify-start'} mb-4`}
     >
       <div className={`message-bubble ${isUser ? 'user-message' : 'agent-message'} ${isWelcome ? '!mx-auto' : ''}`}>
-        <p className={`${isShortMessage ? '' : 'wrap'} ${isWelcome ? 'text-center font-bold text-lg text-gray-900' : ''}`}>
+        <p className={`${isShortMessage ? '' : 'wrap'} ${isWelcome ? 'welcome' : ''}`}>
           {message.content}
         </p>
         
