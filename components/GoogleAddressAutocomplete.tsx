@@ -50,15 +50,10 @@ export default function GoogleAddressAutocomplete({
     
     if (window.google && window.google.maps && window.google.maps.places) {
       console.log('GoogleAddressAutocomplete: All Google Maps APIs available');
-      // Prefer new AutocompleteSuggestion API if available, fallback otherwise
+      // Always use the reliable AutocompleteService for now
       const placesNS = window.google.maps.places as any;
-      if (typeof placesNS.AutocompleteSuggestion === 'function') {
-        console.log('GoogleAddressAutocomplete: Using AutocompleteSuggestion API');
-        autocompleteService.current = new placesNS.AutocompleteSuggestion();
-      } else {
-        console.log('GoogleAddressAutocomplete: Using AutocompleteService API');
-        autocompleteService.current = new placesNS.AutocompleteService();
-      }
+      console.log('GoogleAddressAutocomplete: Using AutocompleteService API');
+      autocompleteService.current = new placesNS.AutocompleteService();
       sessionToken.current = new window.google.maps.places.AutocompleteSessionToken();
       if (!placesService.current) {
         // PlacesService requires a DOM node or map; we can pass a dummy div
@@ -113,30 +108,19 @@ export default function GoogleAddressAutocomplete({
 
     console.log('GoogleAddressAutocomplete: Making request with:', request);
 
-    // New API: AutocompleteSuggestion#suggest, fallback: AutocompleteService#getPlacePredictions
-    if (typeof autocompleteService.current.suggest === 'function') {
-      console.log('GoogleAddressAutocomplete: Using suggest method');
-      autocompleteService.current.suggest(request, (response: any) => {
-        console.log('GoogleAddressAutocomplete: suggest response:', response);
-        setIsLoading(false);
-        const items = Array.isArray(response?.suggestions) ? response.suggestions : [];
-        console.log('GoogleAddressAutocomplete: Setting predictions:', items);
-        setPredictions(items.slice(0, 5));
-      });
-    } else {
-      console.log('GoogleAddressAutocomplete: Using getPlacePredictions method');
-      autocompleteService.current.getPlacePredictions(request, (predictions: any, status: any) => {
-        console.log('GoogleAddressAutocomplete: getPlacePredictions response:', { predictions, status });
-        setIsLoading(false);
-        if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
-          console.log('GoogleAddressAutocomplete: Setting predictions:', predictions);
-          setPredictions(predictions.slice(0, 5));
-        } else {
-          console.log('GoogleAddressAutocomplete: No predictions or error status');
-          setPredictions([]);
-        }
-      });
-    }
+    // Use AutocompleteService#getPlacePredictions
+    console.log('GoogleAddressAutocomplete: Using getPlacePredictions method');
+    autocompleteService.current.getPlacePredictions(request, (predictions: any, status: any) => {
+      console.log('GoogleAddressAutocomplete: getPlacePredictions response:', { predictions, status });
+      setIsLoading(false);
+      if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+        console.log('GoogleAddressAutocomplete: Setting predictions:', predictions);
+        setPredictions(predictions.slice(0, 5));
+      } else {
+        console.log('GoogleAddressAutocomplete: No predictions or error status');
+        setPredictions([]);
+      }
+    });
   };
 
   const selectAddress = (prediction: any) => {
