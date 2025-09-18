@@ -93,12 +93,12 @@ export default function AIAgentDashboard() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.02 }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
+            className="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
             <div className="flex items-center gap-4">
               <motion.div 
@@ -112,8 +112,8 @@ export default function AIAgentDashboard() {
                 <Users className="w-6 h-6 text-white" />
               </motion.div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Visits</p>
-                <p className="text-3xl font-light text-gray-900 tracking-wide">{stats.total_visits}</p>
+                <p className="text-xs md:text-sm font-medium text-gray-600">Total Visits</p>
+                <p className="text-xl md:text-3xl font-light text-gray-900 tracking-wide">{stats.total_visits}</p>
               </div>
             </div>
           </motion.div>
@@ -123,7 +123,7 @@ export default function AIAgentDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             whileHover={{ scale: 1.02 }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
+            className="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
             <div className="flex items-center gap-4">
               <motion.div 
@@ -137,8 +137,8 @@ export default function AIAgentDashboard() {
                 <BarChart className="w-6 h-6 text-white" />
               </motion.div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Idag</p>
-                <p className="text-3xl font-light text-gray-900 tracking-wide">{stats.today_visits}</p>
+                <p className="text-xs md:text-sm font-medium text-gray-600">Idag</p>
+                <p className="text-xl md:text-3xl font-light text-gray-900 tracking-wide">{stats.today_visits}</p>
               </div>
             </div>
           </motion.div>
@@ -148,7 +148,7 @@ export default function AIAgentDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             whileHover={{ scale: 1.02 }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
+            className="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
             <div className="flex items-center gap-4">
               <motion.div 
@@ -173,7 +173,7 @@ export default function AIAgentDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             whileHover={{ scale: 1.02 }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
+            className="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
             <div className="flex items-center gap-4">
               <motion.div 
@@ -198,7 +198,7 @@ export default function AIAgentDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             whileHover={{ scale: 1.02 }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
+            className="bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
           >
             <div className="flex items-center gap-4">
               <motion.div 
@@ -230,12 +230,12 @@ export default function AIAgentDashboard() {
             <h2 className="text-2xl font-light text-gray-900 tracking-wide">Senaste AI-agent besök</h2>
           </div>
           
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto -mx-6 md:mx-0">
+            <table className="w-full min-w-[640px]">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Time
+                  <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Tid
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Agent Type
