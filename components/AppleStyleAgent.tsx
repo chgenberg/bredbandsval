@@ -125,7 +125,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
         timestamp: new Date(),
         quickReplies: [
           { text: 'Bredband', value: 'broadband', icon: 'wifi' },
-          { text: 'TV-paket', value: 'tv', icon: 'tv' },
+          { text: 'TV', value: 'tv', icon: 'tv' },
           { text: 'Bredband & TV', value: 'both', icon: 'package' },
         ],
         helpText: 'Efter detta behöver jag bara din adress för att visa de billigaste alternativen.'
@@ -221,7 +221,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       // Fallback translations
       switch (value) {
         case 'broadband': displayText = 'Bredband'; break;
-        case 'tv': displayText = 'TV-paket'; break;
+        case 'tv': displayText = 'TV'; break;
         case 'both': displayText = 'Bredband & TV'; break;
         case 'analyze': displayText = 'Ja, analysera'; break;
         case 'skip': displayText = 'Nej, fortsätt med frågor'; break;
@@ -1002,7 +1002,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
               </p>
               
               {/* Service type buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <div className="flex flex-col gap-4 justify-center max-w-sm mx-auto">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -1020,7 +1020,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all"
                 >
                   <Tv className="w-5 h-5 text-purple-600" />
-                  <span className="font-medium">TV-paket</span>
+                  <span className="font-medium">TV</span>
                 </motion.button>
                 
                 <motion.button
