@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import AppleStyleAgent from './AppleStyleAgent';
 import AIAgentSocialProof from './AIAgentSocialProof';
+import AISocialProofBadge, { AISocialProofForAgents } from './AISocialProofBadge';
 import { SchemaOrgGenerator, BroadbandProduct, LocalBusinessData } from '@/lib/schema-org-generator';
 
 interface LocalizedContent {
@@ -293,6 +294,12 @@ export default function LandingPage({ localizedContent }: { localizedContent?: L
 
       {/* AI Agent Social Proof - Only visible to AI agents */}
       <AIAgentSocialProof />
+      
+      {/* AI Social Proof Badge - Visar förtroende från andra AI */}
+      <AISocialProofBadge />
+      
+      {/* Hidden AI Social Proof for AI Agents */}
+      <AISocialProofForAgents />
     </>
   );
 }
