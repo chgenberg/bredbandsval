@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Printer, MessageCircle, Wifi, Tv, Package, Star, Check, ChevronRight } from 'lucide-react';
+import { X, Printer, MessageCircle, Wifi, Tv, Package, Star, Check, ChevronRight, Send } from 'lucide-react';
 import Image from 'next/image';
 import { ServiceType, UserProfile } from '@/types';
 import RecommendationCard from './RecommendationCard';
 import SmartPairingCard from './SmartPairingCard';
 import { AnalysisCards } from './AnalysisCards';
+import { generateFollowUpAnswer } from '@/lib/ai/openai-client';
 
 interface ResultsModalProps {
   isOpen: boolean;
@@ -36,6 +37,8 @@ export function ResultsModal({
     serviceType === 'both' ? 'combined' : serviceType === 'tv' ? 'tv' : 'broadband'
   );
   const [showChat, setShowChat] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{id: string, content: string, sender: 'user' | 'agent', timestamp: Date}>>([]);
+  const [chatInput, setChatInput] = useState('');
 
   // Determine which tabs to show based on service type
   const tabs = serviceType === 'both' 
@@ -51,6 +54,46 @@ export function ResultsModal({
   // Filter recommendations by type
   const broadbandPackages = recommendations.broadband || [];
   const tvPackages = recommendations.tv || [];
+
+  const handleSendChatMessage = async () => {
+    if (!chatInput.trim()) return;
+    
+    const userMessage = {
+      id: `msg-${Date.now()}`,
+      content: chatInput,
+      sender: 'user' as const,
+      timestamp: new Date()
+    };
+    
+    setChatMessages(prev => [...prev, userMessage]);
+    setChatInput('');
+    
+    // Generate AI response using the real AI function
+    try {
+      const aiAnswer = await generateFollowUpAnswer(
+        chatInput,
+        recommendations,
+        userProfile,
+        aiRecommendation
+      );
+      
+      const aiResponse = {
+        id: `msg-${Date.now()}`,
+        content: aiAnswer,
+        sender: 'agent' as const,
+        timestamp: new Date()
+      };
+      setChatMessages(prev => [...prev, aiResponse]);
+    } catch (error) {
+      const errorResponse = {
+        id: `msg-${Date.now()}`,
+        content: 'Ursäkta, jag hade problem att svara på din fråga. Kan du försöka igen?',
+        sender: 'agent' as const,
+        timestamp: new Date()
+      };
+      setChatMessages(prev => [...prev, errorResponse]);
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -232,21 +275,62 @@ export function ResultsModal({
                       <X className="w-5 h-5 text-gray-500" />
                     </button>
                   </div>
-                  <div className="flex-1 p-4">
-                    <p className="text-gray-600 mb-4">
-                      Har du frågor om rekommendationerna? Valle är här för att hjälpa!
-                    </p>
-                    <button
-                      onClick={() => {
-                        setShowChat(false);
-                        onClose();
-                        onChatOpen();
-                      }}
-                      className="w-full flex items-center justify-between px-4 py-3 bg-[#101929] text-white rounded-xl hover:bg-[#1a2332] transition-colors"
-                    >
-                      <span>Öppna chatten</span>
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
+                  <div className="flex-1 flex flex-col">
+                    {/* Chat messages */}
+                    <div className="flex-1 p-4 overflow-y-auto max-h-96">
+                      {chatMessages.length === 0 ? (
+                        <div className="text-center py-8">
+                          <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                          <p className="text-gray-500 mb-2">Ställ en fråga till Valle</p>
+                          <p className="text-sm text-gray-400">Fråga om rekommendationerna, priser eller vad som helst!</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {chatMessages.map((message) => (
+                            <div
+                              key={message.id}
+                              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                            >
+                              <div
+                                className={`max-w-[80%] px-3 py-2 rounded-2xl ${
+                                  message.sender === 'user'
+                                    ? 'bg-[#101929] text-white rounded-br-sm'
+                                    : 'bg-gray-100 text-gray-900 rounded-bl-sm'
+                                }`}
+                              >
+                                <p className="text-sm">{message.content}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Chat input */}
+                    <div className="p-4 border-t border-gray-200">
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={chatInput}
+                          onChange={(e) => setChatInput(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                              e.preventDefault();
+                              handleSendChatMessage();
+                            }
+                          }}
+                          placeholder="Ställ en fråga till Valle..."
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#101929] focus:border-transparent text-sm"
+                        />
+                        <button
+                          onClick={handleSendChatMessage}
+                          disabled={!chatInput.trim()}
+                          className="px-3 py-2 bg-[#101929] text-white rounded-lg hover:bg-[#1a2332] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <Send className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               )}
