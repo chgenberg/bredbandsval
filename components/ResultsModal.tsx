@@ -202,7 +202,7 @@ export function ResultsModal({
                           broadbandPackage={broadbandPackages[0]}
                           tvPackage={tvPackages[0]}
                           totalPrice={(broadbandPackages[0]?.price || 0) + (tvPackages[0]?.price || 0)}
-                          reasoning="Valle's rekommenderade kombination för dina behov"
+                          reasoning=""
                         />
                       </motion.div>
                     )}

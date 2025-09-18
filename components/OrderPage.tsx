@@ -152,16 +152,17 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       {/* Header */}
       <div className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              {/* Logo */}
+        {/* Logo row - längst upp */}
+        <div className="border-b border-gray-100">
+          <div className="max-w-4xl mx-auto px-6 py-3">
+            <div className="flex items-center justify-between">
+              {/* Logo längst upp till vänster */}
               <Image
                 src="/bredbandsval-logo-with-text.svg"
                 alt="Bredbandsval"
-                width={120}
-                height={32}
-                className="h-8 w-auto"
+                width={140}
+                height={36}
+                className="h-9 w-auto"
               />
               {/* Diskret tillbaka-knapp */}
               <button
@@ -172,18 +173,23 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                 <span>Tillbaka</span>
               </button>
             </div>
-            
-            <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-semibold text-gray-900">Slutför din beställning</h1>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Shield className="w-4 h-4" />
-                <span>Säker beställning</span>
-              </div>
+          </div>
+        </div>
+        
+        {/* Title row - under logotypen */}
+        <div className="max-w-4xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold text-gray-900">Slutför din beställning</h1>
+            <div className="flex items-center gap-2 text-lg text-gray-600">
+              <Shield className="w-5 h-5" />
+              <span className="font-medium">Säker beställning</span>
             </div>
           </div>
-          
+        </div>
+        
+        <div className="max-w-4xl mx-auto px-6 pb-4">
           {/* Progress indicator */}
-          <div className="mt-6 relative">
+          <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full h-0.5 bg-gray-200" />
             </div>
