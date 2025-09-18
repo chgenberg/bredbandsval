@@ -191,37 +191,9 @@ export function ResultsModal({
                 <div className="max-w-6xl mx-auto">
                   <AnimatePresence mode="wait">
                     {/* Combined view for both services */}
-                    {activeTab === 'combined' && smartPairs && smartPairs.length > 0 && (
+                    {activeTab === 'combined' && broadbandPackages.length > 0 && tvPackages.length > 0 && (
                       <motion.div
                         key="combined"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                      >
-                        <SimpleCombinationView
-                          broadbandPackage={{
-                            provider: smartPairs[0].broadband.provider,
-                            packageName: smartPairs[0].broadband.package,
-                            speed: smartPairs[0].broadband.speed,
-                            price: smartPairs[0].broadband.price,
-                            features: smartPairs[0].broadband.features
-                          }}
-                          tvPackage={{
-                            provider: smartPairs[0].tv.provider,
-                            packageName: smartPairs[0].tv.package,
-                            price: smartPairs[0].tv.price,
-                            features: smartPairs[0].tv.features
-                          }}
-                          totalPrice={smartPairs[0].totalPrice}
-                          reasoning={smartPairs[0].reasoning}
-                        />
-                      </motion.div>
-                    )}
-                    
-                    {/* Fallback to separate packages if no smart pairs */}
-                    {activeTab === 'combined' && (!smartPairs || smartPairs.length === 0) && broadbandPackages.length > 0 && tvPackages.length > 0 && (
-                      <motion.div
-                        key="combined-fallback"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
@@ -230,7 +202,7 @@ export function ResultsModal({
                           broadbandPackage={broadbandPackages[0]}
                           tvPackage={tvPackages[0]}
                           totalPrice={(broadbandPackages[0]?.price || 0) + (tvPackages[0]?.price || 0)}
-                          reasoning="De bästa alternativen för bredband och TV baserat på dina svar"
+                          reasoning="Valle's rekommenderade kombination för dina behov"
                         />
                       </motion.div>
                     )}

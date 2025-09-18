@@ -742,8 +742,18 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       // Ensure GPT always gets recommendations to work with
       let recommendationsForGPT = recs.slice(0, 3);
-      if (serviceType === 'both' && structured.combined.length > 0) {
-        recommendationsForGPT = structured.combined;
+      if (serviceType === 'both') {
+        // For "both" service type, create a simple combination from top broadband + top TV
+        const topBroadband = broadbandRecs[0];
+        const topTV = tvRecs[0];
+        if (topBroadband && topTV) {
+          recommendationsForGPT = [{
+            type: 'combination',
+            broadband: topBroadband,
+            tv: topTV,
+            totalPrice: (topBroadband.package?.pricing?.monthly || 0) + (topTV.package?.pricing?.monthly || 0)
+          }];
+        }
       }
       
       console.log('📦 Sending to GPT - recommendations count:', recommendationsForGPT.length);

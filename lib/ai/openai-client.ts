@@ -434,13 +434,18 @@ ${userProfile.priorities ? userProfile.priorities.replace(/,/g, ', ').replace(/p
 
 🎯 TOPP 3 MATCHADE ALTERNATIV:
 ${recommendations.slice(0, 3).map((rec, i) => {
-  const isPair = rec && rec.broadband && rec.tv;
-  if (isPair) {
-    const bb = rec.broadband || {};
-    const tv = rec.tv || {};
-    const total = rec.totalPrice ?? 0;
-    return `${i + 1}. 🥇 ${bb.provider || 'Bredband'} + ${tv.provider || 'TV'}\n   ⚡ ${bb.speed || 0} Mbit/s | 💰 ${total}kr/mån\n   📋 BB: ${bb.package || 'Okänt'} | TV: ${tv.package || 'Okänt'}`;
+  // Handle combination format
+  if (rec.type === 'combination' && rec.broadband && rec.tv) {
+    const bbPkg = rec.broadband.package || {};
+    const tvPkg = rec.tv.package || {};
+    const bbPrice = bbPkg?.pricing?.campaign?.monthlyPrice ?? bbPkg?.pricing?.monthly ?? 0;
+    const tvPrice = tvPkg?.pricing?.campaign?.monthlyPrice ?? tvPkg?.pricing?.monthly ?? 0;
+    const total = rec.totalPrice || (bbPrice + tvPrice);
+    return `${i + 1}. 🥇 ${bbPkg?.providerName || 'Bredband'} + ${tvPkg?.providerName || 'TV'}
+   ⚡ ${bbPkg?.speed?.download || 0} Mbit/s | 💰 ${total}kr/mån
+   📋 BB: ${bbPkg?.name || 'Okänt'} (${bbPrice}kr) | TV: ${tvPkg?.name || 'Okänt'} (${tvPrice}kr)`;
   }
+  // Handle regular package format
   const pkg = rec.package || {};
   const price = pkg?.pricing?.campaign?.monthlyPrice ?? pkg?.pricing?.monthly ?? 0;
   const campaignInfo = pkg?.pricing?.campaign ? ` 🎉${pkg.pricing.campaign.description}` : '';
