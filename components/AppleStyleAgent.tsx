@@ -421,6 +421,38 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
           { text: '24 månader för bästa pris', value: 'long', icon: 'zap' },
         ],
         helpText: 'TV-paket har ofta kampanjpriser första året med längre bindningstid.'
+      },
+      'budget': {
+        text: 'Vad är din ungefärliga budget per månad?',
+        replies: [
+          { text: 'Under 400 kr', value: 'low', icon: 'piggy' },
+          { text: '400-600 kr', value: 'medium', icon: 'piggy' },
+          { text: '600-800 kr', value: 'high', icon: 'piggy' },
+          { text: 'Över 800 kr', value: 'premium', icon: 'piggy' },
+        ],
+        helpText: 'Budget hjälper oss filtrera bort för dyra alternativ och hitta bästa värdet.'
+      },
+      'current-provider': {
+        text: 'Har du TV-paket idag? Vad betalar du ungefär?',
+        replies: [
+          { text: 'Ja, under 300 kr', value: 'cheap', icon: 'zap' },
+          { text: 'Ja, 300-500 kr', value: 'medium', icon: 'zap' },
+          { text: 'Ja, över 500 kr', value: 'expensive', icon: 'zap' },
+          { text: 'Nej, första gången', value: 'first-time', icon: 'zap' },
+        ],
+        helpText: 'Hjälper oss beräkna besparingar och om uppgradering är värt det.'
+      },
+      'priorities': {
+        text: 'Vad är viktigast för dig?',
+        multiSelect: true,
+        replies: [
+          { text: 'Lägsta pris', value: 'price', icon: 'piggy' },
+          { text: 'Bästa kanalutbudet', value: 'channels', icon: 'tv' },
+          { text: 'Bästa supporten', value: 'support', icon: 'help' },
+          { text: 'Ingen bindning', value: 'flexibility', icon: 'calendar' },
+          { text: 'Inkluderade streamingtjänster', value: 'streaming', icon: 'play' },
+        ],
+        helpText: 'Hjälper oss vikta olika faktorer i rekommendationen.'
       }
     };
     
