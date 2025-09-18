@@ -562,7 +562,7 @@ export default function AppleStyleAgent() {
     // Visa resultat i chatten
     const msg: Message = {
       id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      content: `Utmärkt! Jag mätte din hastighet till ${result.downloadMbps} Mbit/s ned och ${result.uploadMbps} Mbit/s upp. Nu vet jag exakt vad du behöver.`,
+      content: `Utmärkt! Jag mätte din hastighet till ${result.downloadMbps} Mbit/s ned och ${result.uploadMbps} Mbit/s upp. Det ger en bra bild!`,
       sender: 'agent',
       timestamp: new Date(),
     };
