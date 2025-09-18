@@ -157,13 +157,6 @@ export function ResultsModal({
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto">
-              {/* AI Recommendation - Card Layout */}
-              <div className="px-6 py-12 bg-gradient-to-b from-gray-50 to-white">
-                <div className="max-w-6xl mx-auto">
-                  <AnalysisCards aiRecommendation={aiRecommendation} />
-                </div>
-              </div>
-
               {/* Tabs */}
               {tabs.length > 1 && (
                 <div className="px-6 py-8">
@@ -252,6 +245,13 @@ export function ResultsModal({
                       </motion.div>
                     )}
                   </AnimatePresence>
+                </div>
+              </div>
+
+              {/* AI Recommendation - Card Layout - Moved to bottom */}
+              <div className="px-6 py-12 bg-gradient-to-b from-gray-50 to-white">
+                <div className="max-w-6xl mx-auto">
+                  <AnalysisCards aiRecommendation={aiRecommendation} />
                 </div>
               </div>
             </div>
