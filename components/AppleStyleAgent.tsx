@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { 
   MapPin, BarChart3, User, Users, Play, Gamepad2, 
   Briefcase, Video, Router, Zap, ArrowRight, HelpCircle,
@@ -754,8 +755,14 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       {/* Chat Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-            <span className="text-white font-semibold text-sm">AI</span>
+          <div className="w-10 h-10 rounded-full overflow-hidden bg-white border-2 border-blue-500 flex items-center justify-center">
+            <Image
+              src="/valle.png"
+              alt="Valle AI"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
           </div>
           <div className="flex-1">
             <h3 className="font-semibold text-gray-900">Valle AI</h3>
