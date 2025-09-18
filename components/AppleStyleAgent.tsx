@@ -542,9 +542,13 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     setUserProfile(prev => ({ ...prev, ...profileUpdate }));
     
     const nextStep = getNextStep();
+    console.log('🔄 Current step:', currentStep, 'Next step:', nextStep, 'Service type:', serviceType);
+    console.log('📋 Updated profile:', { ...userProfile, ...profileUpdate });
+    
     if (nextStep) {
       await askNextQuestion(nextStep);
     } else {
+      console.log('🎯 No more steps, calling calculateRecommendations');
       await calculateRecommendations();
     }
   };
