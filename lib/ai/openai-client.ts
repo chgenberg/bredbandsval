@@ -426,16 +426,26 @@ ${userProfile.priorities ? userProfile.priorities.replace(/,/g, ', ').replace(/p
 
 🎯 TOPP 3 MATCHADE ALTERNATIV:
 ${recommendations.slice(0, 3).map((rec, i) => {
-  const pkg = rec.package;
-  const price = pkg.pricing.campaign?.monthlyPrice || pkg.pricing.monthly;
-  const campaignInfo = pkg.pricing.campaign ? ` 🎉${pkg.pricing.campaign.description}` : '';
-  const badges = rec.badges ? ` | 🏆 ${rec.badges.join(', ')}` : '';
-  const trustInfo = rec.trustScore ? ` | ⭐ ${rec.trustScore}/100 kundnöjdhet` : '';
-  
-  return `${i + 1}. 🥇 ${pkg.providerName} - ${pkg.name}
-   ⚡ ${pkg.speed.download}/${pkg.speed.upload} Mbit/s | 💰 ${price}kr/mån${campaignInfo}
-   📋 ${pkg.contract?.bindingPeriod === 0 ? 'Ingen bindning' : `${pkg.contract?.bindingPeriod}mån bindning`} | ${pkg.includes?.router ? '📦 Router ingår' : '🚫 Router separat'}
-   📊 Matchning: ${rec.matchScore}/100${badges}${trustInfo}`;
+  // Handle both regular recommendations and smart pairs
+  if (rec.broadband && rec.tv) {
+    // Smart pair format
+    return `${i + 1}. 🥇 KOMBINATION: ${rec.broadband.provider} Bredband + ${rec.tv.provider} TV
+   ⚡ ${rec.broadband.speed} Mbit/s bredband | 📺 ${rec.tv.package} TV
+   💰 Totalt: ${rec.totalPrice}kr/mån (sparar ${rec.savings}kr/mån)
+   📝 ${rec.reasoning}`;
+  } else {
+    // Regular package format
+    const pkg = rec.package;
+    const price = pkg?.pricing?.campaign?.monthlyPrice || pkg?.pricing?.monthly || 0;
+    const campaignInfo = pkg?.pricing?.campaign ? ` 🎉${pkg.pricing.campaign.description}` : '';
+    const badges = rec.badges ? ` | 🏆 ${rec.badges.join(', ')}` : '';
+    const trustInfo = rec.trustScore ? ` | ⭐ ${rec.trustScore}/100 kundnöjdhet` : '';
+    
+    return `${i + 1}. 🥇 ${pkg?.providerName || 'Okänd'} - ${pkg?.name || 'Okänt paket'}
+   ⚡ ${pkg?.speed?.download || 0}/${pkg?.speed?.upload || 0} Mbit/s | 💰 ${price}kr/mån${campaignInfo}
+   📋 ${(pkg?.contract?.bindingPeriod || 0) === 0 ? 'Ingen bindning' : `${pkg?.contract?.bindingPeriod || 0}mån bindning`} | ${pkg?.includes?.router ? '📦 Router ingår' : '🚫 Router separat'}
+   📊 Matchning: ${rec.matchScore || 0}/100${badges}${trustInfo}`;
+  }
 }).join('\n\n')}
 
 SKAPA PERSONLIG ANALYS:
