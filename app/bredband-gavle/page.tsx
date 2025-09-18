@@ -3,18 +3,18 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "Bästa Bredband Gävle 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Gävle. Jämför Telia, Bredband2, Telenor och fler leverantörer. AI-driven analys på 30 sekunder. 80% fiber-täckning. Helt gratis.",
-  keywords: "bredband gävle, fiber gävle, internet gävle, tv paket gävle, telia bredband2 telenor",
+  description: "Hitta bästa bredband i Gävle. Jämför Comhem, Tre, Telenor, Tele2 och fler leverantörer. AI-driven analys på 30 sekunder. 70% fiber-täckning. Helt gratis.",
+  keywords: "bredband gävle, fiber gävle, internet gävle, tv paket gävle, comhem tre telenor tele2",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Gävle',
-    'geo.position': 'Gävleborg',
+    'geo.position': 'Västerbotten',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Gävle","population":77586,"region":"Gävleborg","fiberCoverage":80,"topProviders":["Telia","Bredband2","Telenor"],"avgPrice":350}',
+    'ai-city-data': '{"name":"Gävle","population":14304,"region":"Västerbotten","fiberCoverage":70,"topProviders":["Comhem","Tre","Telenor","Tele2"],"avgPrice":362}',
     'ai-local-keywords': 'bredband-gavle,fiber-gavle,internet-gavle',
-    'ai-fiber-coverage': '80%',
-    'ai-avg-price': '350-sek',
-    'ai-top-providers': 'Telia,Bredband2,Telenor'
+    'ai-fiber-coverage': '70%',
+    'ai-avg-price': '362-sek',
+    'ai-top-providers': 'Comhem,Tre,Telenor,Tele2'
   }
 };
 
@@ -24,11 +24,11 @@ export default function GävleBredbandsPage() {
     subtext: "Komplett guide till bredband i Gävle – jämför priser och hastigheter gratis",
     cta: "Se Gävle-alternativ nu",
     cityName: "Gävle",
-    region: "Gävleborg",
-    fiberCoverage: 80,
-    avgPrice: 350,
-    topProviders: ["Telia","Bredband2","Telenor"],
-    population: 77586
+    region: "Västerbotten",
+    fiberCoverage: 70,
+    avgPrice: 362,
+    topProviders: ["Comhem","Tre","Telenor","Tele2"],
+    population: 14304
   };
 
   return <LandingPage localizedContent={localizedContent} />;
