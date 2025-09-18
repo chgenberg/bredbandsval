@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Shield, Router, Smartphone, Eye, Lock, CheckCircle, AlertTriangle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, Router, Smartphone, Lock, HelpCircle, X } from 'lucide-react';
 
 interface RealUsagePermissionProps {
   onAccept: (method: 'router' | 'isp' | 'app') => void;
@@ -10,56 +10,25 @@ interface RealUsagePermissionProps {
 }
 
 export default function RealUsagePermission({ onAccept, onDecline }: RealUsagePermissionProps) {
-  const [selectedMethod, setSelectedMethod] = useState<'router' | 'isp' | 'app' | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<'router' | 'isp' | null>(null);
+  const [openHelp, setOpenHelp] = useState<string | null>(null);
 
   const methods = [
     {
       id: 'router' as const,
       icon: Router,
-      title: 'Analysera min router',
-      description: 'Vi ansluter säkert till din router för att se 3 månaders trafikdata',
+      title: 'Via din router',
+      shortDesc: 'Snabb analys på 2 minuter',
       accuracy: '99% exakt',
-      time: '2 minuter',
-      privacy: 'Data stannar i din router',
-      steps: [
-        'Du anger router-IP (192.168.1.1)',
-        'Vi läser trafikstatistik (ingen personlig data)',
-        'Analys av hastigheter och användningsmönster'
-      ],
-      pros: ['Extremt exakt', 'Snabb analys', 'Ingen installation'],
-      cons: ['Kräver router-lösenord', 'Fungerar ej med alla routrar']
+      helpText: 'Vi ansluter säkert till din router och läser trafikstatistik från de senaste 3 månaderna. Ingen personlig data eller innehåll analyseras - endast trafikvolym och hastigheter. Du behöver din routers IP-adress (oftast 192.168.1.1) och lösenord.'
     },
     {
       id: 'isp' as const,
       icon: Smartphone,
-      title: 'Hämta från min leverantör',
-      description: 'Logga in med BankID för att hämta data från Telia/Comhem/etc.',
-      accuracy: '95% exakt', 
-      time: '1 minut',
-      privacy: 'Via BankID - säkert',
-      steps: [
-        'Välj din nuvarande leverantör',
-        'Logga in med BankID',
-        'Vi hämtar 3 månaders användningsdata'
-      ],
-      pros: ['Mycket enkelt', 'BankID-säkerhet', 'Officiell data'],
-      cons: ['Kräver BankID', 'Begränsad till stora leverantörer']
-    },
-    {
-      id: 'app' as const,
-      icon: Eye,
-      title: 'Installera analysapp',
-      description: 'Liten app som analyserar din trafik i realtid i 1-7 dagar',
-      accuracy: '99.9% exakt',
-      time: '5-7 dagar',
-      privacy: 'All data lokalt på din dator',
-      steps: [
-        'Ladda ner Bredbandsval Analyzer',
-        'Kör i bakgrunden 1-7 dagar',
-        'Få detaljerad analys av all användning'
-      ],
-      pros: ['Mest exakt', 'Ser verkligen ALLT', 'Fullständig privacy'],
-      cons: ['Kräver installation', 'Tar längre tid']
+      title: 'Via din leverantör',
+      shortDesc: 'Enkel inloggning med BankID',
+      accuracy: '95% exakt',
+      helpText: 'Logga in säkert med BankID hos din nuvarande leverantör (Telia, Comhem, Telenor etc). Vi hämtar din faktiska användningsdata från de senaste 3 månaderna direkt från leverantören. Helt säkert och officiell data.'
     }
   ];
 
@@ -67,139 +36,107 @@ export default function RealUsagePermission({ onAccept, onDecline }: RealUsagePe
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 backdrop-blur-md"
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="bg-white rounded-3xl shadow-2xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-100"
       >
-        <div className="text-center mb-6">
-          <Shield className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Analysera din RIKTIGA internetanvändning
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Shield className="w-8 h-8 text-gray-700" />
+          </div>
+          <h2 className="text-2xl font-semibold text-black mb-2">
+            Få exakta rekommendationer
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Med ditt godkännande kan vi analysera din faktiska användning från senaste 3 månaderna 
-            för att ge dig 100% exakta rekommendationer.
+          <p className="text-gray-600 max-w-md mx-auto">
+            Analysera din faktiska användning för skräddarsydda förslag
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 mb-6">
+        <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-8">
           {methods.map((method) => (
             <motion.div
               key={method.id}
               whileHover={{ scale: 1.02 }}
               onClick={() => setSelectedMethod(method.id)}
-              className={`p-6 border-2 rounded-2xl cursor-pointer transition-all ${
+              className={`relative p-6 border-2 rounded-2xl cursor-pointer transition-all ${
                 selectedMethod === method.id
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                  ? 'border-gray-900 bg-gray-50'
+                  : 'border-gray-200 hover:border-gray-400 bg-white'
               }`}
             >
-              <method.icon className="w-10 h-10 text-blue-500 mb-4" />
-              <h3 className="font-bold text-lg mb-2">{method.title}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                {method.description}
-              </p>
+              <div className="flex items-start justify-between mb-3">
+                <method.icon className="w-8 h-8 text-gray-700" />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenHelp(openHelp === method.id ? null : method.id);
+                  }}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <HelpCircle size={18} />
+                </button>
+              </div>
               
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Exakthet:</span>
-                  <span className="font-medium text-green-600">{method.accuracy}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Tid:</span>
-                  <span className="font-medium">{method.time}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Integritet:</span>
-                  <span className="font-medium text-blue-600">{method.privacy}</span>
-                </div>
+              <h3 className="font-semibold text-lg mb-1 text-black">{method.title}</h3>
+              <p className="text-sm text-gray-600 mb-3">{method.shortDesc}</p>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-500">Exakthet</span>
+                <span className="text-sm font-semibold text-gray-900">{method.accuracy}</span>
               </div>
 
-              {selectedMethod === method.id && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4"
-                >
-                  <h4 className="font-medium mb-2">Så här fungerar det:</h4>
-                  <ol className="text-sm space-y-1 mb-4">
-                    {method.steps.map((step, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="w-5 h-5 bg-blue-500 text-white rounded-full text-xs 
-                                       flex items-center justify-center mt-0.5">
-                          {i + 1}
-                        </span>
-                        {step}
-                      </li>
-                    ))}
-                  </ol>
-                  
-                  <div className="grid grid-cols-2 gap-4 text-xs">
-                    <div>
-                      <h5 className="font-medium text-green-600 mb-1">Fördelar:</h5>
-                      <ul className="space-y-1">
-                        {method.pros.map((pro, i) => (
-                          <li key={i} className="flex items-center gap-1">
-                            <CheckCircle size={12} className="text-green-500" />
-                            {pro}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <h5 className="font-medium text-orange-600 mb-1">Begränsningar:</h5>
-                      <ul className="space-y-1">
-                        {method.cons.map((con, i) => (
-                          <li key={i} className="flex items-center gap-1">
-                            <AlertTriangle size={12} className="text-orange-500" />
-                            {con}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
+              <AnimatePresence>
+                {openHelp === method.id && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="absolute z-50 top-full mt-2 left-0 right-0 bg-white rounded-xl shadow-xl p-4 border border-gray-200"
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenHelp(null);
+                      }}
+                      className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X size={16} />
+                    </button>
+                    <p className="text-sm text-gray-700 pr-6">{method.helpText}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           ))}
         </div>
 
-        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 mb-6">
-          <div className="flex items-start gap-3">
-            <Lock className="w-5 h-5 text-blue-500 mt-1" />
-            <div className="text-sm">
-              <h4 className="font-medium text-blue-700 dark:text-blue-300 mb-1">
-                Din integritet är viktig
-              </h4>
-              <p className="text-blue-600 dark:text-blue-400">
-                Vi analyserar endast trafikvolym och hastigheter - aldrig innehåll eller personlig data. 
-                All analys sker säkert och du kan avbryta när som helst.
-              </p>
-            </div>
-          </div>
+        <div className="text-center text-xs text-gray-500 mb-6">
+          <Lock className="w-4 h-4 inline-block mr-1" />
+          Vi analyserar endast trafikvolym - aldrig innehåll eller personlig data
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 max-w-lg mx-auto">
           <button
             onClick={onDecline}
-            className="flex-1 py-3 px-6 bg-gray-200 dark:bg-gray-700 text-gray-700 
-                     dark:text-gray-300 rounded-2xl hover:bg-gray-300 dark:hover:bg-gray-600 
-                     transition-colors"
+            className="flex-1 py-3 px-6 text-gray-600 
+                     rounded-xl hover:bg-gray-50
+                     transition-colors font-medium"
           >
-            Nej tack, använd uppskattningar
+            Hoppa över
           </button>
           
           <button
             onClick={() => selectedMethod && onAccept(selectedMethod)}
             disabled={!selectedMethod}
-            className="flex-1 py-3 px-6 bg-blue-500 text-white rounded-2xl font-medium 
-                     hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed 
-                     transition-colors"
+            className="flex-1 py-3 px-6 bg-gray-900 text-white rounded-xl font-medium 
+                     hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed 
+                     transition-all shadow-sm"
           >
-            {selectedMethod ? `Analysera med ${methods.find(m => m.id === selectedMethod)?.title}` : 'Välj metod först'}
+            {selectedMethod ? 'Fortsätt' : 'Välj en metod'}
           </button>
         </div>
       </motion.div>

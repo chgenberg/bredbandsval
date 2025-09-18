@@ -4,12 +4,15 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, BarChart3, User, Users, Play, Gamepad2, 
-  Briefcase, Video, Router, Zap, ArrowRight
+  Briefcase, Video, Router, Zap, ArrowRight, HelpCircle,
+  Tv, Wifi, Package, X
 } from 'lucide-react';
 import GoogleAddressAutocomplete from './GoogleAddressAutocomplete';
 import RealUsagePermission from './RealUsagePermission';
 import { analytics } from '@/lib/analytics';
 import { bredbandsvalAPI } from '@/lib/api/client';
+import RecommendationCard from './RecommendationCard';
+import { generateAIRecommendation } from '@/lib/ai/openai-client';
 
 interface Message {
   id: string;
@@ -21,16 +24,52 @@ interface Message {
     value: string;
     icon?: string;
   }>;
+  helpText?: string;
+  multiSelect?: boolean;
 }
+
+interface HelpTooltipProps {
+  text: string;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const HelpTooltip = ({ text, isOpen, onClose }: HelpTooltipProps) => {
+  if (!isOpen) return null;
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      className="absolute z-[100] bg-white rounded-lg shadow-xl p-4 max-w-xs
+                 border border-gray-200 top-full mt-2 right-0"
+      style={{ minWidth: '250px' }}
+    >
+      <button
+        onClick={onClose}
+        className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+      >
+        <X size={16} />
+      </button>
+      <p className="text-sm text-gray-700 pr-6">{text}</p>
+      <div className="absolute top-[-6px] right-4 
+                      w-3 h-3 bg-white border-l border-t border-gray-200 rotate-45"></div>
+    </motion.div>
+  );
+};
 
 export default function AppleStyleAgent() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [currentStep, setCurrentStep] = useState('address');
+  const [currentStep, setCurrentStep] = useState('service-type');
   const [userProfile, setUserProfile] = useState<any>({});
-  const [showAddressInput, setShowAddressInput] = useState(true);
+  const [showAddressInput, setShowAddressInput] = useState(false);
   const [showRealUsage, setShowRealUsage] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [openHelpTooltip, setOpenHelpTooltip] = useState<string | null>(null);
+  const [serviceType, setServiceType] = useState<'broadband' | 'tv' | 'both' | null>(null);
+  const [selectedStreamingServices, setSelectedStreamingServices] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -42,12 +81,18 @@ export default function AppleStyleAgent() {
   }, [messages]);
 
   useEffect(() => {
-    // Start with minimal question
+    // Start with service type question
     const initialMessage: Message = {
-      id: '1',
-      content: 'Var befinner du dig?',
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      content: 'Hej! Vad kan jag hjälpa dig med idag?',
       sender: 'agent',
       timestamp: new Date(),
+      quickReplies: [
+        { text: 'Bredband', value: 'broadband', icon: 'wifi' },
+        { text: 'TV-paket', value: 'tv', icon: 'tv' },
+        { text: 'Både bredband och TV', value: 'both', icon: 'package' },
+      ],
+      helpText: 'Välj vad du är intresserad av så kan jag hjälpa dig hitta det bästa alternativet för just dina behov.'
     };
     setMessages([initialMessage]);
   }, []);
@@ -57,7 +102,7 @@ export default function AppleStyleAgent() {
     
     // Add user message
     const userMsg: Message = {
-      id: Date.now().toString(),
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       content: address,
       sender: 'user',
       timestamp: new Date(),
@@ -72,14 +117,15 @@ export default function AppleStyleAgent() {
     
     // Ask about usage analysis
     const analysisQuestion: Message = {
-      id: (Date.now() + 1).toString(),
-      content: 'Analysera din användning?',
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      content: 'Vill du att jag ska analysera din nuvarande internetanvändning för att ge dig en mer precis rekommendation?',
       sender: 'agent',
       timestamp: new Date(),
       quickReplies: [
-        { text: 'Ja', value: 'analyze', icon: 'chart' },
-        { text: 'Nej', value: 'skip', icon: 'arrow-right' },
+        { text: 'Ja, analysera', value: 'analyze', icon: 'chart' },
+        { text: 'Nej, fortsätt med frågor', value: 'skip', icon: 'arrow-right' },
       ],
+      helpText: 'Genom att analysera din faktiska användning kan jag ge dig en mer träffsäker rekommendation. Detta kräver tillgång till din router.'
     };
     
     setMessages(prev => [...prev, analysisQuestion]);
@@ -90,15 +136,60 @@ export default function AppleStyleAgent() {
   };
 
   const handleQuickReply = async (value: string) => {
-    // Add user click as message
+    // Close any open help tooltips
+    setOpenHelpTooltip(null);
+    
+    // Get display text for the clicked button
+    let displayText = value;
+    const lastMessage = messages[messages.length - 1];
+    const clickedReply = lastMessage?.quickReplies?.find(r => r.value === value);
+    
+    if (clickedReply) {
+      displayText = clickedReply.text;
+    } else {
+      // Fallback translations
+      switch (value) {
+        case 'broadband': displayText = 'Bredband'; break;
+        case 'tv': displayText = 'TV-paket'; break;
+        case 'both': displayText = 'Både bredband och TV'; break;
+        case 'analyze': displayText = 'Ja, analysera'; break;
+        case 'skip': displayText = 'Nej, fortsätt med frågor'; break;
+      }
+    }
+    
+    // Add user message
     const userMsg: Message = {
-      id: Date.now().toString(),
-      content: value === 'analyze' ? 'Ja' : value === 'skip' ? 'Nej' : value,
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      content: displayText,
       sender: 'user',
       timestamp: new Date(),
     };
     
     setMessages(prev => [...prev, userMsg]);
+    
+    // Handle service type selection
+    if (currentStep === 'service-type') {
+      setServiceType(value as 'broadband' | 'tv' | 'both');
+      setUserProfile(prev => ({ ...prev, serviceType: value }));
+      setIsTyping(true);
+      
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // Ask for address
+      const addressMsg: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: 'Perfekt! För att hitta de bästa alternativen behöver jag veta var du bor.',
+        sender: 'agent',
+        timestamp: new Date(),
+        helpText: 'Vi behöver din adress för att kontrollera vilka leverantörer som kan leverera till just dig.'
+      };
+      
+      setMessages(prev => [...prev, addressMsg]);
+      setIsTyping(false);
+      setCurrentStep('address');
+      setShowAddressInput(true);
+      return;
+    }
     
     if (value === 'analyze') {
       setShowRealUsage(true);
@@ -106,11 +197,11 @@ export default function AppleStyleAgent() {
     }
     
     if (value === 'skip') {
-      await askNextQuestion('household');
+      await askNextQuestion(serviceType === 'tv' ? 'tv-type' : 'household');
       return;
     }
     
-    // Process other responses
+    // Process other responses without adding another message
     await processAnswer(value);
   };
 
@@ -118,167 +209,285 @@ export default function AppleStyleAgent() {
     setIsTyping(true);
     await new Promise(resolve => setTimeout(resolve, 600));
     
-    const questions = {
+    const broadbandQuestions = {
       'household': {
-        text: 'Antal personer?',
+        text: 'Hur många personer bor i ditt hushåll?',
         replies: [
-          { text: '1', value: '1', icon: 'user' },
-          { text: '2', value: '2', icon: 'users' },
-          { text: '3-4', value: '3-4', icon: 'users' },
-          { text: '5+', value: '5+', icon: 'users' },
-        ]
+          { text: 'Bara jag', value: '1', icon: 'user' },
+          { text: '2 personer', value: '2', icon: 'users' },
+          { text: '3-4 personer', value: '3-4', icon: 'users' },
+          { text: '5 eller fler', value: '5+', icon: 'users' },
+        ],
+        helpText: 'Antalet personer påverkar hur mycket bandbredd som behövs för att alla ska kunna surfa samtidigt utan störningar.'
       },
       'streaming': {
-        text: 'Streamar ni mycket?',
+        text: 'Hur ofta streamar ni film och serier i hemmet?',
         replies: [
-          { text: 'Dagligen', value: 'heavy', icon: 'play' },
-          { text: 'Ibland', value: 'moderate', icon: 'play' },
-          { text: 'Sällan', value: 'light', icon: 'play' },
-        ]
+          { text: 'Varje dag', value: 'heavy', icon: 'play' },
+          { text: 'Några gånger i veckan', value: 'moderate', icon: 'play' },
+          { text: 'Sällan eller aldrig', value: 'light', icon: 'play' },
+        ],
+        helpText: 'Streaming i 4K kräver cirka 25 Mbit/s per stream. HD kräver cirka 5-8 Mbit/s.'
       },
       'gaming': {
-        text: 'Gaming?',
+        text: 'Spelar någon i hushållet onlinespel?',
         replies: [
-          { text: 'Ja', value: 'yes', icon: 'gamepad' },
+          { text: 'Ja, ofta', value: 'yes', icon: 'gamepad' },
           { text: 'Nej', value: 'no', icon: 'arrow-right' },
-        ]
+        ],
+        helpText: 'Onlinespel kräver låg latens (ping) för bästa upplevelse, inte nödvändigtvis högsta hastigheten.'
       },
       'meetings': {
-        text: 'Videomöten?',
+        text: 'Arbetar någon hemifrån med videomöten?',
         replies: [
-          { text: 'Dagligen', value: 'daily', icon: 'briefcase' },
+          { text: 'Ja, dagligen', value: 'daily', icon: 'briefcase' },
           { text: 'Ibland', value: 'sometimes', icon: 'video' },
           { text: 'Nej', value: 'no', icon: 'arrow-right' },
-        ]
+        ],
+        helpText: 'Videomöten kräver stabil uppkoppling och bra uppladdningshastighet, minst 3-5 Mbit/s.'
       },
       'router': {
-        text: 'Router inkluderad?',
+        text: 'Behöver du en router från leverantören?',
         replies: [
-          { text: 'Ja', value: 'yes', icon: 'router' },
-          { text: 'Nej', value: 'no', icon: 'arrow-right' },
-        ]
+          { text: 'Ja, jag vill ha en router', value: 'yes', icon: 'router' },
+          { text: 'Nej, jag har redan', value: 'no', icon: 'arrow-right' },
+        ],
+        helpText: 'Många leverantörer inkluderar router i priset. Om du redan har en bra router kan du spara pengar.'
       },
       'contract': {
-        text: 'Bindningstid?',
+        text: 'Vilken bindningstid föredrar du?',
         replies: [
-          { text: 'Ingen', value: 'none', icon: 'zap' },
-          { text: '3-6 mån', value: 'short', icon: 'zap' },
-          { text: 'Längre', value: 'long', icon: 'zap' },
-        ]
+          { text: 'Ingen bindning', value: 'none', icon: 'zap' },
+          { text: '3-6 månader', value: 'short', icon: 'zap' },
+          { text: 'Längre för bättre pris', value: 'long', icon: 'zap' },
+        ],
+        helpText: 'Längre bindningstid ger ofta lägre månadspris, men ingen bindning ger mer flexibilitet.'
       }
     };
+    
+    const tvQuestions = {
+      'tv-type': {
+        text: 'Vad är viktigast för dig när det gäller TV?',
+        replies: [
+          { text: 'Sport', value: 'sports', icon: 'tv' },
+          { text: 'Film & serier', value: 'entertainment', icon: 'play' },
+          { text: 'Nyheter & dokumentärer', value: 'news', icon: 'tv' },
+          { text: 'Allt ovan', value: 'all', icon: 'package' },
+        ],
+        helpText: 'Detta hjälper oss att hitta paket med rätt kanaler för dina intressen.'
+      },
+      'streaming-services': {
+        text: 'Vilka streamingtjänster använder du? (välj alla som stämmer)',
+        multiSelect: true,
+        replies: [
+          { text: 'Netflix', value: 'netflix', icon: 'play' },
+          { text: 'HBO Max', value: 'hbo', icon: 'play' },
+          { text: 'Disney+', value: 'disney', icon: 'play' },
+          { text: 'Viaplay', value: 'viaplay', icon: 'play' },
+          { text: 'SVT Play', value: 'svtplay', icon: 'tv' },
+          { text: 'TV4 Play', value: 'tv4play', icon: 'tv' },
+        ],
+        helpText: 'Vissa TV-paket inkluderar streamingtjänster vilket kan ge bättre totalpris.'
+      },
+      'tv-contract': {
+        text: 'Hur länge vill du binda dig för TV-paketet?',
+        replies: [
+          { text: 'Ingen bindning', value: 'none', icon: 'zap' },
+          { text: '12 månader', value: 'year', icon: 'zap' },
+          { text: '24 månader för bästa pris', value: 'long', icon: 'zap' },
+        ],
+        helpText: 'TV-paket har ofta kampanjpriser första året med längre bindningstid.'
+      }
+    };
+    
+    // Choose questions based on service type
+    let questions = broadbandQuestions;
+    if (serviceType === 'tv') {
+      questions = tvQuestions;
+    } else if (serviceType === 'both') {
+      // Merge both question sets for combined service
+      questions = { ...broadbandQuestions, ...tvQuestions };
+    }
     
     const question = questions[step];
     if (question) {
       const msg: Message = {
-        id: Date.now().toString(),
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         content: question.text,
         sender: 'agent',
         timestamp: new Date(),
         quickReplies: question.replies,
+        helpText: question.helpText,
+        multiSelect: question.multiSelect
       };
       
       setMessages(prev => [...prev, msg]);
       setCurrentStep(step);
+      
+      // Reset selected streaming services when we show the question
+      if (step === 'streaming-services') {
+        setSelectedStreamingServices([]);
+      }
     }
     
     setIsTyping(false);
   };
 
-  const processAnswer = async (value: string) => {
+  const processAnswer = async (value: string, displayText?: string) => {
+    // Only add user message if displayText is provided (from multiselect)
+    if (displayText) {
+      const userMsg: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: displayText,
+        sender: 'user',
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, userMsg]);
+    }
+    
     // Save to profile based on current step
     const profileUpdate = {};
+    
+    // Define question flow based on service type
+    const getNextStep = () => {
+      if (serviceType === 'broadband') {
+        const flow = ['household', 'streaming', 'gaming', 'meetings', 'router', 'contract'];
+        const currentIndex = flow.indexOf(currentStep);
+        return currentIndex < flow.length - 1 ? flow[currentIndex + 1] : null;
+      } else if (serviceType === 'tv') {
+        const flow = ['tv-type', 'streaming-services', 'tv-contract'];
+        const currentIndex = flow.indexOf(currentStep);
+        return currentIndex < flow.length - 1 ? flow[currentIndex + 1] : null;
+      } else { // both
+        const flow = ['household', 'streaming', 'gaming', 'meetings', 'tv-type', 'streaming-services', 'router', 'contract'];
+        const currentIndex = flow.indexOf(currentStep);
+        return currentIndex < flow.length - 1 ? flow[currentIndex + 1] : null;
+      }
+    };
     
     switch (currentStep) {
       case 'household':
         profileUpdate['householdSize'] = value;
-        await askNextQuestion('streaming');
         break;
       case 'streaming':
         profileUpdate['streamingHeavy'] = value === 'heavy';
-        await askNextQuestion('gaming');
+        profileUpdate['streamingLevel'] = value;
         break;
       case 'gaming':
         profileUpdate['onlineGaming'] = value === 'yes';
-        await askNextQuestion('meetings');
         break;
       case 'meetings':
         profileUpdate['videoMeetings'] = value === 'daily' || value === 'sometimes';
-        await askNextQuestion('router');
+        profileUpdate['workFromHome'] = value === 'daily';
         break;
       case 'router':
         profileUpdate['includeRouter'] = value === 'yes';
-        await askNextQuestion('contract');
         break;
       case 'contract':
         profileUpdate['contractPreference'] = value;
-        await calculateRecommendations();
+        break;
+      case 'tv-type':
+        profileUpdate['tvPreference'] = value;
+        break;
+      case 'streaming-services':
+        profileUpdate['streamingServices'] = value;
+        break;
+      case 'tv-contract':
+        profileUpdate['tvContractPreference'] = value;
         break;
     }
     
     setUserProfile(prev => ({ ...prev, ...profileUpdate }));
+    
+    const nextStep = getNextStep();
+    if (nextStep) {
+      await askNextQuestion(nextStep);
+    } else {
+      await calculateRecommendations();
+    }
   };
 
   const calculateRecommendations = async () => {
     setIsTyping(true);
     
     const calcMsg: Message = {
-      id: Date.now().toString(),
-      content: 'Analyserar...',
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      content: 'Låt mig analysera dina behov och hitta de bästa alternativen för dig...',
       sender: 'agent',
       timestamp: new Date(),
     };
     
     setMessages(prev => [...prev, calcMsg]);
     
-    // Call API
-    const addressData = await bredbandsvalAPI.lookupAddress(userProfile.address || '');
-    const preferences = {
-      address: addressData,
-      household: {
-        size: parseInt(userProfile.householdSize) || 1,
-        workFromHome: userProfile.videoMeetings ? 1 : 0,
-        students: 0,
-      },
-      usage: {
-        streaming: userProfile.streamingHeavy ? 'heavy' as const : 'moderate' as const,
-        gaming: userProfile.onlineGaming || false,
-        videoConferencing: userProfile.videoMeetings || false,
-        smartHome: false,
-        devicesCount: (parseInt(userProfile.householdSize) || 1) * 3,
-      },
-      preferences: {
-        contractLength: userProfile.contractPreference || 'no-preference' as const,
-        includeRouter: userProfile.includeRouter ?? null,
-        tvChannels: [],
-        streamingServices: [],
-        sports: [],
-      },
-    };
-    
-    const recs = await bredbandsvalAPI.getRecommendations(preferences);
-    setRecommendations(recs);
-    
-    // Show results
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    const resultsMsg: Message = {
-      id: (Date.now() + 1).toString(),
-      content: `Här är dina rekommendationer:
-
-${recs.slice(0, 3).map((rec, i) => 
-  `${i + 1}. **${rec.package.providerName}** ${rec.package.speed.download} Mbit/s
-     ${rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly} kr/mån
-     ${rec.reasons[0] || ''}`
-).join('\n\n')}`,
-      sender: 'agent',
-      timestamp: new Date(),
-    };
-    
-    setMessages(prev => [...prev, resultsMsg]);
-    setIsTyping(false);
-    
-    analytics.trackRecommendationsShown(recs, userProfile);
+    try {
+      // Call API
+      const addressData = await bredbandsvalAPI.lookupAddress(userProfile.address || '');
+      const preferences = {
+        address: addressData,
+        household: {
+          size: parseInt(userProfile.householdSize) || 1,
+          workFromHome: userProfile.workFromHome ? 1 : 0,
+          students: 0,
+        },
+        usage: {
+          streaming: userProfile.streamingLevel || 'moderate' as const,
+          gaming: userProfile.onlineGaming || false,
+          videoConferencing: userProfile.videoMeetings || false,
+          smartHome: false,
+          devicesCount: (parseInt(userProfile.householdSize) || 1) * 3,
+        },
+        preferences: {
+          contractLength: userProfile.contractPreference || 'no-preference' as const,
+          includeRouter: userProfile.includeRouter ?? null,
+          tvChannels: userProfile.tvPreference ? [userProfile.tvPreference] : [],
+          streamingServices: userProfile.streamingServices ? [userProfile.streamingServices] : [],
+          sports: userProfile.tvPreference === 'sports' ? ['all'] : [],
+        },
+      };
+      
+      const recs = await bredbandsvalAPI.getRecommendations(preferences);
+      setRecommendations(recs);
+      
+      // Generate AI recommendation
+      const aiRecommendation = await generateAIRecommendation({
+        userProfile,
+        recommendations: recs.slice(0, 3),
+        serviceType: serviceType || 'broadband'
+      });
+      
+      // Show results
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      const resultsMsg: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: aiRecommendation || 'Baserat på dina svar har jag hittat de bästa alternativen för dig.',
+        sender: 'agent',
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, resultsMsg]);
+      setIsTyping(false);
+      
+      // Show recommendations after a short delay
+      setTimeout(() => {
+        setCurrentStep('results');
+      }, 500);
+      
+      analytics.trackRecommendationsShown(recs, userProfile);
+    } catch (error) {
+      console.error('Error calculating recommendations:', error);
+      
+      const errorMsg: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: 'Ursäkta, jag hade problem att hämta rekommendationer. Försök igen senare.',
+        sender: 'agent',
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, errorMsg]);
+      setIsTyping(false);
+    }
   };
 
   const handleRealUsageAccept = async (method: string) => {
@@ -306,6 +515,9 @@ ${recs.slice(0, 3).map((rec, i) =>
       case 'chart': return BarChart3;
       case 'arrow-right': return ArrowRight;
       case 'location': return MapPin;
+      case 'wifi': return Wifi;
+      case 'tv': return Tv;
+      case 'package': return Package;
       default: return ArrowRight;
     }
   };
@@ -346,14 +558,55 @@ ${recs.slice(0, 3).map((rec, i) =>
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-3`}
               >
                 <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  className={`relative px-5 py-3 max-w-[70%] ${
+                  whileHover={{ scale: 1.01 }}
+                  className={`relative px-5 py-3 max-w-[85%] md:max-w-[75%] ${
                     message.sender === 'user' 
                       ? 'bg-blue-500 text-white rounded-[24px] rounded-br-[4px] shadow-sm' 
                       : 'bg-white text-gray-900 rounded-[24px] rounded-bl-[4px] shadow-sm border border-gray-100'
                   }`}
+                  animate={message.sender === 'agent' && index === messages.length - 1 ? {
+                    boxShadow: [
+                      "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                      "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                      "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                    ]
+                  } : {}}
+                  transition={{
+                    boxShadow: {
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }
+                  }}
                 >
-                  <p className="text-[15px] leading-relaxed break-words">{message.content}</p>
+                  <div className="flex items-start gap-2">
+                    <div className="text-[15px] leading-relaxed break-words flex-1">
+                      {message.sender === 'agent' ? (
+                        <div dangerouslySetInnerHTML={{ __html: message.content }} />
+                      ) : (
+                        <p>{message.content}</p>
+                      )}
+                    </div>
+                    
+                    {/* Help icon */}
+                    {message.helpText && message.sender === 'agent' && (
+                      <div className="relative">
+                        <button
+                          onClick={() => setOpenHelpTooltip(openHelpTooltip === message.id ? null : message.id)}
+                          className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+                        >
+                          <HelpCircle size={16} />
+                        </button>
+                        <AnimatePresence>
+                          <HelpTooltip
+                            text={message.helpText}
+                            isOpen={openHelpTooltip === message.id}
+                            onClose={() => setOpenHelpTooltip(null)}
+                          />
+                        </AnimatePresence>
+                      </div>
+                    )}
+                  </div>
                   
                   {/* Timestamp */}
                   <div className={`text-[11px] mt-1 ${
@@ -366,25 +619,91 @@ ${recs.slice(0, 3).map((rec, i) =>
                   </div>
                   
                   {message.quickReplies && (
-                    <div className="mt-3 flex flex-wrap gap-2">
+                    <div className={`mt-3 ${
+                      message.quickReplies.length <= 3 
+                        ? 'flex flex-row gap-2 justify-start' 
+                        : message.quickReplies.length === 4
+                        ? 'grid grid-cols-2 gap-2'
+                        : message.quickReplies.length === 6
+                        ? 'grid grid-cols-2 md:grid-cols-3 gap-2'
+                        : 'grid grid-cols-2 md:grid-cols-3 gap-2'
+                    }`}>
                       {message.quickReplies.map((reply) => {
                         const Icon = getIcon(reply.icon);
+                        const isSelected = selectedStreamingServices.includes(reply.value);
+                        
                         return (
                           <motion.button
                             key={reply.value}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            onClick={() => handleQuickReply(reply.value)}
-                            className="flex items-center gap-2 px-4 py-2 bg-gray-50 
-                                     rounded-full text-sm text-gray-700 font-medium 
-                                     border border-gray-200 hover:border-gray-300 
-                                     hover:bg-gray-100 transition-all"
+                            onClick={() => {
+                              if (message.multiSelect) {
+                                if (isSelected) {
+                                  setSelectedStreamingServices(prev => 
+                                    prev.filter(s => s !== reply.value)
+                                  );
+                                } else {
+                                  setSelectedStreamingServices(prev => 
+                                    [...prev, reply.value]
+                                  );
+                                }
+                              } else {
+                                handleQuickReply(reply.value);
+                              }
+                            }}
+                            className={`flex items-center justify-center gap-2 px-4 py-2 
+                                     rounded-full text-sm font-medium transition-all
+                                     ${isSelected 
+                                       ? 'bg-blue-500 text-white border-blue-500' 
+                                       : 'bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-100'
+                                     }`}
                           >
-                            <Icon size={14} className="text-gray-500" />
+                            <Icon size={14} className={isSelected ? 'text-white' : 'text-gray-500'} />
                             {reply.text}
                           </motion.button>
                         );
                       })}
+                      {message.multiSelect && (
+                        <div className="col-span-full mt-3 space-y-2">
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => {
+                              if (selectedStreamingServices.length > 0) {
+                                const displayText = selectedStreamingServices
+                                  .map(service => 
+                                    message.quickReplies?.find(r => r.value === service)?.text
+                                  )
+                                  .filter(Boolean)
+                                  .join(', ');
+                                processAnswer(selectedStreamingServices.join(','), displayText);
+                              }
+                            }}
+                            disabled={selectedStreamingServices.length === 0}
+                            className={`w-full py-3 px-6 rounded-full font-medium
+                                     transition-all ${
+                                       selectedStreamingServices.length > 0
+                                         ? 'bg-blue-500 text-white hover:bg-blue-600' 
+                                         : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                     }`}
+                          >
+                            {selectedStreamingServices.length > 0 
+                              ? `Fortsätt med ${selectedStreamingServices.length} val` 
+                              : 'Välj minst en tjänst'}
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => processAnswer('none', 'Inga tjänster')}
+                            className="w-full py-3 px-6 rounded-full font-medium
+                                     bg-gray-100 text-gray-700 border border-gray-300
+                                     hover:bg-gray-200 transition-all"
+                          >
+                            Jag använder inga streamingtjänster
+                          </motion.button>
+                        </div>
+                      )}
                     </div>
                   )}
                   
@@ -468,6 +787,34 @@ ${recs.slice(0, 3).map((rec, i) =>
                 onAddressSelect={handleAddressSelect}
                 placeholder="Ange din adress"
               />
+            </motion.div>
+          )}
+          
+          {/* Results view */}
+          {currentStep === 'results' && recommendations.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-8 space-y-4"
+            >
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Här är de tre bästa alternativen för dig:
+              </h3>
+              {recommendations.slice(0, 3).map((rec, index) => (
+                <RecommendationCard
+                  key={rec.package.id}
+                  provider={rec.package.providerName}
+                  packageName={rec.package.name}
+                  speed={rec.package.speed.download}
+                  price={rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly}
+                  bindingTime={rec.package.contractLength}
+                  features={rec.package.features || []}
+                  savings={rec.savings}
+                  matchScore={rec.matchScore}
+                  reasoning={rec.reasons?.[0] || 'Passar dina behov perfekt'}
+                  index={index}
+                />
+              ))}
             </motion.div>
           )}
           

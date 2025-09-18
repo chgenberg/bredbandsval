@@ -4,7 +4,7 @@ import { bredbandsvalAPI } from '@/lib/api/client';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true, // Only for demo - in production, use server-side API
 });
 
@@ -257,5 +257,75 @@ Fokusera på värde och besparingar. På svenska.`;
       role: 'assistant',
       content: this.getSystemPrompt()
     }];
+  }
+}
+
+// Export helper function for generating AI recommendations
+export async function generateAIRecommendation(params: {
+  userProfile: any;
+  recommendations: any[];
+  serviceType: 'broadband' | 'tv' | 'both';
+}): Promise<string> {
+  const { userProfile, recommendations, serviceType } = params;
+  
+  // Create a service type specific prompt
+  const serviceTypeText = serviceType === 'broadband' ? 'bredband' : 
+                         serviceType === 'tv' ? 'TV-paket' : 
+                         'bredband och TV';
+  
+  const prompt = `Baserat på användarens svar, generera en personlig rekommendation för ${serviceTypeText}.
+
+ANVÄNDARPROFIL:
+- Servicetyp: ${serviceType}
+- Hushållsstorlek: ${userProfile.householdSize || 'ej angivet'}
+- Streaming: ${userProfile.streamingLevel || userProfile.streamingHeavy ? 'Ja' : 'Nej'}
+- Gaming: ${userProfile.onlineGaming ? 'Ja' : 'Nej'}
+- Videomöten: ${userProfile.videoMeetings ? 'Ja' : 'Nej'}
+- Router behövs: ${userProfile.includeRouter ? 'Ja' : 'Nej'}
+- Bindningstid: ${userProfile.contractPreference || 'ej angivet'}
+${userProfile.tvPreference ? `- TV-preferens: ${userProfile.tvPreference}` : ''}
+${userProfile.streamingServices ? `- Streamingtjänster: ${userProfile.streamingServices}` : ''}
+
+TOPP 3 REKOMMENDATIONER:
+${recommendations.slice(0, 3).map((rec, i) => 
+  `${i + 1}. ${rec.package.providerName} - ${rec.package.speed.download} Mbit/s - ${rec.package.pricing.campaign?.monthlyPrice || rec.package.pricing.monthly} kr/mån`
+).join('\n')}
+
+FORMATKRAV:
+- Svara i ren HTML (ingen Markdown). Använd <strong> för rubrik och <p> för stycken.
+- Struktur:
+  <div>
+    <p><strong>Rekommendation</strong></p>
+    <p>[Stycke 1: kärnan i valet och varför det passar]</p>
+    <p>[Stycke 2: pris/värde, bindning, router, ev. TV/streaming‑fit]</p>
+    <p>[Stycke 3: alternativ 2–3 kort motivering, och vad man vinner]</p>
+  </div>
+- Skriv på svenska, tydligt och koncist. Avsluta alltid meningar – bryt aldrig mitt i en mening.
+- Håll 3–6 meningar totalt och undvik upprepningar.`;
+
+  try {
+    const openai = new OpenAI({
+      apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+      dangerouslyAllowBrowser: true,
+    });
+    
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { 
+          role: 'system', 
+          content: 'Du är en expert på bredband och TV-paket i Sverige. Ge personliga, tydliga rekommendationer på svenska. Följ FORMATKRAV. Avsluta alltid meningar helt.'
+        },
+        { role: 'user', content: prompt }
+      ],
+      max_tokens: 500,
+      temperature: 0.7
+    });
+
+    return completion.choices[0].message.content || 
+           'Baserat på dina svar har jag hittat de bästa alternativen för dig. Dessa leverantörer erbjuder hastigheter och priser som passar ditt hushåll perfekt.';
+  } catch (error) {
+    console.error('Error generating AI recommendation:', error);
+    return 'Baserat på dina svar har jag hittat de bästa alternativen för dig. Dessa leverantörer erbjuder hastigheter och priser som passar ditt hushåll perfekt.';
   }
 }
