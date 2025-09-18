@@ -89,11 +89,11 @@ export class BredbandsvalAPI {
           // Apply filters if provided
           let filtered = convertedPackages;
           if (filters?.minSpeed) {
-            filtered = filtered.filter((pkg: any) => pkg.speed.download >= filters.minSpeed!);
+            filtered = filtered.filter((pkg: any) => (pkg.speed?.download || 0) >= filters.minSpeed!);
           }
           if (filters?.maxPrice) {
             filtered = filtered.filter((pkg: any) => {
-              const price = pkg.pricing.campaign?.monthlyPrice || pkg.pricing.monthly;
+              const price = pkg.pricing?.campaign?.monthlyPrice || pkg.pricing?.monthly || 0;
               return price <= filters.maxPrice!;
             });
           }
@@ -199,18 +199,18 @@ export class BredbandsvalAPI {
       const pros: string[] = [];
       const cons: string[] = [];
 
-      // Speed matching
-      if (pkg.speed.download >= bandwidthNeed) {
+      // Speed matching (safe access)
+      if ((pkg.speed?.download || 0) >= bandwidthNeed) {
         score += 30;
-        reasons.push(`Hastigheten ${pkg.speed.download} Mbit/s täcker era behov`);
+        reasons.push(`Hastigheten ${pkg.speed?.download || 0} Mbit/s täcker era behov`);
         pros.push('Tillräcklig hastighet');
       } else {
         score -= 20;
         cons.push('För låg hastighet för era behov');
       }
 
-      // Price evaluation
-      const monthlyPrice = pkg.pricing.campaign?.monthlyPrice || pkg.pricing.monthly;
+      // Price evaluation (safe access)
+      const monthlyPrice = pkg.pricing?.campaign?.monthlyPrice || pkg.pricing?.monthly || 0;
       if (preferences.preferences.maxBudget) {
         if (monthlyPrice <= preferences.preferences.maxBudget) {
           score += 20;
@@ -221,20 +221,20 @@ export class BredbandsvalAPI {
         }
       }
 
-      // Contract preference
-      if (preferences.preferences.contractLength === 'none' && pkg.contract.bindingPeriod === 0) {
+      // Contract preference (safe access)
+      if (preferences.preferences.contractLength === 'none' && pkg.contract?.bindingPeriod === 0) {
         score += 15;
         pros.push('Ingen bindningstid');
-      } else if (preferences.preferences.contractLength === 'long' && pkg.contract.bindingPeriod >= 12) {
+      } else if (preferences.preferences.contractLength === 'long' && (pkg.contract?.bindingPeriod || 0) >= 12) {
         score += 10;
         pros.push('Bra pris med bindningstid');
       }
 
-      // Router preference
-      if (preferences.preferences.includeRouter === true && pkg.includes.router) {
+      // Router preference (safe access)
+      if (preferences.preferences.includeRouter === true && pkg.includes?.router) {
         score += 10;
         pros.push('Router ingår');
-      } else if (preferences.preferences.includeRouter === false && !pkg.includes.router) {
+      } else if (preferences.preferences.includeRouter === false && !pkg.includes?.router) {
         score += 5;
         pros.push('Inget routertillägg');
       }
