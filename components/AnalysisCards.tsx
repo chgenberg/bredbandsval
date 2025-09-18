@@ -45,7 +45,7 @@ export function AnalysisCards({ aiRecommendation }: AnalysisCardsProps) {
   
   const getCardColor = (title: string, index: number) => {
     const lower = title.toLowerCase();
-    if (lower.includes('rekommendation')) return 'from-blue-500 to-blue-600 text-white';
+    if (lower.includes('rekommendation')) return 'bg-[#101929] text-white';
     if (lower.includes('sparar') || lower.includes('kostnad')) return 'from-green-50 to-green-100 border border-green-200';
     if (lower.includes('bredband')) return 'from-blue-50 to-blue-100 border border-blue-200';
     if (lower.includes('tv')) return 'from-purple-50 to-purple-100 border border-purple-200';

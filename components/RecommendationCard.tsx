@@ -80,7 +80,7 @@ export default function RecommendationCard({
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className={`relative rounded-2xl p-4 h-full flex flex-col ${
         isTopChoice
-          ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-xl'
+          ? 'bg-[#101929] text-white shadow-xl'
           : 'bg-white border border-gray-200 shadow-sm'
       }`}
     >
@@ -229,8 +229,8 @@ export default function RecommendationCard({
         whileTap={{ scale: 0.98 }}
         className={`w-full mt-auto py-2.5 px-4 rounded-xl font-medium transition-colors text-sm ${
           isTopChoice
-            ? 'bg-white text-blue-600 hover:bg-blue-50'
-            : 'bg-blue-500 text-white hover:bg-blue-600'
+            ? 'bg-white text-[#101929] hover:bg-gray-50'
+            : 'bg-[#101929] text-white hover:bg-[#1a2332]'
         }`}
       >
         Välj detta paket

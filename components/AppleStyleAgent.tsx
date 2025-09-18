@@ -1007,7 +1007,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   whileHover={{ scale: 1.01 }}
                   className={`relative px-5 py-3 max-w-[85%] md:max-w-[75%] ${
                     message.sender === 'user' 
-                      ? 'bg-blue-500 text-white rounded-[24px] rounded-br-[4px] shadow-sm' 
+                      ? 'bg-[#101929] text-white rounded-[24px] rounded-br-[4px] shadow-sm' 
                       : `bg-white text-gray-900 rounded-[24px] rounded-bl-[4px] shadow-sm border border-gray-100 ${
                           index === 0 && message.sender === 'agent' ? 'first-message' : ''
                         }`
@@ -1109,7 +1109,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                                      rounded-full text-sm font-medium transition-all
                                      min-h-[48px] sm:min-h-[52px] w-full text-center leading-tight
                                      ${isSelected 
-                                       ? 'bg-blue-500 text-white border-blue-500' 
+                                       ? 'bg-[#101929] text-white border-[#101929]' 
                                        : 'bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-100'
                                      }`}
                           >
@@ -1149,7 +1149,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                               className={`w-full py-3 px-6 rounded-full font-medium
                                        transition-all ${
                                          currentSelection.length > 0
-                                           ? 'bg-blue-500 text-white hover:bg-blue-600' 
+                                           ? 'bg-[#101929] text-white hover:bg-[#1a2332]' 
                                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                                        }`}
                             >
@@ -1181,7 +1181,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   {/* Message tail */}
                   {message.sender === 'user' ? (
                     <div className="absolute -right-[8px] bottom-0 w-4 h-4 overflow-hidden">
-                      <div className="absolute -left-[8px] bottom-0 w-4 h-4 bg-blue-500 transform rotate-45"></div>
+                      <div className="absolute -left-[8px] bottom-0 w-4 h-4 bg-[#101929] transform rotate-45"></div>
                     </div>
                   ) : (
                     <div className="absolute -left-[8px] bottom-0 w-4 h-4 overflow-hidden">
@@ -1224,7 +1224,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                         {[0, 0.15, 0.3].map((delay, i) => (
                           <motion.div
                             key={i}
-                            className="w-1.5 h-1.5 bg-blue-500 rounded-full"
+                            className="w-1.5 h-1.5 bg-[#101929] rounded-full"
                             animate={{ 
                               y: [0, -6, 0],
                               opacity: [0.3, 1, 0.3]
@@ -1281,8 +1281,8 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setShowResultsModal(true)}
-                className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 
-                         hover:from-blue-700 hover:to-blue-800 text-white rounded-2xl 
+                className="flex items-center gap-3 px-8 py-4 bg-[#101929] 
+                         hover:bg-[#1a2332] text-white rounded-2xl 
                          text-lg font-semibold shadow-lg transition-all"
               >
                 <Package className="w-6 h-6" />

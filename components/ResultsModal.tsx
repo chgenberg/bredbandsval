@@ -73,7 +73,7 @@ export function ResultsModal({
             className="fixed inset-4 md:inset-8 lg:inset-16 bg-white rounded-3xl shadow-2xl z-50 overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 text-white">
+            <div className="relative bg-[#101929] px-6 py-8 text-white">
               <button
                 onClick={onClose}
                 className="absolute top-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
@@ -81,20 +81,15 @@ export function ResultsModal({
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                  <Image
-                    src="/valle.png"
-                    alt="Valle AI"
-                    width={32}
-                    height={32}
-                    className="object-contain"
-                  />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold">Valle AI Rekommendation</h2>
-                  <p className="text-blue-100">Personligt anpassad för {userProfile.address}</p>
-                </div>
+              <div className="flex flex-col items-center text-center mb-6">
+                <Image
+                  src="/val2.png"
+                  alt="Valle AI Banner"
+                  width={200}
+                  height={80}
+                  className="object-contain mb-4"
+                />
+                <p className="text-white/80 text-lg">Personligt anpassad för {userProfile.address}</p>
               </div>
 
               {/* Action buttons */}
@@ -108,7 +103,7 @@ export function ResultsModal({
                 </button>
                 <button
                   onClick={() => setShowChat(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white text-blue-700 hover:bg-blue-50 rounded-xl transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-white text-[#101929] hover:bg-gray-50 rounded-xl transition-colors"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span className="text-sm font-medium">Har du frågor?</span>
@@ -139,7 +134,7 @@ export function ResultsModal({
                             className={`
                               flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all
                               ${activeTab === tab.id 
-                                ? 'bg-blue-600 text-white shadow-sm' 
+                                ? 'bg-[#101929] text-white shadow-sm' 
                                 : 'text-gray-600 hover:bg-gray-50'
                               }
                             `}
@@ -247,7 +242,7 @@ export function ResultsModal({
                         onClose();
                         onChatOpen();
                       }}
-                      className="w-full flex items-center justify-between px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                      className="w-full flex items-center justify-between px-4 py-3 bg-[#101929] text-white rounded-xl hover:bg-[#1a2332] transition-colors"
                     >
                       <span>Öppna chatten</span>
                       <ChevronRight className="w-5 h-5" />
