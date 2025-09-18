@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { MapPin, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { googleMapsLoader } from '@/lib/google-maps-loader';
 
 interface GoogleAddressAutocompleteProps {
   onAddressSelect: (address: string) => void;
@@ -30,18 +31,12 @@ export default function GoogleAddressAutocomplete({
   const sessionToken = useRef<any>(null);
 
   useEffect(() => {
-    // Load Google Maps Script
-    if (!window.google && process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
-      script.async = true;
-      script.onload = () => {
-        initializeAutocomplete();
-      };
-      document.head.appendChild(script);
-    } else if (window.google) {
+    // Use singleton loader to ensure Google Maps is only loaded once
+    googleMapsLoader.load().then(() => {
       initializeAutocomplete();
-    }
+    }).catch((error) => {
+      console.error('Failed to load Google Maps:', error);
+    });
   }, []);
 
   const initializeAutocomplete = () => {

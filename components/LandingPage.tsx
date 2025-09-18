@@ -22,7 +22,7 @@ export default function LandingPage() {
               fill
               className="object-cover"
               priority
-              quality={100}
+              quality={90}
             />
           </div>
           {/* Mobile background */}
@@ -33,7 +33,7 @@ export default function LandingPage() {
               fill
               className="object-cover"
               priority
-              quality={100}
+              quality={90}
             />
           </div>
           {/* Gradient overlay for better text readability */}
