@@ -367,121 +367,105 @@ export async function generateAIRecommendation(params: {
                          serviceType === 'tv' ? 'TV-paket' : 
                          'bredband och TV';
   
-  const prompt = `Baserat på användarens svar, generera en personlig rekommendation för ${serviceTypeText}.
+  const prompt = `Du är Valle, Sveriges mest erfarna bredbandsexpert. Skapa en personlig rekommendation för ${serviceTypeText} som ger maximal värde åt kunden.
 
-KOMPLETT KUNDANALYS OCH PROFIL:
+🎯 DITT UPPDRAG:
+Analysera kundens unika situation och ge en rekommendation som:
+- Löser deras VERKLIGA problem (inte bara säljer produkter)
+- Sparar pengar ELLER ger betydligt mer värde för pengarna
+- Förhindrar framtida problem de inte tänkt på
+- Ger konkreta, actionable råd
 
-📍 ADRESS & TEKNISK SITUATION:
-- Adress: ${userProfile.address || 'ej angiven'}
-- Servicetyp: ${serviceType === 'broadband' ? 'Endast bredband' : serviceType === 'tv' ? 'Endast TV' : 'Både bredband och TV'}
-${userProfile.speedTestResult ? `- UPPMÄTT hastighet (just nu): ${userProfile.speedTestResult.downloadMbps} Mbit/s ned, ${userProfile.speedTestResult.uploadMbps} Mbit/s upp, ping: ${userProfile.speedTestResult.ping}ms` : ''}
-${userProfile.calculatedNeeds ? `- BERÄKNADE behov: ${userProfile.calculatedNeeds.requiredDownloadMbps} Mbit/s ned, ${userProfile.calculatedNeeds.requiredUploadMbps} Mbit/s upp` : ''}
+📊 KUNDANALYS - ${userProfile.address || 'Okänd adress'}:
 
-👥 HUSHÅLL & ANVÄNDNINGSMÖNSTER:
-- Hushållsstorlek: ${userProfile.householdSize || '1'} personer
-- Streaming-intensitet: ${
-  userProfile.streamingLevel === 'heavy' ? 'MYCKET HÖGT (dagligen, flera tjänster, 4K-innehåll)' :
-  userProfile.streamingLevel === 'moderate' ? 'Måttlig (några gånger i veckan, HD-innehåll)' :
-  userProfile.streamingLevel === 'light' ? 'Lågt (sällan, grundläggande kvalitet)' : 'Okänt'
+🏠 HUSHÅLLSSITUATION:
+${userProfile.householdSize ? `${userProfile.householdSize} personer` : '1 person'} | ${
+  userProfile.workFromHome ? '🏠 Hemarbete DAGLIGEN (kritisk uppkoppling)' :
+  userProfile.videoMeetings ? '💻 Sporadiska videomöten' : '🚫 Inget hemarbete'
+} | ${userProfile.onlineGaming ? '🎮 Gaming (låg latens viktigt)' : '🚫 Inget gaming'}
+
+📱 STREAMING & UNDERHÅLLNING:
+${userProfile.streamingLevel === 'heavy' ? '📺 TUNG streaming (4K, flera enheter samtidigt)' :
+  userProfile.streamingLevel === 'moderate' ? '📺 Måttlig streaming (HD, några gånger/vecka)' :
+  userProfile.streamingLevel === 'light' ? '📺 Lätt streaming (grundkvalitet, sällan)' : '📺 Okänd streamingvana'
 }
-${userProfile.streamingServices ? `- Aktiva streamingtjänster: ${userProfile.streamingServices.replace(/,/g, ', ')} (påverkar bandbreddsbehov)` : ''}
-- Online gaming: ${userProfile.onlineGaming ? 'JA - spelar ofta (behöver låg latens/ping)' : 'Nej, spelar inte online'}
-- Videomöten/hemarbete: ${
-  userProfile.workFromHome ? 'JA - jobbar hemifrån DAGLIGEN (kritiskt för inkomst, behöver stabil uppkoppling)' :
-  userProfile.videoMeetings ? 'Ja, ibland (sporadiska möten)' : 'Nej, inga videomöten'
+${userProfile.streamingServices ? `Aktiva tjänster: ${userProfile.streamingServices.replace(/,/g, ', ')}` : ''}
+${userProfile.tvPreference ? `TV-fokus: ${
+  userProfile.tvPreference === 'sports' ? '⚽ Sport (behöver sportkanaler + låg latens)' :
+  userProfile.tvPreference === 'entertainment' ? '🎬 Film & serier' :
+  userProfile.tvPreference === 'news' ? '📰 Nyheter & dokumentärer' :
+  '📺 Bred TV-konsumtion'
+}` : ''}
+
+💰 EKONOMISK SITUATION:
+${userProfile.budget ? `Budget: ${
+  userProfile.budget === 'low' ? '💸 Under 400kr/mån (pris avgörande)' :
+  userProfile.budget === 'medium' ? '💳 400-600kr/mån (balans pris/kvalitet)' :
+  userProfile.budget === 'high' ? '💎 600-800kr/mån (kvalitet viktigare)' :
+  '🏆 Över 800kr/mån (vill ha det bästa)'
+}` : '💰 Budget ej angiven'}
+${userProfile.currentProvider ? ` | Betalar idag: ${
+  userProfile.currentProvider === 'cheap' ? '✅ Under 300kr (redan bra pris)' :
+  userProfile.currentProvider === 'medium' ? '📊 300-500kr (standardnivå)' :
+  userProfile.currentProvider === 'expensive' ? '🚨 Över 500kr (STORA besparingsmöjligheter!)' :
+  '🆕 Första abonnemanget'
+}` : ''}
+
+⚡ TEKNISKA KRAV:
+${userProfile.speedTestResult ? `Nuvarande hastighet: ${userProfile.speedTestResult.downloadMbps}/${userProfile.speedTestResult.uploadMbps} Mbit/s (ping: ${userProfile.speedTestResult.ping}ms)` : ''}
+${userProfile.calculatedNeeds ? ` | Beräknade behov: ${userProfile.calculatedNeeds.requiredDownloadMbps}/${userProfile.calculatedNeeds.requiredUploadMbps} Mbit/s` : ''}
+Router: ${userProfile.includeRouter ? '📦 Vill ha inkluderad' : '✅ Har redan'} | Bindning: ${
+  userProfile.contractPreference === 'none' ? '🚫 Ingen bindning (flexibilitet viktigast)' :
+  userProfile.contractPreference === 'short' ? '📅 Kort bindning OK' :
+  userProfile.contractPreference === 'long' ? '📅 Lång bindning OK för bättre pris' :
+  '🤷 Ingen preferens'
 }
 
-💰 EKONOMI & BESPARINGSMÖJLIGHETER:
-${userProfile.budget ? `- Månadsbudget: ${
-  userProfile.budget === 'low' ? 'Under 400 kr/mån (PRISET ÄR AVGÖRANDE - visa billigaste alternativ)' :
-  userProfile.budget === 'medium' ? '400-600 kr/mån (balanserat värde, inte bara billigast)' :
-  userProfile.budget === 'high' ? '600-800 kr/mån (kan satsa mer för premium-kvalitet)' :
-  userProfile.budget === 'premium' ? 'Över 800 kr/mån (vill ha det absolut bästa, pris mindre viktigt)' : userProfile.budget
-}` : ''}
-${userProfile.currentProvider ? `- Nuvarande kostnad: ${
-  userProfile.currentProvider === 'cheap' ? 'Under 300 kr/mån (redan bra pris, svårt att förbättra)' :
-  userProfile.currentProvider === 'medium' ? '300-500 kr/mån (standardnivå, måttliga besparingar möjliga)' :
-  userProfile.currentProvider === 'expensive' ? 'Över 500 kr/mån (STORA BESPARINGSMÖJLIGHETER! Beräkna exakta besparingar)' :
-  userProfile.currentProvider === 'first-time' ? 'Första bredbandsabonnemanget (behöver grundläggande guidning)' : userProfile.currentProvider
-}` : ''}
-${userProfile.priorities ? `- Prioriteringsordning: ${userProfile.priorities.replace(/,/g, ', ').replace(/price/g, 'Lägsta pris').replace(/speed/g, 'Högsta hastighet').replace(/support/g, 'Bästa supporten').replace(/flexibility/g, 'Ingen bindning').replace(/convenience/g, 'Allt-i-ett-lösning')} (använd för att vikta rekommendationen)` : ''}
+🏆 PRIORITERINGAR:
+${userProfile.priorities ? userProfile.priorities.replace(/,/g, ', ').replace(/price/g, '💰 Lägsta pris').replace(/speed/g, '⚡ Högsta hastighet').replace(/support/g, '🛟 Bästa supporten').replace(/flexibility/g, '🔄 Flexibilitet').replace(/convenience/g, '📦 Allt-i-ett') : 'Ej angivna'}
 
-🔧 TEKNISKA KRAV & PREFERENSER:
-- Router-behov: ${userProfile.includeRouter ? 'Vill ha router inkluderad (lägg till routerkostnad i jämförelse)' : 'Har redan bra router (kan spara på routeravgift)'}
-- Bindningstid-flexibilitet: ${
-  userProfile.contractPreference === 'none' ? 'INGEN bindning (flexibilitet viktigast, accepterar högre pris)' :
-  userProfile.contractPreference === 'short' ? '3-6 månader OK (kort bindning acceptabel)' :
-  userProfile.contractPreference === 'long' ? 'Längre bindning OK för bättre pris (prismedveten)' :
-  'Ingen stark preferens (fokusera på andra faktorer)'
-}
-
-📺 TV & UNDERHÅLLNING:
-${userProfile.tvPreference ? `- TV-intressen: ${
-  userProfile.tvPreference === 'sports' ? 'Sport (fotboll, hockey, etc) - BEHÖVER sportkanaler och låg latens' :
-  userProfile.tvPreference === 'entertainment' ? 'Film & serier - fokusera på streaming-integrationer' :
-  userProfile.tvPreference === 'news' ? 'Nyheter & dokumentärer - grundläggande kanalutbud räcker' :
-  userProfile.tvPreference === 'all' ? 'Brett TV-intresse - behöver omfattande kanalpaket' : userProfile.tvPreference
-}` : ''}
-${userProfile.tvContractPreference ? `- TV-bindningstid: ${userProfile.tvContractPreference}` : ''}
-
-TOPP 3 REKOMMENDATIONER MED DETALJER:
+🎯 TOPP 3 MATCHADE ALTERNATIV:
 ${recommendations.slice(0, 3).map((rec, i) => {
   const pkg = rec.package;
   const price = pkg.pricing.campaign?.monthlyPrice || pkg.pricing.monthly;
-  const campaignInfo = pkg.pricing.campaign ? ` (kampanj: ${pkg.pricing.campaign.description})` : '';
-  const bindingInfo = pkg.contract?.bindingPeriod === 0 ? 'Ingen bindning' : `${pkg.contract?.bindingPeriod} mån bindning`;
-  const routerInfo = pkg.includes?.router ? 'Router ingår' : 'Router ingår ej';
-  const comboInfo = pkg.isCombo ? ` | KOMBINATION: ${pkg.comboDetails?.broadbandProvider} bredband + ${pkg.comboDetails?.tvProvider} TV (sparar ${pkg.comboDetails?.savings}kr/mån)` : '';
-  const badges = rec.badges ? ` | Badges: ${rec.badges.join(', ')}` : '';
-  const trustInfo = rec.trustScore ? ` | Förtroendepoäng: ${rec.trustScore}/100` : '';
+  const campaignInfo = pkg.pricing.campaign ? ` 🎉${pkg.pricing.campaign.description}` : '';
+  const badges = rec.badges ? ` | 🏆 ${rec.badges.join(', ')}` : '';
+  const trustInfo = rec.trustScore ? ` | ⭐ ${rec.trustScore}/100 kundnöjdhet` : '';
   
-  return `${i + 1}. ${pkg.providerName}
-   - Paket: ${pkg.name}
-   - Hastighet: ${pkg.speed.download}/${pkg.speed.upload} Mbit/s
-   - Pris: ${price} kr/mån${campaignInfo}
-   - Bindning: ${bindingInfo}
-   - Router: ${routerInfo}
-   - Matchpoäng: ${rec.matchScore}/100${badges}${trustInfo}${comboInfo}`;
+  return `${i + 1}. 🥇 ${pkg.providerName} - ${pkg.name}
+   ⚡ ${pkg.speed.download}/${pkg.speed.upload} Mbit/s | 💰 ${price}kr/mån${campaignInfo}
+   📋 ${pkg.contract?.bindingPeriod === 0 ? 'Ingen bindning' : `${pkg.contract?.bindingPeriod}mån bindning`} | ${pkg.includes?.router ? '📦 Router ingår' : '🚫 Router separat'}
+   📊 Matchning: ${rec.matchScore}/100${badges}${trustInfo}`;
 }).join('\n\n')}
 
-FORMATKRAV:
-- Svara i ren HTML (ingen Markdown). Använd <strong> för rubrik och <p> för stycken.
-- Struktur baserat på servicetyp:
-  
-  För BREDBAND:
-  <div>
-    <p><strong>Min rekommendation för dig</strong></p>
-    <p>[Varför just denna leverantör och hastighet passar dina behov]</p>
-    <p>[Specifika fördelar: pris, bindning, router, support, teknologi]</p>
-    <p>[Alternativ 2-3 med konkreta skillnader och när de kan vara bättre]</p>
-  </div>
-  
-  För BÅDE BREDBAND OCH TV:
-  <div>
-    <p><strong>Bästa kombinationen för dig</strong></p>
-    <p>[Om det är en kombination från samma leverantör ELLER varför olika leverantörer är bättre]</p>
-    <p>[Totalkostnad, vad som ingår, fördelar med valet]</p>
-    <p>[Alternativa kombinationer och vad som skiljer dem åt]</p>
-  </div>
+🎯 SKAPA VÄRDE-FOKUSERAD REKOMMENDATION:
 
-- Var SPECIFIK med leverantörsnamn, priser och tekniska detaljer
-- Förklara VARFÖR ett val är bättre (inte bara att det är bra)
-- Nämn konkreta besparingar eller fördelar
-- Skriv på svenska, personligt och direkt
-- MAX 4 meningar totalt (kortfattat och kraftfullt)
-- Fokusera på de 2-3 viktigaste fördelarna
+KRITISKA KRAV:
+✅ HTML-format: <div><p><strong>Titel</strong></p><p>Innehåll...</p></div>
+✅ MAX 4 meningar (kraftfulla, inte fluff)
+✅ KONKRETA siffror (pris, hastighet, besparingar)
+✅ Förklara VARFÖR detta val löser deras problem
+✅ Personligt och direkt (använd "du", "dina behov")
 
-KRITISKA INSTRUKTIONER - KONCIS REKOMMENDATION:
-1. FÖRSTA MENINGEN: Huvudrekommendation med leverantör och totalpris
-2. ANDRA MENINGEN: Varför det passar (hastighet/behov/prioriteringar)  
-3. TREDJE MENINGEN: Konkret fördel (besparing/feature/support)
-4. FJÄRDE MENINGEN: Kort alternativ eller slutsats
+🎯 STRUKTUR:
+1. 🏆 HUVUDREKOMMENDATION: "[Leverantör] för [totalpris]kr/mån är mitt val för dig"
+2. 🎯 VARFÖR DET PASSAR: "Eftersom du [specifik situation], ger detta [konkret fördel]"  
+3. 💎 VÄRDEPROPOSITION: "[Konkret besparing/fördel] jämfört med [alternativ/nuvarande]"
+4. 🚀 NÄSTA STEG/ALTERNATIV: "Om [scenario] skulle [alternativ] vara bättre"
 
-UNDVIK:
-- Långa utsvävningar om tekniska detaljer
-- Upprepningar av samma information
+💡 VÄRDE-SKAPANDE FOKUS:
+- Om de betalar för mycket: Beräkna EXAKTA årliga besparingar
+- Om de har för låg hastighet: Förklara vad de MISSAR just nu
+- Om de har fel prioritering: Visa vad som VERKLIGEN spelar roll för dem
+- Om de överköper: Förklara hur de kan få samma värde billigare
+- Om de underköper: Visa vad de kan få för lite mer
+
+🚫 UNDVIK:
+- Vaga fraser som "bra val", "passar dig"
+- Teknisk jargong utan förklaring
+- Säljsnack utan substans
 - Mer än 4 meningar
-- Vaga formuleringar som "kan hjälpa dig"`;
+- Information som redan finns i korten`;
 
   try {
     const openai = new OpenAI({
@@ -494,7 +478,7 @@ UNDVIK:
       messages: [
         { 
           role: 'system', 
-          content: 'Du är en expert på bredband och TV-paket i Sverige. Ge personliga, tydliga rekommendationer på svenska. Följ FORMATKRAV. Avsluta alltid meningar helt.'
+          content: 'Du är Valle - Sveriges mest erfarna bredbandsexpert som skapar maximal värde för kunder. Ge konkreta, problemlösande rekommendationer som sparar pengar eller ger betydligt mer värde. Fokusera på VARFÖR ett val löser deras specifika problem. Använd HTML-format och max 4 kraftfulla meningar.'
         },
         { role: 'user', content: prompt }
       ],

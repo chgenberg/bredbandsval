@@ -97,6 +97,12 @@ body {
   justify-content: center;
 }
 
+/* Center the first welcome message */
+.agent-message.first-message {
+  @apply mx-auto;
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   .agent-message {
     max-width: 75%;

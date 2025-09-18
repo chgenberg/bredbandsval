@@ -290,6 +290,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
   };
 
   const askNextQuestion = async (step: string) => {
+    console.log('askNextQuestion called with step:', step, 'serviceType:', serviceType);
     setLoadingMessage(getRandomLoadingMessage());
     setIsTyping(true);
     await new Promise(resolve => setTimeout(resolve, 600));
@@ -433,6 +434,10 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     }
     
     const question = questions[step];
+    console.log('Looking for question:', step, 'serviceType:', serviceType);
+    console.log('Available questions:', Object.keys(questions));
+    console.log('Found question:', question);
+    
     if (question) {
       const msg: Message = {
         id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -451,9 +456,13 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       if (step === 'streaming-services') {
         setSelectedStreamingServices([]);
       }
+      console.log('Question added to messages, currentStep set to:', step);
+    } else {
+      console.error('No question found for step:', step, 'in serviceType:', serviceType);
     }
     
     setIsTyping(false);
+    console.log('isTyping set to false');
   };
 
   const processAnswer = async (value: string, displayText?: string) => {
@@ -733,8 +742,10 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     };
     setMessages(prev => [...prev, msg]);
     
-    // Fortsätt med frågor
-    await askNextQuestion('household');
+    // Fortsätt med frågor baserat på serviceType
+    const nextStep = serviceType === 'tv' ? 'tv-type' : 'household';
+    console.log('Speed test complete, continuing with:', nextStep, 'serviceType:', serviceType);
+    await askNextQuestion(nextStep);
   };
 
   const handleSpeedTestSkip = () => {
@@ -895,14 +906,19 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
                   damping: 30,
                   delay: index * 0.05 
                 }}
-                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-3 px-2 sm:px-0`}
+                className={`flex ${
+                  message.sender === 'user' ? 'justify-end' : 
+                  index === 0 && message.sender === 'agent' ? 'justify-center' : 'justify-start'
+                } mb-3 px-2 sm:px-0`}
               >
                 <motion.div 
                   whileHover={{ scale: 1.01 }}
                   className={`relative px-5 py-3 max-w-[85%] md:max-w-[75%] ${
                     message.sender === 'user' 
                       ? 'bg-blue-500 text-white rounded-[24px] rounded-br-[4px] shadow-sm' 
-                      : 'bg-white text-gray-900 rounded-[24px] rounded-bl-[4px] shadow-sm border border-gray-100'
+                      : `bg-white text-gray-900 rounded-[24px] rounded-bl-[4px] shadow-sm border border-gray-100 ${
+                          index === 0 && message.sender === 'agent' ? 'first-message' : ''
+                        }`
                   }`}
                   animate={message.sender === 'agent' && index === messages.length - 1 ? {
                     boxShadow: [
