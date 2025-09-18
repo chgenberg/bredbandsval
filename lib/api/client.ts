@@ -91,7 +91,20 @@ export class BredbandsvalAPI {
             );
           }
 
-          return filtered;
+          // Combine scraped data with mock data for richer recommendations
+          console.log('🔄 Combining scraped data with mock data for richer selection');
+          const mockData = await mockProviderPackages(address, filters);
+          const combined = [...filtered, ...mockData];
+          
+          // Remove duplicates based on provider and package name
+          const unique = combined.filter((pkg, index, self) => 
+            index === self.findIndex(p => 
+              p.providerName === pkg.providerName && p.name === pkg.name
+            )
+          );
+          
+          console.log(`📦 Combined: ${filtered.length} scraped + ${mockData.length} mock = ${unique.length} total packages`);
+          return unique;
         }
       }
     } catch (error) {
