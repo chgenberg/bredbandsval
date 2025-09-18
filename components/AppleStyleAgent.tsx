@@ -95,7 +95,7 @@ export default function AppleStyleAgent() {
       quickReplies: [
         { text: 'Bredband', value: 'broadband', icon: 'wifi' },
         { text: 'TV-paket', value: 'tv', icon: 'tv' },
-        { text: 'Både bredband och TV', value: 'both', icon: 'package' },
+        { text: 'Bredband & TV', value: 'both', icon: 'package' },
       ],
       helpText: 'Välj vad du är intresserad av så kan jag hjälpa dig hitta det bästa alternativet för just dina behov.'
     };
@@ -156,7 +156,7 @@ export default function AppleStyleAgent() {
       switch (value) {
         case 'broadband': displayText = 'Bredband'; break;
         case 'tv': displayText = 'TV-paket'; break;
-        case 'both': displayText = 'Både bredband och TV'; break;
+        case 'both': displayText = 'Bredband & TV'; break;
         case 'analyze': displayText = 'Ja, analysera'; break;
         case 'skip': displayText = 'Nej, fortsätt med frågor'; break;
       }
