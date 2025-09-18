@@ -1,63 +1,52 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MapPin, Users, Wifi, TrendingUp } from 'lucide-react';
+import { MapPin, Users, Wifi, TrendingUp, Search, Filter } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-
-const swedishCities = [
-  // Stora städer
-  { name: "Stockholm", population: 975551, slug: "stockholm", region: "Stockholm", fiberCoverage: 95 },
-  { name: "Göteborg", population: 583056, slug: "goteborg", region: "Västra Götaland", fiberCoverage: 92 },
-  { name: "Malmö", population: 347949, slug: "malmo", region: "Skåne", fiberCoverage: 88 },
-  { name: "Uppsala", population: 230767, slug: "uppsala", region: "Uppsala", fiberCoverage: 90 },
-  { name: "Västerås", population: 127799, slug: "vasteras", region: "Västmanland", fiberCoverage: 85 },
-  { name: "Örebro", population: 126009, slug: "orebro", region: "Örebro", fiberCoverage: 83 },
-  { name: "Linköping", population: 114291, slug: "linkoping", region: "Östergötland", fiberCoverage: 87 },
-  { name: "Helsingborg", population: 113816, slug: "helsingborg", region: "Skåne", fiberCoverage: 84 },
-  { name: "Jönköping", population: 112766, slug: "jonkoping", region: "Jönköping", fiberCoverage: 82 },
-  { name: "Norrköping", population: 95618, slug: "norrkoping", region: "Östergötland", fiberCoverage: 86 },
-  
-  // Medelstora städer
-  { name: "Lund", population: 94703, slug: "lund", region: "Skåne", fiberCoverage: 89 },
-  { name: "Umeå", population: 89232, slug: "umea", region: "Västerbotten", fiberCoverage: 78 },
-  { name: "Gävle", population: 77586, slug: "gavle", region: "Gävleborg", fiberCoverage: 80 },
-  { name: "Borås", population: 73768, slug: "boras", region: "Västra Götaland", fiberCoverage: 84 },
-  { name: "Eskilstuna", population: 69948, slug: "eskilstuna", region: "Södermanland", fiberCoverage: 82 },
-  { name: "Halmstad", population: 67207, slug: "halmstad", region: "Halland", fiberCoverage: 86 },
-  { name: "Växjö", population: 66275, slug: "vaxjo", region: "Kronoberg", fiberCoverage: 85 },
-  { name: "Karlstad", population: 65856, slug: "karlstad", region: "Värmland", fiberCoverage: 81 },
-  { name: "Sundsvall", population: 58807, slug: "sundsvall", region: "Västernorrland", fiberCoverage: 77 },
-  { name: "Trollhättan", population: 58218, slug: "trollhattan", region: "Västra Götaland", fiberCoverage: 83 },
-  
-  // Mindre städer och orter
-  { name: "Skellefteå", population: 57589, slug: "skelleftea", region: "Västerbotten", fiberCoverage: 76 },
-  { name: "Kalmar", population: 42634, slug: "kalmar", region: "Kalmar", fiberCoverage: 83 },
-  { name: "Kristianstad", population: 40145, slug: "kristianstad", region: "Skåne", fiberCoverage: 82 },
-  { name: "Falun", population: 37291, slug: "falun", region: "Dalarna", fiberCoverage: 79 },
-  { name: "Skövde", population: 36855, slug: "skovde", region: "Västra Götaland", fiberCoverage: 84 },
-  { name: "Karlskrona", population: 36304, slug: "karlskrona", region: "Blekinge", fiberCoverage: 81 },
-  { name: "Östersund", population: 31158, slug: "ostersund", region: "Jämtland", fiberCoverage: 75 },
-  { name: "Åre", population: 3200, slug: "are", region: "Jämtland", fiberCoverage: 85 },
-  { name: "Kiruna", population: 17002, slug: "kiruna", region: "Norrbotten", fiberCoverage: 72 },
-];
+import { useState, useMemo } from 'react';
+import { allAreas, getCitySize, getFiberStatus, getAreaType, totalPopulation, averageFiberCoverage, totalProviders } from '@/lib/city-data';
 
 export default function StaderPage() {
   const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState('all');
+  const [selectedType, setSelectedType] = useState('all');
 
-  const getCitySize = (population: number) => {
-    if (population > 500000) return "Storstad";
-    if (population > 100000) return "Större stad";
-    if (population > 50000) return "Medelstad";
-    return "Mindre ort";
-  };
+  // Filtrera och sortera områden
+  const filteredAreas = useMemo(() => {
+    return allAreas
+      .filter(area => {
+        const matchesSearch = area.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            area.region.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            (area.parentCity && area.parentCity.toLowerCase().includes(searchTerm.toLowerCase()));
+        const matchesRegion = selectedRegion === 'all' || area.region === selectedRegion;
+        const matchesType = selectedType === 'all' || area.type === selectedType;
+        
+        return matchesSearch && matchesRegion && matchesType;
+      })
+      .sort((a, b) => {
+        // Sortera: städer först (efter population), sedan lokala områden (efter sökvolym)
+        if (a.type === 'city' && b.type === 'area') return -1;
+        if (a.type === 'area' && b.type === 'city') return 1;
+        
+        if (a.type === 'city' && b.type === 'city') {
+          return b.population - a.population;
+        }
+        
+        if (a.type === 'area' && b.type === 'area') {
+          return (b.searchVolume || 0) - (a.searchVolume || 0);
+        }
+        
+        return 0;
+      });
+  }, [searchTerm, selectedRegion, selectedType]);
 
-  const getFiberStatus = (coverage: number) => {
-    if (coverage > 90) return { text: "Utmärkt fiber", color: "text-green-600" };
-    if (coverage > 80) return { text: "Bra fiber", color: "text-blue-600" };
-    return { text: "Växande fiber", color: "text-orange-600" };
-  };
+  // Unika regioner för filter
+  const regions = useMemo(() => {
+    return [...new Set(allAreas.map(area => area.region))].sort();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
@@ -79,8 +68,8 @@ export default function StaderPage() {
             </button>
             
             <div className="text-center">
-              <h1 className="text-3xl font-light text-gray-900 tracking-wide">Svenska Städer</h1>
-              <p className="text-gray-600">Bredband & TV-jämförelse för alla orter</p>
+              <h1 className="text-3xl font-light text-gray-900 tracking-wide">Svenska Städer & Områden</h1>
+              <p className="text-gray-600">Bredband & TV-jämförelse för alla orter och lokala områden</p>
             </div>
             
             <div className="w-15"></div> {/* Spacer för centrering */}
@@ -91,15 +80,15 @@ export default function StaderPage() {
       {/* Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center"
           >
             <MapPin className="w-8 h-8 text-[#101929] mx-auto mb-3" />
-            <p className="text-2xl font-bold text-gray-900">{swedishCities.length}+</p>
-            <p className="text-sm text-gray-600">Städer & orter</p>
+            <p className="text-2xl font-bold text-gray-900">{allAreas.length}</p>
+            <p className="text-sm text-gray-600">Städer & områden</p>
           </motion.div>
           
           <motion.div
@@ -109,7 +98,7 @@ export default function StaderPage() {
             className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center"
           >
             <Users className="w-8 h-8 text-[#101929] mx-auto mb-3" />
-            <p className="text-2xl font-bold text-gray-900">8M+</p>
+            <p className="text-2xl font-bold text-gray-900">{Math.round(totalPopulation / 1000000 * 10) / 10}M</p>
             <p className="text-sm text-gray-600">Invånare täckta</p>
           </motion.div>
           
@@ -120,7 +109,7 @@ export default function StaderPage() {
             className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center"
           >
             <Wifi className="w-8 h-8 text-[#101929] mx-auto mb-3" />
-            <p className="text-2xl font-bold text-gray-900">21+</p>
+            <p className="text-2xl font-bold text-gray-900">{totalProviders}+</p>
             <p className="text-sm text-gray-600">Leverantörer</p>
           </motion.div>
           
@@ -131,56 +120,127 @@ export default function StaderPage() {
             className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center"
           >
             <TrendingUp className="w-8 h-8 text-[#101929] mx-auto mb-3" />
-            <p className="text-2xl font-bold text-gray-900">85%</p>
+            <p className="text-2xl font-bold text-gray-900">{averageFiberCoverage}%</p>
             <p className="text-sm text-gray-600">Genomsnittlig fiber</p>
           </motion.div>
         </div>
 
-        {/* Cities Grid */}
+        {/* Search and Filters */}
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8">
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Search */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Sök stad eller område..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#101929] focus:border-transparent"
+              />
+            </div>
+            
+            {/* Region Filter */}
+            <div className="relative">
+              <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <select
+                value={selectedRegion}
+                onChange={(e) => setSelectedRegion(e.target.value)}
+                className="pl-10 pr-8 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#101929] focus:border-transparent bg-white appearance-none cursor-pointer"
+              >
+                <option value="all">Alla regioner</option>
+                {regions.map(region => (
+                  <option key={region} value={region}>{region}</option>
+                ))}
+              </select>
+            </div>
+            
+            {/* Type Filter */}
+            <div className="relative">
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#101929] focus:border-transparent bg-white appearance-none cursor-pointer"
+              >
+                <option value="all">Alla typer</option>
+                <option value="city">Städer</option>
+                <option value="area">Lokala områden</option>
+              </select>
+            </div>
+          </div>
+          
+          {/* Results count */}
+          <div className="mt-4 text-sm text-gray-600">
+            Visar {filteredAreas.length} av {allAreas.length} platser
+          </div>
+        </div>
+
+        {/* Areas Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {swedishCities.map((city, index) => {
-            const fiberStatus = getFiberStatus(city.fiberCoverage);
+          {filteredAreas.map((area, index) => {
+            const fiberStatus = getFiberStatus(area.fiberCoverage);
+            const areaType = getAreaType(area.type || 'city');
             
             return (
               <motion.div
-                key={city.slug}
+                key={area.slug}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.02 }}
+                transition={{ delay: Math.min(index * 0.01, 2) }}
                 whileHover={{ scale: 1.02 }}
                 className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all"
               >
-                <Link href={`/bredband-${city.slug}`}>
+                <Link href={`/bredband-${area.slug}`}>
                   <div className="cursor-pointer">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-gray-900">{city.name}</h3>
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
-                        {getCitySize(city.population)}
-                      </span>
+                      <h3 className="font-semibold text-gray-900">{area.name}</h3>
+                      <div className="flex gap-1">
+                        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                          {area.type === 'city' ? getCitySize(area.population) : areaType}
+                        </span>
+                        {area.competition && (
+                          <span className={`text-xs px-2 py-1 rounded-full ${
+                            area.competition === 'high' ? 'bg-red-100 text-red-600' :
+                            area.competition === 'medium' ? 'bg-yellow-100 text-yellow-600' :
+                            'bg-green-100 text-green-600'
+                          }`}>
+                            {area.competition === 'high' ? 'Hög' : 
+                             area.competition === 'medium' ? 'Medium' : 'Låg'} SEO
+                          </span>
+                        )}
+                      </div>
                     </div>
                     
                     <div className="space-y-1 text-sm">
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600">Invånare:</span>
-                        <span className="font-medium">{city.population.toLocaleString('sv-SE')}</span>
+                        <span className="font-medium">{area.population.toLocaleString('sv-SE')}</span>
                       </div>
                       
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-600">Region:</span>
-                        <span className="font-medium">{city.region}</span>
+                        <span className="text-gray-600">
+                          {area.parentCity ? `${area.parentCity}, ${area.region}` : area.region}
+                        </span>
                       </div>
                       
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600">Fiber:</span>
                         <span className={`font-medium ${fiberStatus.color}`}>
-                          {city.fiberCoverage}% - {fiberStatus.text}
+                          {area.fiberCoverage}% - {fiberStatus.text}
                         </span>
                       </div>
+                      
+                      {area.searchVolume && (
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-600">Sökningar/månad:</span>
+                          <span className="font-medium text-blue-600">{area.searchVolume.toLocaleString('sv-SE')}</span>
+                        </div>
+                      )}
                     </div>
                     
                     <div className="mt-3 pt-3 border-t border-gray-100">
                       <span className="text-xs text-[#101929] font-medium">
-                        Jämför bredband i {city.name} →
+                        Jämför bredband i {area.name} →
                       </span>
                     </div>
                   </div>
@@ -189,11 +249,30 @@ export default function StaderPage() {
             );
           })}
         </div>
+        
+        {/* No results message */}
+        {filteredAreas.length === 0 && (
+          <div className="text-center py-12">
+            <MapPin className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Inga resultat hittades</h3>
+            <p className="text-gray-600 mb-4">Prova att ändra dina sökkriterier eller filter</p>
+            <button
+              onClick={() => {
+                setSearchTerm('');
+                setSelectedRegion('all');
+                setSelectedType('all');
+              }}
+              className="px-4 py-2 bg-[#101929] text-white rounded-lg hover:bg-[#1a2332] transition-colors"
+            >
+              Rensa alla filter
+            </button>
+          </div>
+        )}
 
         {/* Footer info */}
         <div className="mt-12 text-center">
           <p className="text-gray-600 mb-4">
-            Saknar du din stad? Vi täcker hela Sverige med personliga AI-rekommendationer.
+            Saknar du din stad eller område? Vi täcker hela Sverige med personliga AI-rekommendationer.
           </p>
           <Link
             href="/"

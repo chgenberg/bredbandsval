@@ -2,33 +2,42 @@ import LandingPage from '@/components/LandingPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Bästa Bredband Vantör 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Vantör. Jämför Bahnhof, Fibio, Tre och fler leverantörer. AI-driven analys på 30 sekunder. 75% fiber-täckning. Helt gratis.",
-  keywords: "bredband vantör, fiber vantör, internet vantör, tv paket vantör, bahnhof fibio tre",
+  title: "Bästa Bredband Vantör Stockholm 2025 - Jämför Priser | Bredbandsval",
+  description: "Hitta bästa bredband i Vantör, Stockholm. Jämför Telia, Comhem, Bahnhof och fler leverantörer. 87% fiber-täckning. AI-analys gratis.",
+  keywords: "bredband vantör, fiber vantör, internet vantör, stockholm, telia comhem bahnhof",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Vantör',
-    'geo.position': 'Västra Götaland',
+    'geo.position': 'Stockholm',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Vantör","population":23299,"region":"Västra Götaland","fiberCoverage":75,"topProviders":["Bahnhof","Fibio","Tre"],"avgPrice":328}',
+    'ai-area-data': '{"name":"Vantör","type":"stadsdel","population":5500,"region":"Stockholm","fiberCoverage":87,"topProviders":["Telia","Comhem","Bahnhof"],"avgPrice":425,"searchVolume":650,"competition":"low"}',
     'ai-local-keywords': 'bredband-vantor,fiber-vantor,internet-vantor',
-    'ai-fiber-coverage': '75%',
-    'ai-avg-price': '328-sek',
-    'ai-top-providers': 'Bahnhof,Fibio,Tre'
+    'ai-fiber-coverage': '87%',
+    'ai-avg-price': '425-sek',
+    'ai-top-providers': 'Telia,Comhem,Bahnhof',
+    'ai-search-volume': '650',
+    'ai-competition': 'low',
+    'ai-area-type': 'stadsdel',
+    'ai-parent-city': 'Stockholm'
   }
 };
 
-export default function VantörBredbandsPage() {
+export default function VantrBredbandsPage() {
   const localizedContent = {
-    headline: "Bredband i Vantör<br/>– Alla tillgängliga alternativ",
-    subtext: "Komplett guide till bredband i Vantör – jämför priser och hastigheter gratis",
-    cta: "Se Vantör-alternativ nu",
+    headline: "Bredband i Vantör<br/>– Alla alternativ",
+    subtext: "Komplett översikt av bredband i Vantör, Stockholm. Jämför Telia, Comhem, Bahnhof och fler",
+    cta: "Jämför Vantör-leverantörer",
     cityName: "Vantör",
-    region: "Västra Götaland",
-    fiberCoverage: 75,
-    avgPrice: 328,
-    topProviders: ["Bahnhof","Fibio","Tre"],
-    population: 23299
+    region: "Stockholm",
+    parentCity: "Stockholm",
+    fiberCoverage: 87,
+    avgPrice: 425,
+    topProviders: ["Telia","Comhem","Bahnhof"],
+    population: 5500,
+    areaType: "stadsdel",
+    searchVolume: 650,
+    competition: "low",
+    localContent: {"localInfo":"Vantör är ett stadsdel i Stockholm med cirka 5,500 invånare.","fiberInfo":"Fiber-täckningen i Vantör ligger på 87%, vilket är bra för området.","providerInfo":"De mest populära bredbandsoperatörerna i Vantör är Telia, Comhem, Bahnhof.","priceInfo":"Genomsnittspriset för bredband i Vantör ligger på cirka 425 SEK per månad.","seoKeywords":"bredband vantör, fiber vantör, internet vantör, stockholm"}
   };
 
   return <LandingPage localizedContent={localizedContent} />;

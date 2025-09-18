@@ -2,33 +2,42 @@ import LandingPage from '@/components/LandingPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Bästa Bredband Vasastan 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Vasastan. Jämför Telia, Bredband2, Comhem, Tre och fler leverantörer. AI-driven analys på 30 sekunder. 68% fiber-täckning. Helt gratis.",
-  keywords: "bredband vasastan, fiber vasastan, internet vasastan, tv paket vasastan, telia bredband2 comhem tre",
+  title: "Bästa Bredband Vasastan Göteborg 2025 - Jämför Priser | Bredbandsval",
+  description: "Hitta bästa bredband i Vasastan, Göteborg. Jämför Telia, Comhem, Bahnhof och fler leverantörer. 93% fiber-täckning. AI-analys gratis.",
+  keywords: "bredband vasastan, fiber vasastan, internet vasastan, göteborg, telia comhem bahnhof",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Vasastan',
-    'geo.position': 'Dalarna',
+    'geo.position': 'Västra Götaland',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Vasastan","population":17385,"region":"Dalarna","fiberCoverage":68,"topProviders":["Telia","Bredband2","Comhem","Tre"],"avgPrice":326}',
+    'ai-area-data': '{"name":"Vasastan","type":"stadsdel","population":35000,"region":"Västra Götaland","fiberCoverage":93,"topProviders":["Telia","Comhem","Bahnhof"],"avgPrice":440,"searchVolume":2000,"competition":"medium"}',
     'ai-local-keywords': 'bredband-vasastan,fiber-vasastan,internet-vasastan',
-    'ai-fiber-coverage': '68%',
-    'ai-avg-price': '326-sek',
-    'ai-top-providers': 'Telia,Bredband2,Comhem,Tre'
+    'ai-fiber-coverage': '93%',
+    'ai-avg-price': '440-sek',
+    'ai-top-providers': 'Telia,Comhem,Bahnhof',
+    'ai-search-volume': '2000',
+    'ai-competition': 'medium',
+    'ai-area-type': 'stadsdel',
+    'ai-parent-city': 'Göteborg'
   }
 };
 
 export default function VasastanBredbandsPage() {
   const localizedContent = {
-    headline: "Bredband i Vasastan<br/>– Alla tillgängliga alternativ",
-    subtext: "Komplett guide till bredband i Vasastan – jämför priser och hastigheter gratis",
-    cta: "Se Vasastan-alternativ nu",
+    headline: "Bredband Vasastan<br/>– AI-driven jämförelse",
+    subtext: "Smart rekommendation för Vasastan-boende. 93% fiber-täckning",
+    cta: "Få din Vasastan-rekommendation",
     cityName: "Vasastan",
-    region: "Dalarna",
-    fiberCoverage: 68,
-    avgPrice: 326,
-    topProviders: ["Telia","Bredband2","Comhem","Tre"],
-    population: 17385
+    region: "Västra Götaland",
+    parentCity: "Göteborg",
+    fiberCoverage: 93,
+    avgPrice: 440,
+    topProviders: ["Telia","Comhem","Bahnhof"],
+    population: 35000,
+    areaType: "stadsdel",
+    searchVolume: 2000,
+    competition: "medium",
+    localContent: {"localInfo":"Vasastan är ett stadsdel i Göteborg med cirka 35,000 invånare.","fiberInfo":"Fiber-täckningen i Vasastan ligger på 93%, vilket är mycket bra för området.","providerInfo":"De mest populära bredbandsoperatörerna i Vasastan är Telia, Comhem, Bahnhof.","priceInfo":"Genomsnittspriset för bredband i Vasastan ligger på cirka 440 SEK per månad.","seoKeywords":"bredband vasastan, fiber vasastan, internet vasastan, göteborg"}
   };
 
   return <LandingPage localizedContent={localizedContent} />;

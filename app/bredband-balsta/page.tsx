@@ -2,33 +2,42 @@ import LandingPage from '@/components/LandingPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Bästa Bredband Bålsta 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Bålsta. Jämför Telia, Comhem och fler leverantörer. AI-driven analys på 30 sekunder. 82% fiber-täckning. Helt gratis.",
-  keywords: "bredband bålsta, fiber bålsta, internet bålsta, tv paket bålsta, telia comhem",
+  title: "Bästa Bredband Bålsta Stockholm 2025 - Jämför Priser | Bredbandsval",
+  description: "Hitta bästa bredband i Bålsta, Stockholm. Jämför Telia, Comhem, Bahnhof och fler leverantörer. 84% fiber-täckning. AI-analys gratis.",
+  keywords: "bredband bålsta, fiber bålsta, internet bålsta, stockholm, telia comhem bahnhof",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Bålsta',
-    'geo.position': 'Skåne',
+    'geo.position': 'Stockholm',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Bålsta","population":32617,"region":"Skåne","fiberCoverage":82,"topProviders":["Telia","Comhem"],"avgPrice":334}',
+    'ai-area-data': '{"name":"Bålsta","type":"tätort","population":14000,"region":"Stockholm","fiberCoverage":84,"topProviders":["Telia","Comhem","Bahnhof"],"avgPrice":415,"searchVolume":650,"competition":"low"}',
     'ai-local-keywords': 'bredband-balsta,fiber-balsta,internet-balsta',
-    'ai-fiber-coverage': '82%',
-    'ai-avg-price': '334-sek',
-    'ai-top-providers': 'Telia,Comhem'
+    'ai-fiber-coverage': '84%',
+    'ai-avg-price': '415-sek',
+    'ai-top-providers': 'Telia,Comhem,Bahnhof',
+    'ai-search-volume': '650',
+    'ai-competition': 'low',
+    'ai-area-type': 'tätort',
+    'ai-parent-city': 'Stockholm'
   }
 };
 
-export default function BålstaBredbandsPage() {
+export default function BlstaBredbandsPage() {
   const localizedContent = {
-    headline: "Bredband i Bålsta<br/>– Alla tillgängliga alternativ",
-    subtext: "Komplett guide till bredband i Bålsta – jämför priser och hastigheter gratis",
-    cta: "Se Bålsta-alternativ nu",
+    headline: "Bredband i Bålsta<br/>– Alla alternativ",
+    subtext: "Komplett översikt av bredband i Bålsta, Stockholm. Jämför Telia, Comhem, Bahnhof och fler",
+    cta: "Jämför Bålsta-leverantörer",
     cityName: "Bålsta",
-    region: "Skåne",
-    fiberCoverage: 82,
-    avgPrice: 334,
-    topProviders: ["Telia","Comhem"],
-    population: 32617
+    region: "Stockholm",
+    parentCity: "Stockholm",
+    fiberCoverage: 84,
+    avgPrice: 415,
+    topProviders: ["Telia","Comhem","Bahnhof"],
+    population: 14000,
+    areaType: "tätort",
+    searchVolume: 650,
+    competition: "low",
+    localContent: {"localInfo":"Bålsta är ett tätort i Stockholm med cirka 14,000 invånare.","fiberInfo":"Fiber-täckningen i Bålsta ligger på 84%, vilket är bra för området.","providerInfo":"De mest populära bredbandsoperatörerna i Bålsta är Telia, Comhem, Bahnhof.","priceInfo":"Genomsnittspriset för bredband i Bålsta ligger på cirka 415 SEK per månad.","seoKeywords":"bredband bålsta, fiber bålsta, internet bålsta, stockholm"}
   };
 
   return <LandingPage localizedContent={localizedContent} />;

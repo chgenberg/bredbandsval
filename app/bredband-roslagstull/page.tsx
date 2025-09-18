@@ -2,33 +2,42 @@ import LandingPage from '@/components/LandingPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Bästa Bredband Roslagstull 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Roslagstull. Jämför Tre, Telia och fler leverantörer. AI-driven analys på 30 sekunder. 77% fiber-täckning. Helt gratis.",
-  keywords: "bredband roslagstull, fiber roslagstull, internet roslagstull, tv paket roslagstull, tre telia",
+  title: "Bästa Bredband Roslagstull Stockholm 2025 - Jämför Priser | Bredbandsval",
+  description: "Hitta bästa bredband i Roslagstull, Stockholm. Jämför Telia, Bahnhof, Comhem och fler leverantörer. 95% fiber-täckning. AI-analys gratis.",
+  keywords: "bredband roslagstull, fiber roslagstull, internet roslagstull, stockholm, telia bahnhof comhem",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Roslagstull',
-    'geo.position': 'Västerbotten',
+    'geo.position': 'Stockholm',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Roslagstull","population":20039,"region":"Västerbotten","fiberCoverage":77,"topProviders":["Tre","Telia"],"avgPrice":395}',
+    'ai-area-data': '{"name":"Roslagstull","type":"område","population":2500,"region":"Stockholm","fiberCoverage":95,"topProviders":["Telia","Bahnhof","Comhem"],"avgPrice":465,"searchVolume":900,"competition":"medium"}',
     'ai-local-keywords': 'bredband-roslagstull,fiber-roslagstull,internet-roslagstull',
-    'ai-fiber-coverage': '77%',
-    'ai-avg-price': '395-sek',
-    'ai-top-providers': 'Tre,Telia'
+    'ai-fiber-coverage': '95%',
+    'ai-avg-price': '465-sek',
+    'ai-top-providers': 'Telia,Bahnhof,Comhem',
+    'ai-search-volume': '900',
+    'ai-competition': 'medium',
+    'ai-area-type': 'område',
+    'ai-parent-city': 'Stockholm'
   }
 };
 
 export default function RoslagstullBredbandsPage() {
   const localizedContent = {
-    headline: "Bredband i Roslagstull<br/>– Alla tillgängliga alternativ",
-    subtext: "Komplett guide till bredband i Roslagstull – jämför priser och hastigheter gratis",
-    cta: "Se Roslagstull-alternativ nu",
+    headline: "Bredband Roslagstull<br/>– AI-driven jämförelse",
+    subtext: "Smart rekommendation för Roslagstull-boende. 95% fiber-täckning",
+    cta: "Få din Roslagstull-rekommendation",
     cityName: "Roslagstull",
-    region: "Västerbotten",
-    fiberCoverage: 77,
-    avgPrice: 395,
-    topProviders: ["Tre","Telia"],
-    population: 20039
+    region: "Stockholm",
+    parentCity: "Stockholm",
+    fiberCoverage: 95,
+    avgPrice: 465,
+    topProviders: ["Telia","Bahnhof","Comhem"],
+    population: 2500,
+    areaType: "område",
+    searchVolume: 900,
+    competition: "medium",
+    localContent: {"localInfo":"Roslagstull är ett område i Stockholm med cirka 2,500 invånare.","fiberInfo":"Fiber-täckningen i Roslagstull ligger på 95%, vilket är mycket bra för området.","providerInfo":"De mest populära bredbandsoperatörerna i Roslagstull är Telia, Bahnhof, Comhem.","priceInfo":"Genomsnittspriset för bredband i Roslagstull ligger på cirka 465 SEK per månad.","seoKeywords":"bredband roslagstull, fiber roslagstull, internet roslagstull, stockholm"}
   };
 
   return <LandingPage localizedContent={localizedContent} />;

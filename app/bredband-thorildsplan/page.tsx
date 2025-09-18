@@ -2,33 +2,42 @@ import LandingPage from '@/components/LandingPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Bästa Bredband Thorildsplan 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Thorildsplan. Jämför Bredband2, Telenor, Fibio och fler leverantörer. AI-driven analys på 30 sekunder. 72% fiber-täckning. Helt gratis.",
-  keywords: "bredband thorildsplan, fiber thorildsplan, internet thorildsplan, tv paket thorildsplan, bredband2 telenor fibio",
+  title: "Bästa Bredband Thorildsplan Stockholm 2025 - Jämför Priser | Bredbandsval",
+  description: "Hitta bästa bredband i Thorildsplan, Stockholm. Jämför Telia, Bahnhof, Comhem och fler leverantörer. 94% fiber-täckning. AI-analys gratis.",
+  keywords: "bredband thorildsplan, fiber thorildsplan, internet thorildsplan, stockholm, telia bahnhof comhem",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Thorildsplan',
-    'geo.position': 'Västerbotten',
+    'geo.position': 'Stockholm',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Thorildsplan","population":34003,"region":"Västerbotten","fiberCoverage":72,"topProviders":["Bredband2","Telenor","Fibio"],"avgPrice":352}',
+    'ai-area-data': '{"name":"Thorildsplan","type":"område","population":1500,"region":"Stockholm","fiberCoverage":94,"topProviders":["Telia","Bahnhof","Comhem"],"avgPrice":460,"searchVolume":600,"competition":"medium"}',
     'ai-local-keywords': 'bredband-thorildsplan,fiber-thorildsplan,internet-thorildsplan',
-    'ai-fiber-coverage': '72%',
-    'ai-avg-price': '352-sek',
-    'ai-top-providers': 'Bredband2,Telenor,Fibio'
+    'ai-fiber-coverage': '94%',
+    'ai-avg-price': '460-sek',
+    'ai-top-providers': 'Telia,Bahnhof,Comhem',
+    'ai-search-volume': '600',
+    'ai-competition': 'medium',
+    'ai-area-type': 'område',
+    'ai-parent-city': 'Stockholm'
   }
 };
 
 export default function ThorildsplanBredbandsPage() {
   const localizedContent = {
-    headline: "Bredband i Thorildsplan<br/>– Alla tillgängliga alternativ",
-    subtext: "Komplett guide till bredband i Thorildsplan – jämför priser och hastigheter gratis",
-    cta: "Se Thorildsplan-alternativ nu",
+    headline: "Bredband Thorildsplan<br/>– AI-driven jämförelse",
+    subtext: "Smart rekommendation för Thorildsplan-boende. 94% fiber-täckning",
+    cta: "Få din Thorildsplan-rekommendation",
     cityName: "Thorildsplan",
-    region: "Västerbotten",
-    fiberCoverage: 72,
-    avgPrice: 352,
-    topProviders: ["Bredband2","Telenor","Fibio"],
-    population: 34003
+    region: "Stockholm",
+    parentCity: "Stockholm",
+    fiberCoverage: 94,
+    avgPrice: 460,
+    topProviders: ["Telia","Bahnhof","Comhem"],
+    population: 1500,
+    areaType: "område",
+    searchVolume: 600,
+    competition: "medium",
+    localContent: {"localInfo":"Thorildsplan är ett område i Stockholm med cirka 1,500 invånare.","fiberInfo":"Fiber-täckningen i Thorildsplan ligger på 94%, vilket är mycket bra för området.","providerInfo":"De mest populära bredbandsoperatörerna i Thorildsplan är Telia, Bahnhof, Comhem.","priceInfo":"Genomsnittspriset för bredband i Thorildsplan ligger på cirka 460 SEK per månad.","seoKeywords":"bredband thorildsplan, fiber thorildsplan, internet thorildsplan, stockholm"}
   };
 
   return <LandingPage localizedContent={localizedContent} />;

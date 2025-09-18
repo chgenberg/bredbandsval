@@ -1,0 +1,2777 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Bredband i Svenska Städer och Områden",
+  "description": "Komplett guide till bredband i Sveriges största städer och lokala områden",
+  "numberOfItems": 173,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Place",
+        "name": "Gamla Stan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Gamla Stan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-gamla-stan",
+        "description": "Bredband och fiber i Gamla Stan, Stockholm. 98% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Place",
+        "name": "Södermalm",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Södermalm",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-sodermalm",
+        "description": "Bredband och fiber i Södermalm, Stockholm. 96% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Place",
+        "name": "Östermalm",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Östermalm",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-ostermalm",
+        "description": "Bredband och fiber i Östermalm, Stockholm. 97% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "Place",
+        "name": "Vasastan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Vasastan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vasastan",
+        "description": "Bredband och fiber i Vasastan, Stockholm. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@type": "Place",
+        "name": "Norrmalm",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Norrmalm",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-norrmalm",
+        "description": "Bredband och fiber i Norrmalm, Stockholm. 98% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@type": "Place",
+        "name": "Kungsholmen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kungsholmen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-kungsholmen",
+        "description": "Bredband och fiber i Kungsholmen, Stockholm. 96% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "item": {
+        "@type": "Place",
+        "name": "Farsta",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Farsta",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-farsta",
+        "description": "Bredband och fiber i Farsta, Stockholm. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "item": {
+        "@type": "Place",
+        "name": "Skärholmen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Skärholmen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-skarholmen",
+        "description": "Bredband och fiber i Skärholmen, Stockholm. 85% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "item": {
+        "@type": "Place",
+        "name": "Hökarängen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hökarängen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-hokarangen",
+        "description": "Bredband och fiber i Hökarängen, Stockholm. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "item": {
+        "@type": "Place",
+        "name": "Hägersten",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hägersten",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-hagersten",
+        "description": "Bredband och fiber i Hägersten, Stockholm. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "item": {
+        "@type": "Place",
+        "name": "Liljeholmen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Liljeholmen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-liljeholmen",
+        "description": "Bredband och fiber i Liljeholmen, Stockholm. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "item": {
+        "@type": "Place",
+        "name": "Aspudden",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Aspudden",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-aspudden",
+        "description": "Bredband och fiber i Aspudden, Stockholm. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "item": {
+        "@type": "Place",
+        "name": "Midsommarkransen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Midsommarkransen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-midsommarkransen",
+        "description": "Bredband och fiber i Midsommarkransen, Stockholm. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "item": {
+        "@type": "Place",
+        "name": "Telefonplan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Telefonplan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-telefonplan",
+        "description": "Bredband och fiber i Telefonplan, Stockholm. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 15,
+      "item": {
+        "@type": "Place",
+        "name": "Västberga",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Västberga",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vastberga",
+        "description": "Bredband och fiber i Västberga, Stockholm. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 16,
+      "item": {
+        "@type": "Place",
+        "name": "Vantör",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Vantör",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vantor",
+        "description": "Bredband och fiber i Vantör, Stockholm. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 17,
+      "item": {
+        "@type": "Place",
+        "name": "Stureby",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Stureby",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-stureby",
+        "description": "Bredband och fiber i Stureby, Stockholm. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 18,
+      "item": {
+        "@type": "Place",
+        "name": "Sköndal",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sköndal",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-skondal",
+        "description": "Bredband och fiber i Sköndal, Stockholm. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 19,
+      "item": {
+        "@type": "Place",
+        "name": "Enskede",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Enskede",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-enskede",
+        "description": "Bredband och fiber i Enskede, Stockholm. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 20,
+      "item": {
+        "@type": "Place",
+        "name": "Johanneshov",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Johanneshov",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-johanneshov",
+        "description": "Bredband och fiber i Johanneshov, Stockholm. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 21,
+      "item": {
+        "@type": "Place",
+        "name": "Globen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Globen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-globen",
+        "description": "Bredband och fiber i Globen, Stockholm. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 22,
+      "item": {
+        "@type": "Place",
+        "name": "Gullmarsplan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Gullmarsplan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-gullmarsplan",
+        "description": "Bredband och fiber i Gullmarsplan, Stockholm. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 23,
+      "item": {
+        "@type": "Place",
+        "name": "Skanstull",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Skanstull",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-skanstull",
+        "description": "Bredband och fiber i Skanstull, Stockholm. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 24,
+      "item": {
+        "@type": "Place",
+        "name": "Medborgarplatsen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Medborgarplatsen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-medborgarplatsen",
+        "description": "Bredband och fiber i Medborgarplatsen, Stockholm. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 25,
+      "item": {
+        "@type": "Place",
+        "name": "Slussen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Slussen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-slussen",
+        "description": "Bredband och fiber i Slussen, Stockholm. 96% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 26,
+      "item": {
+        "@type": "Place",
+        "name": "Vällingby",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Vällingby",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vallingby",
+        "description": "Bredband och fiber i Vällingby, Stockholm. 84% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 27,
+      "item": {
+        "@type": "Place",
+        "name": "Rinkeby",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rinkeby",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-rinkeby",
+        "description": "Bredband och fiber i Rinkeby, Stockholm. 82% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 28,
+      "item": {
+        "@type": "Place",
+        "name": "Tensta",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Tensta",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-tensta",
+        "description": "Bredband och fiber i Tensta, Stockholm. 81% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 29,
+      "item": {
+        "@type": "Place",
+        "name": "Spånga",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Spånga",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-spanga",
+        "description": "Bredband och fiber i Spånga, Stockholm. 85% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 30,
+      "item": {
+        "@type": "Place",
+        "name": "Bromma",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bromma",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-bromma",
+        "description": "Bredband och fiber i Bromma, Stockholm. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 31,
+      "item": {
+        "@type": "Place",
+        "name": "Blackeberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Blackeberg",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-blackeberg",
+        "description": "Bredband och fiber i Blackeberg, Stockholm. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 32,
+      "item": {
+        "@type": "Place",
+        "name": "Hässelby",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hässelby",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-hasselby",
+        "description": "Bredband och fiber i Hässelby, Stockholm. 83% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 33,
+      "item": {
+        "@type": "Place",
+        "name": "Vällingby Centrum",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Vällingby Centrum",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vallingby-centrum",
+        "description": "Bredband och fiber i Vällingby Centrum, Stockholm. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 34,
+      "item": {
+        "@type": "Place",
+        "name": "Rissne",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rissne",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-rissne",
+        "description": "Bredband och fiber i Rissne, Stockholm. 84% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 35,
+      "item": {
+        "@type": "Place",
+        "name": "Hallonbergen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hallonbergen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-hallonbergen",
+        "description": "Bredband och fiber i Hallonbergen, Stockholm. 83% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 36,
+      "item": {
+        "@type": "Place",
+        "name": "Åkeshov",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Åkeshov",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-akeshov",
+        "description": "Bredband och fiber i Åkeshov, Stockholm. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 37,
+      "item": {
+        "@type": "Place",
+        "name": "Ulvsunda",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Ulvsunda",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-ulvsunda",
+        "description": "Bredband och fiber i Ulvsunda, Stockholm. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 38,
+      "item": {
+        "@type": "Place",
+        "name": "Mariehäll",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Mariehäll",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-mariehall",
+        "description": "Bredband och fiber i Mariehäll, Stockholm. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 39,
+      "item": {
+        "@type": "Place",
+        "name": "Sollentuna",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sollentuna",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-sollentuna",
+        "description": "Bredband och fiber i Sollentuna, Stockholm. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 40,
+      "item": {
+        "@type": "Place",
+        "name": "Täby",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Täby",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-taby",
+        "description": "Bredband och fiber i Täby, Stockholm. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 41,
+      "item": {
+        "@type": "Place",
+        "name": "Danderyd",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Danderyd",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-danderyd",
+        "description": "Bredband och fiber i Danderyd, Stockholm. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 42,
+      "item": {
+        "@type": "Place",
+        "name": "Vallentuna",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Vallentuna",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vallentuna",
+        "description": "Bredband och fiber i Vallentuna, Stockholm. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 43,
+      "item": {
+        "@type": "Place",
+        "name": "Österåker",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Österåker",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-osteraker",
+        "description": "Bredband och fiber i Österåker, Stockholm. 85% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 44,
+      "item": {
+        "@type": "Place",
+        "name": "Vaxholm",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Vaxholm",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vaxholm",
+        "description": "Bredband och fiber i Vaxholm, Stockholm. 83% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 45,
+      "item": {
+        "@type": "Place",
+        "name": "Norrtälje",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Norrtälje",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-norrtalje",
+        "description": "Bredband och fiber i Norrtälje, Stockholm. 81% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 46,
+      "item": {
+        "@type": "Place",
+        "name": "Sigtuna",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sigtuna",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-sigtuna",
+        "description": "Bredband och fiber i Sigtuna, Stockholm. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 47,
+      "item": {
+        "@type": "Place",
+        "name": "Märsta",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Märsta",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-marsta",
+        "description": "Bredband och fiber i Märsta, Stockholm. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 48,
+      "item": {
+        "@type": "Place",
+        "name": "Arlanda",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Arlanda",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-arlanda",
+        "description": "Bredband och fiber i Arlanda, Stockholm. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 49,
+      "item": {
+        "@type": "Place",
+        "name": "Rosersberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rosersberg",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-rosersberg",
+        "description": "Bredband och fiber i Rosersberg, Stockholm. 85% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 50,
+      "item": {
+        "@type": "Place",
+        "name": "Bålsta",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bålsta",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-balsta",
+        "description": "Bredband och fiber i Bålsta, Stockholm. 84% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 51,
+      "item": {
+        "@type": "Place",
+        "name": "Kungsängen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kungsängen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-kungsangen",
+        "description": "Bredband och fiber i Kungsängen, Stockholm. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 52,
+      "item": {
+        "@type": "Place",
+        "name": "Jakobsberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Jakobsberg",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-jakobsberg",
+        "description": "Bredband och fiber i Jakobsberg, Stockholm. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 53,
+      "item": {
+        "@type": "Place",
+        "name": "Barkarby",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Barkarby",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-barkarby",
+        "description": "Bredband och fiber i Barkarby, Stockholm. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 54,
+      "item": {
+        "@type": "Place",
+        "name": "Sundbyberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sundbyberg",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-sundbyberg",
+        "description": "Bredband och fiber i Sundbyberg, Stockholm. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 55,
+      "item": {
+        "@type": "Place",
+        "name": "Solna",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Solna",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-solna",
+        "description": "Bredband och fiber i Solna, Stockholm. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 56,
+      "item": {
+        "@type": "Place",
+        "name": "Råsunda",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Råsunda",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-rasunda",
+        "description": "Bredband och fiber i Råsunda, Stockholm. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 57,
+      "item": {
+        "@type": "Place",
+        "name": "Huvudsta",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Huvudsta",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-huvudsta",
+        "description": "Bredband och fiber i Huvudsta, Stockholm. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 58,
+      "item": {
+        "@type": "Place",
+        "name": "Bergshamra",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bergshamra",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-bergshamra",
+        "description": "Bredband och fiber i Bergshamra, Stockholm. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 59,
+      "item": {
+        "@type": "Place",
+        "name": "Universitetet",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Universitetet",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-universitetet",
+        "description": "Bredband och fiber i Universitetet, Stockholm. 96% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 60,
+      "item": {
+        "@type": "Place",
+        "name": "Frescati",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Frescati",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-frescati",
+        "description": "Bredband och fiber i Frescati, Stockholm. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 61,
+      "item": {
+        "@type": "Place",
+        "name": "Albano",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Albano",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-albano",
+        "description": "Bredband och fiber i Albano, Stockholm. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 62,
+      "item": {
+        "@type": "Place",
+        "name": "Roslagstull",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Roslagstull",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-roslagstull",
+        "description": "Bredband och fiber i Roslagstull, Stockholm. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 63,
+      "item": {
+        "@type": "Place",
+        "name": "Odenplan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Odenplan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-odenplan",
+        "description": "Bredband och fiber i Odenplan, Stockholm. 96% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 64,
+      "item": {
+        "@type": "Place",
+        "name": "Sankt Eriksplan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sankt Eriksplan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-sankt-eriksplan",
+        "description": "Bredband och fiber i Sankt Eriksplan, Stockholm. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 65,
+      "item": {
+        "@type": "Place",
+        "name": "Tomteboda",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Tomteboda",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-tomteboda",
+        "description": "Bredband och fiber i Tomteboda, Stockholm. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 66,
+      "item": {
+        "@type": "Place",
+        "name": "Ulriksdal",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Ulriksdal",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-ulriksdal",
+        "description": "Bredband och fiber i Ulriksdal, Stockholm. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 67,
+      "item": {
+        "@type": "Place",
+        "name": "Fridhemsplan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Fridhemsplan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-fridhemsplan",
+        "description": "Bredband och fiber i Fridhemsplan, Stockholm. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 68,
+      "item": {
+        "@type": "Place",
+        "name": "Stadshagen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Stadshagen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-stadshagen",
+        "description": "Bredband och fiber i Stadshagen, Stockholm. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 69,
+      "item": {
+        "@type": "Place",
+        "name": "Kristineberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kristineberg",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-kristineberg",
+        "description": "Bredband och fiber i Kristineberg, Stockholm. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 70,
+      "item": {
+        "@type": "Place",
+        "name": "Thorildsplan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Thorildsplan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-thorildsplan",
+        "description": "Bredband och fiber i Thorildsplan, Stockholm. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 71,
+      "item": {
+        "@type": "Place",
+        "name": "Karlaplan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Karlaplan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-karlaplan",
+        "description": "Bredband och fiber i Karlaplan, Stockholm. 97% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 72,
+      "item": {
+        "@type": "Place",
+        "name": "Gärdet",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Gärdet",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-gardet",
+        "description": "Bredband och fiber i Gärdet, Stockholm. 96% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 73,
+      "item": {
+        "@type": "Place",
+        "name": "Djurgården",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Djurgården",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-djurgarden",
+        "description": "Bredband och fiber i Djurgården, Stockholm. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 74,
+      "item": {
+        "@type": "Place",
+        "name": "Tekniska Högskolan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Tekniska Högskolan",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-tekniska-hogskolan",
+        "description": "Bredband och fiber i Tekniska Högskolan, Stockholm. 97% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 75,
+      "item": {
+        "@type": "Place",
+        "name": "Långholmen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Långholmen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-langholmen",
+        "description": "Bredband och fiber i Långholmen, Stockholm. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 76,
+      "item": {
+        "@type": "Place",
+        "name": "Reimersholme",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Reimersholme",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-reimersholme",
+        "description": "Bredband och fiber i Reimersholme, Stockholm. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 77,
+      "item": {
+        "@type": "Place",
+        "name": "Riddarholmen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Riddarholmen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-riddarholmen",
+        "description": "Bredband och fiber i Riddarholmen, Stockholm. 96% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 78,
+      "item": {
+        "@type": "Place",
+        "name": "Bagarmossen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bagarmossen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-bagarmossen",
+        "description": "Bredband och fiber i Bagarmossen, Stockholm. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 79,
+      "item": {
+        "@type": "Place",
+        "name": "Skarpnäck",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Skarpnäck",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-skarpnack",
+        "description": "Bredband och fiber i Skarpnäck, Stockholm. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 80,
+      "item": {
+        "@type": "Place",
+        "name": "Hammarbyhöjden",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hammarbyhöjden",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-hammarbyhojden",
+        "description": "Bredband och fiber i Hammarbyhöjden, Stockholm. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 81,
+      "item": {
+        "@type": "Place",
+        "name": "Björkhagen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Björkhagen",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-bjorkhagen",
+        "description": "Bredband och fiber i Björkhagen, Stockholm. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 82,
+      "item": {
+        "@type": "Place",
+        "name": "Kärrtorp",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kärrtorp",
+          "addressRegion": "Stockholm",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-karrtorp",
+        "description": "Bredband och fiber i Kärrtorp, Stockholm. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 83,
+      "item": {
+        "@type": "Place",
+        "name": "Centrum",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Centrum",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-centrum",
+        "description": "Bredband och fiber i Centrum, Göteborg. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 84,
+      "item": {
+        "@type": "Place",
+        "name": "Nordstan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Nordstan",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-nordstan",
+        "description": "Bredband och fiber i Nordstan, Göteborg. 96% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 85,
+      "item": {
+        "@type": "Place",
+        "name": "Inom Vallgraven",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Inom Vallgraven",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-inom-vallgraven",
+        "description": "Bredband och fiber i Inom Vallgraven, Göteborg. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 86,
+      "item": {
+        "@type": "Place",
+        "name": "Vasastan",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Vasastan",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vasastan",
+        "description": "Bredband och fiber i Vasastan, Göteborg. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 87,
+      "item": {
+        "@type": "Place",
+        "name": "Lorensberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lorensberg",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-lorensberg",
+        "description": "Bredband och fiber i Lorensberg, Göteborg. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 88,
+      "item": {
+        "@type": "Place",
+        "name": "Johanneberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Johanneberg",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-johanneberg",
+        "description": "Bredband och fiber i Johanneberg, Göteborg. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 89,
+      "item": {
+        "@type": "Place",
+        "name": "Linné",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Linné",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-linn",
+        "description": "Bredband och fiber i Linné, Göteborg. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 90,
+      "item": {
+        "@type": "Place",
+        "name": "Majorna",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Majorna",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-majorna",
+        "description": "Bredband och fiber i Majorna, Göteborg. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 91,
+      "item": {
+        "@type": "Place",
+        "name": "Kungsladugård",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kungsladugård",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-kungsladugard",
+        "description": "Bredband och fiber i Kungsladugård, Göteborg. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 92,
+      "item": {
+        "@type": "Place",
+        "name": "Stigbergsliden",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Stigbergsliden",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-stigbergsliden",
+        "description": "Bredband och fiber i Stigbergsliden, Göteborg. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 93,
+      "item": {
+        "@type": "Place",
+        "name": "Masthugget",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Masthugget",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-masthugget",
+        "description": "Bredband och fiber i Masthugget, Göteborg. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 94,
+      "item": {
+        "@type": "Place",
+        "name": "Slottsskogen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Slottsskogen",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-slottsskogen",
+        "description": "Bredband och fiber i Slottsskogen, Göteborg. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 95,
+      "item": {
+        "@type": "Place",
+        "name": "Annedal",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Annedal",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-annedal",
+        "description": "Bredband och fiber i Annedal, Göteborg. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 96,
+      "item": {
+        "@type": "Place",
+        "name": "Guldheden",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Guldheden",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-guldheden",
+        "description": "Bredband och fiber i Guldheden, Göteborg. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 97,
+      "item": {
+        "@type": "Place",
+        "name": "Krokslätt",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Krokslätt",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-krokslatt",
+        "description": "Bredband och fiber i Krokslätt, Göteborg. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 98,
+      "item": {
+        "@type": "Place",
+        "name": "Kålltorp",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kålltorp",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-kalltorp",
+        "description": "Bredband och fiber i Kålltorp, Göteborg. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 99,
+      "item": {
+        "@type": "Place",
+        "name": "Redbergslid",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Redbergslid",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-redbergslid",
+        "description": "Bredband och fiber i Redbergslid, Göteborg. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 100,
+      "item": {
+        "@type": "Place",
+        "name": "Backa",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Backa",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-backa",
+        "description": "Bredband och fiber i Backa, Göteborg. 85% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 101,
+      "item": {
+        "@type": "Place",
+        "name": "Brunnsbo",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Brunnsbo",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-brunnsbo",
+        "description": "Bredband och fiber i Brunnsbo, Göteborg. 84% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 102,
+      "item": {
+        "@type": "Place",
+        "name": "Bergsjön",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bergsjön",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-bergsjon",
+        "description": "Bredband och fiber i Bergsjön, Göteborg. 83% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 103,
+      "item": {
+        "@type": "Place",
+        "name": "Rinkeby",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rinkeby",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-rinkeby",
+        "description": "Bredband och fiber i Rinkeby, Göteborg. 82% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 104,
+      "item": {
+        "@type": "Place",
+        "name": "Angered",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Angered",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-angered",
+        "description": "Bredband och fiber i Angered, Göteborg. 81% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 105,
+      "item": {
+        "@type": "Place",
+        "name": "Järnbrott",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Järnbrott",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-jarnbrott",
+        "description": "Bredband och fiber i Järnbrott, Göteborg. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 106,
+      "item": {
+        "@type": "Place",
+        "name": "Frölunda",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Frölunda",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-frolunda",
+        "description": "Bredband och fiber i Frölunda, Göteborg. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 107,
+      "item": {
+        "@type": "Place",
+        "name": "Högsbo",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Högsbo",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-hogsbo",
+        "description": "Bredband och fiber i Högsbo, Göteborg. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 108,
+      "item": {
+        "@type": "Place",
+        "name": "Askim",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Askim",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-askim",
+        "description": "Bredband och fiber i Askim, Göteborg. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 109,
+      "item": {
+        "@type": "Place",
+        "name": "Billdal",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Billdal",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-billdal",
+        "description": "Bredband och fiber i Billdal, Göteborg. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 110,
+      "item": {
+        "@type": "Place",
+        "name": "Hovås",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hovås",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-hovas",
+        "description": "Bredband och fiber i Hovås, Göteborg. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 111,
+      "item": {
+        "@type": "Place",
+        "name": "Korsvägen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Korsvägen",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-korsvagen",
+        "description": "Bredband och fiber i Korsvägen, Göteborg. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 112,
+      "item": {
+        "@type": "Place",
+        "name": "Götaplatsen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Götaplatsen",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-gotaplatsen",
+        "description": "Bredband och fiber i Götaplatsen, Göteborg. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 113,
+      "item": {
+        "@type": "Place",
+        "name": "Järntorget",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Järntorget",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-jarntorget",
+        "description": "Bredband och fiber i Järntorget, Göteborg. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 114,
+      "item": {
+        "@type": "Place",
+        "name": "Brunnsparken",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Brunnsparken",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-brunnsparken",
+        "description": "Bredband och fiber i Brunnsparken, Göteborg. 96% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 115,
+      "item": {
+        "@type": "Place",
+        "name": "Centralstationen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Centralstationen",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-centralstationen",
+        "description": "Bredband och fiber i Centralstationen, Göteborg. 97% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 116,
+      "item": {
+        "@type": "Place",
+        "name": "Liseberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Liseberg",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-liseberg",
+        "description": "Bredband och fiber i Liseberg, Göteborg. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 117,
+      "item": {
+        "@type": "Place",
+        "name": "Mölndal",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Mölndal",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-molndal",
+        "description": "Bredband och fiber i Mölndal, Göteborg. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 118,
+      "item": {
+        "@type": "Place",
+        "name": "Partille",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Partille",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-partille",
+        "description": "Bredband och fiber i Partille, Göteborg. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 119,
+      "item": {
+        "@type": "Place",
+        "name": "Lerum",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lerum",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-lerum",
+        "description": "Bredband och fiber i Lerum, Göteborg. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 120,
+      "item": {
+        "@type": "Place",
+        "name": "Kungälv",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kungälv",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-kungalv",
+        "description": "Bredband och fiber i Kungälv, Göteborg. 84% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 121,
+      "item": {
+        "@type": "Place",
+        "name": "Ale",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Ale",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-ale",
+        "description": "Bredband och fiber i Ale, Göteborg. 82% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 122,
+      "item": {
+        "@type": "Place",
+        "name": "Hisingen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hisingen",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-hisingen",
+        "description": "Bredband och fiber i Hisingen, Göteborg. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 123,
+      "item": {
+        "@type": "Place",
+        "name": "Lindholmen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lindholmen",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-lindholmen",
+        "description": "Bredband och fiber i Lindholmen, Göteborg. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 124,
+      "item": {
+        "@type": "Place",
+        "name": "Eriksberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Eriksberg",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-eriksberg",
+        "description": "Bredband och fiber i Eriksberg, Göteborg. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 125,
+      "item": {
+        "@type": "Place",
+        "name": "Älvsjö",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Älvsjö",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-alvsjo",
+        "description": "Bredband och fiber i Älvsjö, Göteborg. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 126,
+      "item": {
+        "@type": "Place",
+        "name": "Chalmers",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Chalmers",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-chalmers",
+        "description": "Bredband och fiber i Chalmers, Göteborg. 95% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 127,
+      "item": {
+        "@type": "Place",
+        "name": "Göteborgs Universitet",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Göteborgs Universitet",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-goteborgs-universitet",
+        "description": "Bredband och fiber i Göteborgs Universitet, Göteborg. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 128,
+      "item": {
+        "@type": "Place",
+        "name": "Medicinareberget",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Medicinareberget",
+          "addressRegion": "Västra Götaland",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-medicinareberget",
+        "description": "Bredband och fiber i Medicinareberget, Göteborg. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 129,
+      "item": {
+        "@type": "Place",
+        "name": "Gamla Staden",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Gamla Staden",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-gamla-staden",
+        "description": "Bredband och fiber i Gamla Staden, Malmö. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 130,
+      "item": {
+        "@type": "Place",
+        "name": "Innerstaden",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Innerstaden",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-innerstaden",
+        "description": "Bredband och fiber i Innerstaden, Malmö. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 131,
+      "item": {
+        "@type": "Place",
+        "name": "Centrum",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Centrum",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-centrum",
+        "description": "Bredband och fiber i Centrum, Malmö. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 132,
+      "item": {
+        "@type": "Place",
+        "name": "Davidshall",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Davidshall",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-davidshall",
+        "description": "Bredband och fiber i Davidshall, Malmö. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 133,
+      "item": {
+        "@type": "Place",
+        "name": "Rörsjöstaden",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rörsjöstaden",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-rorsjostaden",
+        "description": "Bredband och fiber i Rörsjöstaden, Malmö. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 134,
+      "item": {
+        "@type": "Place",
+        "name": "Västra Hamnen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Västra Hamnen",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vastra-hamnen",
+        "description": "Bredband och fiber i Västra Hamnen, Malmö. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 135,
+      "item": {
+        "@type": "Place",
+        "name": "Kirseberg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kirseberg",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-kirseberg",
+        "description": "Bredband och fiber i Kirseberg, Malmö. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 136,
+      "item": {
+        "@type": "Place",
+        "name": "Rönneholm",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rönneholm",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-ronneholm",
+        "description": "Bredband och fiber i Rönneholm, Malmö. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 137,
+      "item": {
+        "@type": "Place",
+        "name": "Husie",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Husie",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-husie",
+        "description": "Bredband och fiber i Husie, Malmö. 85% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 138,
+      "item": {
+        "@type": "Place",
+        "name": "Arlöv",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Arlöv",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-arlov",
+        "description": "Bredband och fiber i Arlöv, Malmö. 84% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 139,
+      "item": {
+        "@type": "Place",
+        "name": "Möllevången",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Möllevången",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-mollevangen",
+        "description": "Bredband och fiber i Möllevången, Malmö. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 140,
+      "item": {
+        "@type": "Place",
+        "name": "Sofielund",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sofielund",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-sofielund",
+        "description": "Bredband och fiber i Sofielund, Malmö. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 141,
+      "item": {
+        "@type": "Place",
+        "name": "Lugnet",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lugnet",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-lugnet",
+        "description": "Bredband och fiber i Lugnet, Malmö. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 142,
+      "item": {
+        "@type": "Place",
+        "name": "Södra Sofielund",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Södra Sofielund",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-sodra-sofielund",
+        "description": "Bredband och fiber i Södra Sofielund, Malmö. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 143,
+      "item": {
+        "@type": "Place",
+        "name": "Seved",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Seved",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-seved",
+        "description": "Bredband och fiber i Seved, Malmö. 83% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 144,
+      "item": {
+        "@type": "Place",
+        "name": "Limhamn",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Limhamn",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-limhamn",
+        "description": "Bredband och fiber i Limhamn, Malmö. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 145,
+      "item": {
+        "@type": "Place",
+        "name": "Bunkeflo",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bunkeflo",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-bunkeflo",
+        "description": "Bredband och fiber i Bunkeflo, Malmö. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 146,
+      "item": {
+        "@type": "Place",
+        "name": "Bunkeflostrand",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bunkeflostrand",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-bunkeflostrand",
+        "description": "Bredband och fiber i Bunkeflostrand, Malmö. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 147,
+      "item": {
+        "@type": "Place",
+        "name": "Fosie",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Fosie",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-fosie",
+        "description": "Bredband och fiber i Fosie, Malmö. 85% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 148,
+      "item": {
+        "@type": "Place",
+        "name": "Oxie",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Oxie",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-oxie",
+        "description": "Bredband och fiber i Oxie, Malmö. 84% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 149,
+      "item": {
+        "@type": "Place",
+        "name": "Väster",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Väster",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-vaster",
+        "description": "Bredband och fiber i Väster, Malmö. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 150,
+      "item": {
+        "@type": "Place",
+        "name": "Kronprinsen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kronprinsen",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-kronprinsen",
+        "description": "Bredband och fiber i Kronprinsen, Malmö. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 151,
+      "item": {
+        "@type": "Place",
+        "name": "Nobeltorget",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Nobeltorget",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-nobeltorget",
+        "description": "Bredband och fiber i Nobeltorget, Malmö. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 152,
+      "item": {
+        "@type": "Place",
+        "name": "Dammfri",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Dammfri",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-dammfri",
+        "description": "Bredband och fiber i Dammfri, Malmö. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 153,
+      "item": {
+        "@type": "Place",
+        "name": "Stortorget",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Stortorget",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-stortorget",
+        "description": "Bredband och fiber i Stortorget, Malmö. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 154,
+      "item": {
+        "@type": "Place",
+        "name": "Lilla Torg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lilla Torg",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-lilla-torg",
+        "description": "Bredband och fiber i Lilla Torg, Malmö. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 155,
+      "item": {
+        "@type": "Place",
+        "name": "Triangeln",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Triangeln",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-triangeln",
+        "description": "Bredband och fiber i Triangeln, Malmö. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 156,
+      "item": {
+        "@type": "Place",
+        "name": "Centralstationen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Centralstationen",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-centralstationen",
+        "description": "Bredband och fiber i Centralstationen, Malmö. 94% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 157,
+      "item": {
+        "@type": "Place",
+        "name": "Malmö Arena",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Malmö Arena",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-malmo-arena",
+        "description": "Bredband och fiber i Malmö Arena, Malmö. 90% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 158,
+      "item": {
+        "@type": "Place",
+        "name": "Burlöv",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Burlöv",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-burlov",
+        "description": "Bredband och fiber i Burlöv, Malmö. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 159,
+      "item": {
+        "@type": "Place",
+        "name": "Staffanstorp",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Staffanstorp",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-staffanstorp",
+        "description": "Bredband och fiber i Staffanstorp, Malmö. 88% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 160,
+      "item": {
+        "@type": "Place",
+        "name": "Svedala",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Svedala",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-svedala",
+        "description": "Bredband och fiber i Svedala, Malmö. 85% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 161,
+      "item": {
+        "@type": "Place",
+        "name": "Lomma",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lomma",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-lomma",
+        "description": "Bredband och fiber i Lomma, Malmö. 89% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 162,
+      "item": {
+        "@type": "Place",
+        "name": "Bjärred",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bjärred",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-bjarred",
+        "description": "Bredband och fiber i Bjärred, Malmö. 87% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 163,
+      "item": {
+        "@type": "Place",
+        "name": "Löddeköpinge",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Löddeköpinge",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-loddekopinge",
+        "description": "Bredband och fiber i Löddeköpinge, Malmö. 84% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 164,
+      "item": {
+        "@type": "Place",
+        "name": "Malmö Universitet",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Malmö Universitet",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-malmo-universitet",
+        "description": "Bredband och fiber i Malmö Universitet, Malmö. 93% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 165,
+      "item": {
+        "@type": "Place",
+        "name": "Orkanen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Orkanen",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-orkanen",
+        "description": "Bredband och fiber i Orkanen, Malmö. 91% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 166,
+      "item": {
+        "@type": "Place",
+        "name": "Rosengård",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rosengård",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-rosengard",
+        "description": "Bredband och fiber i Rosengård, Malmö. 82% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 167,
+      "item": {
+        "@type": "Place",
+        "name": "Herrgården",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Herrgården",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-herrgarden",
+        "description": "Bredband och fiber i Herrgården, Malmö. 81% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 168,
+      "item": {
+        "@type": "Place",
+        "name": "Lindängen",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lindängen",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-lindangen",
+        "description": "Bredband och fiber i Lindängen, Malmö. 80% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 169,
+      "item": {
+        "@type": "Place",
+        "name": "Bellevue",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bellevue",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-bellevue",
+        "description": "Bredband och fiber i Bellevue, Malmö. 83% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 170,
+      "item": {
+        "@type": "Place",
+        "name": "Hyllie",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hyllie",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-hyllie",
+        "description": "Bredband och fiber i Hyllie, Malmö. 92% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 171,
+      "item": {
+        "@type": "Place",
+        "name": "Persborg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Persborg",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-persborg",
+        "description": "Bredband och fiber i Persborg, Malmö. 86% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 172,
+      "item": {
+        "@type": "Place",
+        "name": "Holma",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Holma",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-holma",
+        "description": "Bredband och fiber i Holma, Malmö. 84% fiber-täckning."
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 173,
+      "item": {
+        "@type": "Place",
+        "name": "Kroksbäck",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kroksbäck",
+          "addressRegion": "Skåne",
+          "addressCountry": "SE"
+        },
+        "url": "https://bredbandsval.se/bredband-kroksback",
+        "description": "Bredband och fiber i Kroksbäck, Malmö. 85% fiber-täckning."
+      }
+    }
+  ]
+}

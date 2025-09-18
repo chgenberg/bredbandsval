@@ -2,33 +2,42 @@ import LandingPage from '@/components/LandingPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Bästa Bredband Norrmalm 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Norrmalm. Jämför Comhem, Tre, Telia och fler leverantörer. AI-driven analys på 30 sekunder. 91% fiber-täckning. Helt gratis.",
-  keywords: "bredband norrmalm, fiber norrmalm, internet norrmalm, tv paket norrmalm, comhem tre telia",
+  title: "Bästa Bredband Norrmalm Stockholm 2025 - Jämför Priser | Bredbandsval",
+  description: "Hitta bästa bredband i Norrmalm, Stockholm. Jämför Telia, Bahnhof, Bredband2 och fler leverantörer. 98% fiber-täckning. AI-analys gratis.",
+  keywords: "bredband norrmalm, fiber norrmalm, internet norrmalm, stockholm, telia bahnhof bredband2",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Norrmalm',
-    'geo.position': 'Skåne',
+    'geo.position': 'Stockholm',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Norrmalm","population":26545,"region":"Skåne","fiberCoverage":91,"topProviders":["Comhem","Tre","Telia"],"avgPrice":337}',
+    'ai-area-data': '{"name":"Norrmalm","type":"stadsdel","population":26000,"region":"Stockholm","fiberCoverage":98,"topProviders":["Telia","Bahnhof","Bredband2"],"avgPrice":485,"searchVolume":2200,"competition":"high"}',
     'ai-local-keywords': 'bredband-norrmalm,fiber-norrmalm,internet-norrmalm',
-    'ai-fiber-coverage': '91%',
-    'ai-avg-price': '337-sek',
-    'ai-top-providers': 'Comhem,Tre,Telia'
+    'ai-fiber-coverage': '98%',
+    'ai-avg-price': '485-sek',
+    'ai-top-providers': 'Telia,Bahnhof,Bredband2',
+    'ai-search-volume': '2200',
+    'ai-competition': 'high',
+    'ai-area-type': 'stadsdel',
+    'ai-parent-city': 'Stockholm'
   }
 };
 
 export default function NorrmalmBredbandsPage() {
   const localizedContent = {
-    headline: "Bredband i Norrmalm<br/>– Alla tillgängliga alternativ",
-    subtext: "Komplett guide till bredband i Norrmalm – jämför priser och hastigheter gratis",
-    cta: "Se Norrmalm-alternativ nu",
+    headline: "Norrmalms smartaste<br/>bredbandsval",
+    subtext: "Lokala experter hjälper dig hitta perfekt bredband i Norrmalm – personlig AI-rekommendation",
+    cta: "Jämför Norrmalm-leverantörer",
     cityName: "Norrmalm",
-    region: "Skåne",
-    fiberCoverage: 91,
-    avgPrice: 337,
-    topProviders: ["Comhem","Tre","Telia"],
-    population: 26545
+    region: "Stockholm",
+    parentCity: "Stockholm",
+    fiberCoverage: 98,
+    avgPrice: 485,
+    topProviders: ["Telia","Bahnhof","Bredband2"],
+    population: 26000,
+    areaType: "stadsdel",
+    searchVolume: 2200,
+    competition: "high",
+    localContent: {"localInfo":"Norrmalm är ett stadsdel i Stockholm med cirka 26,000 invånare.","fiberInfo":"Fiber-täckningen i Norrmalm ligger på 98%, vilket är mycket bra för området.","providerInfo":"De mest populära bredbandsoperatörerna i Norrmalm är Telia, Bahnhof, Bredband2.","priceInfo":"Genomsnittspriset för bredband i Norrmalm ligger på cirka 485 SEK per månad.","seoKeywords":"bredband norrmalm, fiber norrmalm, internet norrmalm, stockholm"}
   };
 
   return <LandingPage localizedContent={localizedContent} />;

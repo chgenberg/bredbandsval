@@ -2,33 +2,42 @@ import LandingPage from '@/components/LandingPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Bästa Bredband Gärdet 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Gärdet. Jämför Telia, Bredband2 och fler leverantörer. AI-driven analys på 30 sekunder. 69% fiber-täckning. Helt gratis.",
-  keywords: "bredband gärdet, fiber gärdet, internet gärdet, tv paket gärdet, telia bredband2",
+  title: "Bästa Bredband Gärdet Stockholm 2025 - Jämför Priser | Bredbandsval",
+  description: "Hitta bästa bredband i Gärdet, Stockholm. Jämför Telia, Bahnhof, Bredband2 och fler leverantörer. 96% fiber-täckning. AI-analys gratis.",
+  keywords: "bredband gärdet, fiber gärdet, internet gärdet, stockholm, telia bahnhof bredband2",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Gärdet',
-    'geo.position': 'Västra Götaland',
+    'geo.position': 'Stockholm',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Gärdet","population":21043,"region":"Västra Götaland","fiberCoverage":69,"topProviders":["Telia","Bredband2"],"avgPrice":358}',
+    'ai-area-data': '{"name":"Gärdet","type":"stadsdel","population":4000,"region":"Stockholm","fiberCoverage":96,"topProviders":["Telia","Bahnhof","Bredband2"],"avgPrice":480,"searchVolume":1100,"competition":"high"}',
     'ai-local-keywords': 'bredband-gardet,fiber-gardet,internet-gardet',
-    'ai-fiber-coverage': '69%',
-    'ai-avg-price': '358-sek',
-    'ai-top-providers': 'Telia,Bredband2'
+    'ai-fiber-coverage': '96%',
+    'ai-avg-price': '480-sek',
+    'ai-top-providers': 'Telia,Bahnhof,Bredband2',
+    'ai-search-volume': '1100',
+    'ai-competition': 'high',
+    'ai-area-type': 'stadsdel',
+    'ai-parent-city': 'Stockholm'
   }
 };
 
-export default function GärdetBredbandsPage() {
+export default function GrdetBredbandsPage() {
   const localizedContent = {
-    headline: "Bredband i Gärdet<br/>– Alla tillgängliga alternativ",
-    subtext: "Komplett guide till bredband i Gärdet – jämför priser och hastigheter gratis",
-    cta: "Se Gärdet-alternativ nu",
+    headline: "Bredband Gärdet<br/>– Bästa valet 2025",
+    subtext: "Jämför alla leverantörer i Gärdet, Stockholm. AI-analys på 30 sekunder – helt gratis",
+    cta: "Hitta bästa bredband Gärdet",
     cityName: "Gärdet",
-    region: "Västra Götaland",
-    fiberCoverage: 69,
-    avgPrice: 358,
-    topProviders: ["Telia","Bredband2"],
-    population: 21043
+    region: "Stockholm",
+    parentCity: "Stockholm",
+    fiberCoverage: 96,
+    avgPrice: 480,
+    topProviders: ["Telia","Bahnhof","Bredband2"],
+    population: 4000,
+    areaType: "stadsdel",
+    searchVolume: 1100,
+    competition: "high",
+    localContent: {"localInfo":"Gärdet är ett stadsdel i Stockholm med cirka 4,000 invånare.","fiberInfo":"Fiber-täckningen i Gärdet ligger på 96%, vilket är mycket bra för området.","providerInfo":"De mest populära bredbandsoperatörerna i Gärdet är Telia, Bahnhof, Bredband2.","priceInfo":"Genomsnittspriset för bredband i Gärdet ligger på cirka 480 SEK per månad.","seoKeywords":"bredband gärdet, fiber gärdet, internet gärdet, stockholm"}
   };
 
   return <LandingPage localizedContent={localizedContent} />;

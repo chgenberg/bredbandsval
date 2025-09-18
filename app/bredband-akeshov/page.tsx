@@ -2,33 +2,42 @@ import LandingPage from '@/components/LandingPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Bästa Bredband Åkeshov 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Åkeshov. Jämför Bredband2, Telenor, Tele2 och fler leverantörer. AI-driven analys på 30 sekunder. 67% fiber-täckning. Helt gratis.",
-  keywords: "bredband åkeshov, fiber åkeshov, internet åkeshov, tv paket åkeshov, bredband2 telenor tele2",
+  title: "Bästa Bredband Åkeshov Stockholm 2025 - Jämför Priser | Bredbandsval",
+  description: "Hitta bästa bredband i Åkeshov, Stockholm. Jämför Telia, Bahnhof, Comhem och fler leverantörer. 88% fiber-täckning. AI-analys gratis.",
+  keywords: "bredband åkeshov, fiber åkeshov, internet åkeshov, stockholm, telia bahnhof comhem",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Åkeshov',
-    'geo.position': 'Norrbotten',
+    'geo.position': 'Stockholm',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Åkeshov","population":15473,"region":"Norrbotten","fiberCoverage":67,"topProviders":["Bredband2","Telenor","Tele2"],"avgPrice":391}',
+    'ai-area-data': '{"name":"Åkeshov","type":"stadsdel","population":2500,"region":"Stockholm","fiberCoverage":88,"topProviders":["Telia","Bahnhof","Comhem"],"avgPrice":430,"searchVolume":450,"competition":"low"}',
     'ai-local-keywords': 'bredband-akeshov,fiber-akeshov,internet-akeshov',
-    'ai-fiber-coverage': '67%',
-    'ai-avg-price': '391-sek',
-    'ai-top-providers': 'Bredband2,Telenor,Tele2'
+    'ai-fiber-coverage': '88%',
+    'ai-avg-price': '430-sek',
+    'ai-top-providers': 'Telia,Bahnhof,Comhem',
+    'ai-search-volume': '450',
+    'ai-competition': 'low',
+    'ai-area-type': 'stadsdel',
+    'ai-parent-city': 'Stockholm'
   }
 };
 
-export default function ÅkeshovBredbandsPage() {
+export default function keshovBredbandsPage() {
   const localizedContent = {
-    headline: "Bredband i Åkeshov<br/>– Alla tillgängliga alternativ",
-    subtext: "Komplett guide till bredband i Åkeshov – jämför priser och hastigheter gratis",
-    cta: "Se Åkeshov-alternativ nu",
+    headline: "Bredband i Åkeshov<br/>– Alla alternativ",
+    subtext: "Komplett översikt av bredband i Åkeshov, Stockholm. Jämför Telia, Bahnhof, Comhem och fler",
+    cta: "Jämför Åkeshov-leverantörer",
     cityName: "Åkeshov",
-    region: "Norrbotten",
-    fiberCoverage: 67,
-    avgPrice: 391,
-    topProviders: ["Bredband2","Telenor","Tele2"],
-    population: 15473
+    region: "Stockholm",
+    parentCity: "Stockholm",
+    fiberCoverage: 88,
+    avgPrice: 430,
+    topProviders: ["Telia","Bahnhof","Comhem"],
+    population: 2500,
+    areaType: "stadsdel",
+    searchVolume: 450,
+    competition: "low",
+    localContent: {"localInfo":"Åkeshov är ett stadsdel i Stockholm med cirka 2,500 invånare.","fiberInfo":"Fiber-täckningen i Åkeshov ligger på 88%, vilket är bra för området.","providerInfo":"De mest populära bredbandsoperatörerna i Åkeshov är Telia, Bahnhof, Comhem.","priceInfo":"Genomsnittspriset för bredband i Åkeshov ligger på cirka 430 SEK per månad.","seoKeywords":"bredband åkeshov, fiber åkeshov, internet åkeshov, stockholm"}
   };
 
   return <LandingPage localizedContent={localizedContent} />;

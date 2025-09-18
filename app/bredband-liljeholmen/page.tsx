@@ -2,33 +2,42 @@ import LandingPage from '@/components/LandingPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Bästa Bredband Liljeholmen 2025 - Jämför Priser & Hastigheter | Bredbandsval",
-  description: "Hitta bästa bredband i Liljeholmen. Jämför Tele2, Telenor och fler leverantörer. AI-driven analys på 30 sekunder. 65% fiber-täckning. Helt gratis.",
-  keywords: "bredband liljeholmen, fiber liljeholmen, internet liljeholmen, tv paket liljeholmen, tele2 telenor",
+  title: "Bästa Bredband Liljeholmen Stockholm 2025 - Jämför Priser | Bredbandsval",
+  description: "Hitta bästa bredband i Liljeholmen, Stockholm. Jämför Telia, Bahnhof, Comhem och fler leverantörer. 92% fiber-täckning. AI-analys gratis.",
+  keywords: "bredband liljeholmen, fiber liljeholmen, internet liljeholmen, stockholm, telia bahnhof comhem",
   other: {
     'geo.region': 'SE',
     'geo.placename': 'Liljeholmen',
-    'geo.position': 'Dalarna',
+    'geo.position': 'Stockholm',
     'ai-local-optimization': 'true',
-    'ai-city-data': '{"name":"Liljeholmen","population":9797,"region":"Dalarna","fiberCoverage":65,"topProviders":["Tele2","Telenor"],"avgPrice":395}',
+    'ai-area-data': '{"name":"Liljeholmen","type":"stadsdel","population":15000,"region":"Stockholm","fiberCoverage":92,"topProviders":["Telia","Bahnhof","Comhem"],"avgPrice":445,"searchVolume":1600,"competition":"medium"}',
     'ai-local-keywords': 'bredband-liljeholmen,fiber-liljeholmen,internet-liljeholmen',
-    'ai-fiber-coverage': '65%',
-    'ai-avg-price': '395-sek',
-    'ai-top-providers': 'Tele2,Telenor'
+    'ai-fiber-coverage': '92%',
+    'ai-avg-price': '445-sek',
+    'ai-top-providers': 'Telia,Bahnhof,Comhem',
+    'ai-search-volume': '1600',
+    'ai-competition': 'medium',
+    'ai-area-type': 'stadsdel',
+    'ai-parent-city': 'Stockholm'
   }
 };
 
 export default function LiljeholmenBredbandsPage() {
   const localizedContent = {
-    headline: "Bredband i Liljeholmen<br/>– Alla tillgängliga alternativ",
-    subtext: "Komplett guide till bredband i Liljeholmen – jämför priser och hastigheter gratis",
-    cta: "Se Liljeholmen-alternativ nu",
+    headline: "Bästa bredband i Liljeholmen<br/>– Komplett guide 2025",
+    subtext: "Alla tillgängliga alternativ i Liljeholmen – jämför priser, hastigheter och leverantörer",
+    cta: "Se Liljeholmen-alternativ",
     cityName: "Liljeholmen",
-    region: "Dalarna",
-    fiberCoverage: 65,
-    avgPrice: 395,
-    topProviders: ["Tele2","Telenor"],
-    population: 9797
+    region: "Stockholm",
+    parentCity: "Stockholm",
+    fiberCoverage: 92,
+    avgPrice: 445,
+    topProviders: ["Telia","Bahnhof","Comhem"],
+    population: 15000,
+    areaType: "stadsdel",
+    searchVolume: 1600,
+    competition: "medium",
+    localContent: {"localInfo":"Liljeholmen är ett stadsdel i Stockholm med cirka 15,000 invånare.","fiberInfo":"Fiber-täckningen i Liljeholmen ligger på 92%, vilket är mycket bra för området.","providerInfo":"De mest populära bredbandsoperatörerna i Liljeholmen är Telia, Bahnhof, Comhem.","priceInfo":"Genomsnittspriset för bredband i Liljeholmen ligger på cirka 445 SEK per månad.","seoKeywords":"bredband liljeholmen, fiber liljeholmen, internet liljeholmen, stockholm"}
   };
 
   return <LandingPage localizedContent={localizedContent} />;
