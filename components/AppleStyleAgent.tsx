@@ -631,7 +631,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       // Separate broadband and TV packages (fix filters to use correct schema)
       const broadbandRecs = recs.filter(r => (r.package?.speed?.download || 0) > 0 && !r.package?.isCombo && !r.package?.tv);
-      const tvRecs = recs.filter(r => !!r.package?.tv && ((r.package?.speed?.download || 0) === 0 || r.package?.availability?.technology === 'streaming'));
+      const tvRecs = recs.filter(r => !!r.package?.tv);
 
       // Helper: map a recommendation to RecommendationCard props shape
       const mapRecToCard = (rec: any) => {
@@ -670,10 +670,11 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       };
       
       // Generate smart pairs for "both" service type
+      let generatedPairs: any[] = [];
       if (serviceType === 'both') {
-        const pairs = generateSmartPairs(broadbandRecs, tvRecs, userProfile);
-        setSmartPairs(pairs);
-        structured.combined = pairs;
+        generatedPairs = generateSmartPairs(broadbandRecs, tvRecs, userProfile);
+        setSmartPairs(generatedPairs);
+        structured.combined = generatedPairs;
       }
       
       setStructuredRecommendations(structured);
@@ -688,7 +689,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       
       const aiRecommendation = await generateAIRecommendation({
         userProfile: completeProfile,
-        recommendations: serviceType === 'both' ? smartPairs : recs.slice(0, 3),
+        recommendations: serviceType === 'both' ? structured.combined : recs.slice(0, 3),
         serviceType: serviceType || 'broadband'
       });
       
