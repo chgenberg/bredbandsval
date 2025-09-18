@@ -84,7 +84,7 @@ export default function LandingPage({ localizedContent }: { localizedContent?: L
                 {localizedContent?.headline ? (
                   <span dangerouslySetInnerHTML={{ __html: localizedContent.headline }} />
                 ) : (
-                  <>Sveriges mest omfattande<br />jämförelse för bredband & TV</>
+                  <>Sveriges AI-AGENT<br />inom bredband & TV</>
                 )}
               </h1>
               
