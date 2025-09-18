@@ -152,25 +152,6 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       {/* Header */}
       <div className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-        {/* Valle logo - centrerad */}
-        <div className="border-b border-gray-100">
-          <div className="max-w-4xl mx-auto px-6 py-4">
-            <div className="flex justify-center">
-              <button
-                onClick={() => router.push('/')}
-                className="hover:scale-105 transition-transform"
-              >
-                <Image
-                  src="/valle.png"
-                  alt="Valle AI"
-                  width={80}
-                  height={80}
-                  className="w-20 h-20 rounded-full"
-                />
-              </button>
-            </div>
-          </div>
-        </div>
         
         {/* Title row - under logotypen */}
         <div className="max-w-4xl mx-auto px-6 py-4">
