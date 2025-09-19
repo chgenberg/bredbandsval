@@ -53,14 +53,14 @@ export function SimpleCombinationView({
           <Star className="w-4 h-4" />
           Valle's rekommenderade kombination
         </div>
-        <p className="text-gray-600">{reasoning}</p>
+        <p className="text-sm sm:text-base text-gray-600 px-4 sm:px-0">{reasoning}</p>
       </div>
 
       {/* Cards side by side */}
-      <div className="flex flex-col lg:flex-row items-center gap-6">
+      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
         {/* Broadband card */}
         <div className="flex-1 w-full">
-          <h4 className="text-sm font-medium text-gray-500 mb-3 text-center">📡 Bredband</h4>
+          <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2 sm:mb-3 text-center">📡 Bredband</h4>
           <RecommendationCard
             {...broadbandPackage}
             isTopChoice={true}
@@ -68,15 +68,15 @@ export function SimpleCombinationView({
         </div>
 
         {/* Plus icon */}
-        <div className="flex-shrink-0">
-          <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-            <Plus className="w-6 h-6 text-gray-400" />
+        <div className="flex-shrink-0 hidden sm:block">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-full flex items-center justify-center">
+            <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
           </div>
         </div>
 
         {/* TV card */}
         <div className="flex-1 w-full">
-          <h4 className="text-sm font-medium text-gray-500 mb-3 text-center">📺 TV</h4>
+          <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2 sm:mb-3 text-center">📺 TV</h4>
           <RecommendationCard
             {...tvPackage}
             isTopChoice={true}
@@ -89,12 +89,12 @@ export function SimpleCombinationView({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-2xl p-6 text-center"
+        className="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center"
       >
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">
           Totalt: {totalPrice} kr/mån
         </h3>
-        <p className="text-green-700 font-medium">
+        <p className="text-sm sm:text-base text-green-700 font-medium">
           Bästa kombinationen för dina behov
         </p>
         
@@ -102,7 +102,7 @@ export function SimpleCombinationView({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleOrderClick}
-          className="mt-4 px-8 py-3 bg-[#101929] text-white rounded-xl font-semibold hover:bg-[#1a2332] transition-colors shadow-lg"
+          className="mt-3 sm:mt-4 px-6 sm:px-8 py-2.5 sm:py-3 bg-[#101929] text-white rounded-lg sm:rounded-xl text-sm sm:text-base font-semibold hover:bg-[#1a2332] transition-colors shadow-lg"
         >
           Beställ denna kombination
         </motion.button>

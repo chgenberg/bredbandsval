@@ -142,40 +142,40 @@ export function ResultsModal({
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed inset-4 md:inset-8 lg:inset-16 bg-white rounded-3xl shadow-2xl z-50 overflow-hidden flex flex-col"
+            className="fixed inset-2 sm:inset-4 md:inset-8 lg:inset-16 bg-white rounded-2xl sm:rounded-3xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[calc(100vh-1rem)] sm:max-h-[calc(100vh-2rem)]"
           >
             {/* Header */}
-            <div className="relative bg-[#101929] px-6 py-8 text-white">
+            <div className="relative bg-[#101929] px-4 sm:px-6 py-6 sm:py-8 text-white flex-shrink-0">
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="flex flex-col items-center text-center mb-6">
+              <div className="flex flex-col items-center text-center mb-4 sm:mb-6">
                 <Image
                   src="/val2.png"
                   alt="Valle AI Banner"
-                  width={200}
-                  height={80}
-                  className="object-contain mb-4"
+                  width={160}
+                  height={64}
+                  className="object-contain mb-3 sm:mb-4 w-32 sm:w-40 md:w-48"
                 />
-                <p className="text-white/80 text-lg">Personligt anpassad för {userProfile.address}</p>
+                <p className="text-white/80 text-sm sm:text-base md:text-lg px-4">Personligt anpassad för {userProfile.address}</p>
               </div>
 
               {/* Action buttons */}
-              <div className="flex gap-3 mt-6">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4 sm:mt-6">
                 <button
                   onClick={onPrint}
-                  className="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
+                  className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
                 >
                   <Printer className="w-4 h-4" />
                   <span className="text-sm font-medium">Skriv ut</span>
                 </button>
                 <button
                   onClick={() => setShowChat(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white text-[#101929] hover:bg-gray-50 rounded-xl transition-colors"
+                  className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-white text-[#101929] hover:bg-gray-50 rounded-xl transition-colors"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span className="text-sm font-medium">Har du frågor?</span>
@@ -187,9 +187,9 @@ export function ResultsModal({
             <div className="flex-1 overflow-y-auto">
               {/* Tabs */}
               {tabs.length > 1 && (
-                <div className="px-6 py-8">
+                <div className="px-4 sm:px-6 py-4 sm:py-8">
                   <div className="max-w-4xl mx-auto">
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-3 flex gap-3">
+                    <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-2 sm:p-3 flex gap-1 sm:gap-3 overflow-x-auto">
                       {tabs.map((tab) => {
                         const Icon = tab.icon;
                         return (
@@ -197,15 +197,18 @@ export function ResultsModal({
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
                             className={`
-                              flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all
+                              flex-1 flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all whitespace-nowrap text-xs sm:text-sm
                               ${activeTab === tab.id 
                                 ? 'bg-[#101929] text-white shadow-sm' 
                                 : 'text-gray-600 hover:bg-gray-50'
                               }
                             `}
                           >
-                            <Icon className="w-4 h-4" />
-                            <span>{tab.label}</span>
+                            <Icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                            <span className="hidden sm:inline">{tab.label}</span>
+                            <span className="sm:hidden">
+                              {tab.id === 'combined' ? 'Kombo' : tab.id === 'broadband' ? 'Bredband' : 'TV'}
+                            </span>
                           </button>
                         );
                       })}
@@ -215,7 +218,7 @@ export function ResultsModal({
               )}
 
               {/* Recommendations */}
-              <div className="px-6 py-12">
+              <div className="px-4 sm:px-6 py-6 sm:py-12">
                 <div className="max-w-6xl mx-auto">
                   <AnimatePresence mode="wait">
                     {/* Combined view for both services */}
@@ -277,7 +280,7 @@ export function ResultsModal({
               </div>
 
               {/* AI Recommendation - Card Layout - Moved to bottom */}
-              <div className="px-6 py-12 bg-gradient-to-b from-gray-50 to-white">
+              <div className="px-4 sm:px-6 py-6 sm:py-12 bg-gradient-to-b from-gray-50 to-white">
                 <div className="max-w-6xl mx-auto">
                   <AnalysisCards aiRecommendation={aiRecommendation} />
                 </div>
@@ -291,7 +294,7 @@ export function ResultsModal({
                   initial={{ x: '100%' }}
                   animate={{ x: 0 }}
                   exit={{ x: '100%' }}
-                  className="absolute inset-y-0 right-0 w-full md:w-96 bg-white shadow-2xl flex flex-col"
+                  className="absolute inset-0 sm:inset-y-0 sm:right-0 sm:left-auto w-full sm:w-96 bg-white shadow-2xl flex flex-col z-10"
                 >
                   <div className="flex items-center justify-between p-4 border-b">
                     <h3 className="font-semibold text-gray-900">Ställ en fråga</h3>

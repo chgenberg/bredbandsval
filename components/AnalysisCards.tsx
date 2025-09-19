@@ -61,15 +61,15 @@ export function AnalysisCards({ aiRecommendation }: AnalysisCardsProps) {
   if (sections.length === 0) {
     // Fallback to original display if parsing fails
     return (
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-            <Star className="w-5 h-5 text-blue-600" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+            <Star className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
           </div>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Valle's analys</h3>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Valle's analys</h3>
             <div 
-              className="ai-content text-gray-700 leading-relaxed"
+              className="ai-content text-sm sm:text-base text-gray-700 leading-relaxed break-words overflow-wrap-anywhere"
               dangerouslySetInnerHTML={{ __html: aiRecommendation }}
             />
           </div>
@@ -80,12 +80,12 @@ export function AnalysisCards({ aiRecommendation }: AnalysisCardsProps) {
   
   return (
     <div className="space-y-6">
-      <div className="text-center mb-8">
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">Valle's personliga analys</h3>
-        <p className="text-gray-600">Baserat på dina svar och behov</p>
+      <div className="text-center mb-6 sm:mb-8">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Valle's personliga analys</h3>
+        <p className="text-sm sm:text-base text-gray-600">Baserat på dina svar och behov</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {sections.map((section, index) => {
           const Icon = section.icon;
           const isMainRecommendation = section.title.toLowerCase().includes('rekommendation');
@@ -97,20 +97,20 @@ export function AnalysisCards({ aiRecommendation }: AnalysisCardsProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className={`
-                relative rounded-2xl p-6 shadow-sm transition-all hover:shadow-md
+                relative rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm transition-all hover:shadow-md
                 ${isMainRecommendation ? 'md:col-span-2' : ''}
                 ${getCardColor(section.title, index)}
               `}
             >
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3 sm:gap-4">
                 <div className={`
-                  w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0
+                  w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0
                   ${isMainRecommendation 
                     ? 'bg-white/20' 
                     : 'bg-white shadow-sm'
                   }
                 `}>
-                  <Icon className={`w-5 h-5 ${
+                  <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${
                     isMainRecommendation 
                       ? 'text-white' 
                       : 'text-gray-800'
@@ -119,13 +119,13 @@ export function AnalysisCards({ aiRecommendation }: AnalysisCardsProps) {
                 
                 <div className="flex-1">
                   <h4 className={`
-                    text-lg font-semibold mb-3
+                    text-base sm:text-lg font-semibold mb-2 sm:mb-3
                     ${isMainRecommendation ? 'text-white' : 'text-gray-900'}
                   `}>
                     {section.title}
                   </h4>
                   <p className={`
-                    leading-relaxed
+                    text-sm sm:text-base leading-relaxed break-words
                     ${isMainRecommendation ? 'text-white/90' : 'text-gray-700'}
                   `}>
                     {section.content}
@@ -134,8 +134,8 @@ export function AnalysisCards({ aiRecommendation }: AnalysisCardsProps) {
               </div>
               
               {isMainRecommendation && (
-                <div className="absolute -top-3 right-6">
-                  <span className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-medium shadow-lg">
+                <div className="absolute -top-3 right-3 sm:right-6">
+                  <span className="bg-yellow-400 text-yellow-900 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium shadow-lg">
                     Valle's val
                   </span>
                 </div>

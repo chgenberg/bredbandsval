@@ -96,7 +96,7 @@ export default function RecommendationCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`relative rounded-2xl p-4 h-full flex flex-col ${
+      className={`relative rounded-xl sm:rounded-2xl p-3 sm:p-4 h-full flex flex-col ${
         isTopChoice
           ? 'bg-[#101929] text-white shadow-xl'
           : 'bg-white border border-gray-200 shadow-sm'
@@ -111,8 +111,8 @@ export default function RecommendationCard({
       )}
 
       {/* Header - Provider and Trust Score */}
-      <div className="text-center mb-3">
-        <h3 className={`text-lg font-bold ${isTopChoice ? 'text-white' : 'text-gray-900'}`}>
+      <div className="text-center mb-2 sm:mb-3">
+        <h3 className={`text-base sm:text-lg font-bold ${isTopChoice ? 'text-white' : 'text-gray-900'}`}>
           {provider}
         </h3>
         <div className="flex items-center justify-center gap-1 mt-1">
@@ -124,8 +124,8 @@ export default function RecommendationCard({
       </div>
 
       {/* Package Name */}
-      <div className="text-center mb-3">
-        <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600'}`}>
+      <div className="text-center mb-2 sm:mb-3">
+        <p className={`text-xs sm:text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600'} line-clamp-2`}>
           {packageName}
         </p>
         {isCombo && (
@@ -138,33 +138,33 @@ export default function RecommendationCard({
       </div>
 
       {/* Price - Prominent */}
-      <div className="text-center mb-4">
-        <p className={`text-3xl font-bold ${isTopChoice ? 'text-white' : 'text-gray-900'}`}>
+      <div className="text-center mb-3 sm:mb-4">
+        <p className={`text-2xl sm:text-3xl font-bold ${isTopChoice ? 'text-white' : 'text-gray-900'}`}>
           {price} kr
         </p>
-        <p className={`text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600'}`}>
+        <p className={`text-xs sm:text-sm ${isTopChoice ? 'text-blue-100' : 'text-gray-600'}`}>
           /månad
         </p>
       </div>
 
       {/* Speed and Binding - Vertical */}
-      <div className="text-center space-y-2 mb-4">
+      <div className="text-center space-y-1 sm:space-y-2 mb-3 sm:mb-4">
         {speed && speed > 0 && (
           <div className="flex items-center justify-center gap-1">
             <Zap size={16} className={isTopChoice ? 'text-yellow-300' : 'text-blue-500'} />
-            <span className="text-sm font-medium">{speed} Mbit/s</span>
+            <span className="text-xs sm:text-sm font-medium">{speed} Mbit/s</span>
           </div>
         )}
         {!speed || speed === 0 && (
           <div className="flex items-center justify-center gap-1">
             <Tv size={16} className={isTopChoice ? 'text-blue-200' : 'text-purple-500'} />
-            <span className="text-sm font-medium">Streaming TV</span>
+            <span className="text-xs sm:text-sm font-medium">Streaming TV</span>
           </div>
         )}
         {bindingTime !== undefined && (
           <div className="flex items-center justify-center gap-1">
             <Calendar size={16} className={isTopChoice ? 'text-blue-200' : 'text-gray-500'} />
-            <span className="text-sm">
+            <span className="text-xs sm:text-sm">
               {bindingTime === 0 ? 'Ingen bindning' : `${bindingTime} mån`}
             </span>
           </div>
@@ -173,7 +173,7 @@ export default function RecommendationCard({
 
       {/* Badges - Stacked */}
       {badges.length > 0 && (
-        <div className="mb-4 space-y-1">
+        <div className="mb-3 sm:mb-4 space-y-1">
           {badges.slice(0, 2).map((badge, i) => (
             <div
               key={i}
@@ -195,15 +195,15 @@ export default function RecommendationCard({
       )}
 
       {isCombo && comboDetails && (
-        <div className={`mb-4 p-3 rounded-2xl ${
+        <div className={`mb-3 sm:mb-4 p-2 sm:p-3 rounded-xl sm:rounded-2xl ${
           isTopChoice ? 'bg-white/20' : 'bg-blue-50'
         }`}>
-          <p className={`text-sm font-medium ${
+          <p className={`text-xs sm:text-sm font-medium ${
             isTopChoice ? 'text-white' : 'text-blue-700'
           }`}>
             🔗 Bredband: {comboDetails.broadbandProvider} • TV: {comboDetails.tvProvider}
           </p>
-          <p className={`text-xs mt-1 ${
+          <p className={`text-[10px] sm:text-xs mt-1 ${
             isTopChoice ? 'text-white/80' : 'text-blue-600'
           }`}>
             Sparar {comboDetails.savings} kr/mån jämfört med separata avtal
@@ -212,10 +212,10 @@ export default function RecommendationCard({
       )}
 
       {savings && savings > 0 && !isCombo && (
-        <div className={`mb-4 p-3 rounded-2xl ${
+        <div className={`mb-3 sm:mb-4 p-2 sm:p-3 rounded-xl sm:rounded-2xl ${
           isTopChoice ? 'bg-white/20' : 'bg-green-50'
         }`}>
-          <p className={`text-sm font-medium ${
+          <p className={`text-xs sm:text-sm font-medium ${
             isTopChoice ? 'text-white' : 'text-green-700'
           }`}>
             Du sparar {savings} kr/mån på streaming! 💰
@@ -224,19 +224,19 @@ export default function RecommendationCard({
       )}
 
       {/* Features - Compact */}
-      <div className="space-y-1 mb-4 flex-1">
+      <div className="space-y-1 mb-3 sm:mb-4 flex-1">
         {features.slice(0, 2).map((feature, i) => (
-          <div key={i} className="flex items-center gap-2 text-sm">
+          <div key={i} className="flex items-center gap-2 text-xs sm:text-sm">
             <span className={isTopChoice ? 'text-blue-200' : 'text-gray-400'}>
               {getIcon(feature)}
             </span>
-            <span>{feature}</span>
+            <span className="line-clamp-1">{feature}</span>
           </div>
         ))}
       </div>
 
       {/* Reasoning - Shorter */}
-      <div className={`text-xs italic text-center mb-4 ${
+      <div className={`text-[10px] sm:text-xs italic text-center mb-3 sm:mb-4 line-clamp-2 ${
         isTopChoice ? 'text-blue-100' : 'text-gray-600'
       }`}>
         &ldquo;{reasoning}&rdquo;
@@ -246,7 +246,7 @@ export default function RecommendationCard({
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={handleOrderClick}
-        className={`w-full mt-auto py-2.5 px-4 rounded-xl font-medium transition-colors text-sm ${
+        className={`w-full mt-auto py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg sm:rounded-xl font-medium transition-colors text-xs sm:text-sm ${
           isTopChoice
             ? 'bg-white text-[#101929] hover:bg-gray-50'
             : 'bg-[#101929] text-white hover:bg-[#1a2332]'
