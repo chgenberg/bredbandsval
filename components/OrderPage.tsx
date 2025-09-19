@@ -154,17 +154,17 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
       <div className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         
         {/* Title row - under logotypen */}
-        <div className="max-w-4xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-light text-gray-900 tracking-wide">Slutför din beställning</h1>
-            <div className="flex items-center gap-2 text-lg text-gray-600">
-              <Shield className="w-5 h-5" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-light text-gray-900 tracking-wide text-center sm:text-left">Slutför din beställning</h1>
+            <div className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base md:text-lg text-gray-600">
+              <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
               <span className="font-medium">Säker beställning</span>
             </div>
           </div>
         </div>
         
-        <div className="max-w-4xl mx-auto px-6 pb-4">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-3 sm:pb-4">
           {/* Progress indicator */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -182,23 +182,28 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                       onClick={() => isCompleted && setCurrentStep(step.id)}
                       disabled={!isCompleted}
                       className={`
-                        w-10 h-10 rounded-full flex items-center justify-center
+                        w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center
                         transition-all duration-200 relative z-10
-                        ${isActive ? 'bg-[#101929] text-white shadow-lg scale-110' : 
+                        ${isActive ? 'bg-[#101929] text-white shadow-lg scale-105 sm:scale-110' : 
                           isCompleted ? 'bg-[#101929] text-white cursor-pointer hover:scale-105' : 
                           'bg-white border-2 border-gray-300 text-gray-400'}
                       `}
                     >
                       {isCompleted ? (
-                        <CheckCircle2 className="w-5 h-5" />
+                        <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
                       ) : (
-                        <Icon className="w-5 h-5" />
+                        <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                       )}
                     </button>
-                    <span className={`mt-2 text-xs font-medium ${
+                    <span className={`mt-1 sm:mt-2 text-[10px] sm:text-xs font-medium ${
                       isActive ? 'text-[#101929]' : isCompleted ? 'text-[#101929]' : 'text-gray-400'
-                    }`}>
+                    } ${index > 1 ? 'hidden sm:block' : ''}`}>
                       {step.title}
+                    </span>
+                    <span className={`mt-1 text-[10px] font-medium sm:hidden ${
+                      isActive ? 'text-[#101929]' : isCompleted ? 'text-[#101929]' : 'text-gray-400'
+                    } ${index <= 1 ? 'hidden' : ''}`}>
+                      {step.id}
                     </span>
                   </div>
                 );
@@ -209,7 +214,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         <AnimatePresence mode="wait">
           {/* Step 1: Router val */}
           {currentStep === 1 && (
@@ -218,13 +223,13 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="bg-white rounded-2xl shadow-sm p-8"
+              className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 md:p-8"
             >
-              <h2 className="text-xl font-semibold mb-6">Välj router</h2>
+              <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Välj router</h2>
               
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <label className={`
-                  block p-6 rounded-xl border-2 cursor-pointer transition-all
+                  block p-4 sm:p-6 rounded-lg sm:rounded-xl border-2 cursor-pointer transition-all
                   ${formData.routerOption === 'own' ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}
                 `}>
                   <input
@@ -235,17 +240,17 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                     onChange={() => updateFormData('routerOption', 'own')}
                     className="sr-only"
                   />
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium text-gray-900">Nej tack, jag har egen router</div>
-                      <div className="text-sm text-gray-600 mt-1">Använd din befintliga utrustning</div>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex-1">
+                      <div className="text-sm sm:text-base font-medium text-gray-900">Nej tack, jag har egen router</div>
+                      <div className="text-xs sm:text-sm text-gray-600 mt-1">Använd din befintliga utrustning</div>
                     </div>
-                    <Circle className={`w-6 h-6 ${formData.routerOption === 'own' ? 'text-blue-600 fill-blue-600' : 'text-gray-400'}`} />
+                    <Circle className={`w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 ${formData.routerOption === 'own' ? 'text-blue-600 fill-blue-600' : 'text-gray-400'}`} />
                   </div>
                 </label>
 
                 <label className={`
-                  block p-6 rounded-xl border-2 cursor-pointer transition-all
+                  block p-4 sm:p-6 rounded-lg sm:rounded-xl border-2 cursor-pointer transition-all
                   ${formData.routerOption === 'rent' ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}
                 `}>
                   <input
@@ -256,16 +261,16 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                     onChange={() => updateFormData('routerOption', 'rent')}
                     className="sr-only"
                   />
-                  <div className="flex items-center justify-between">
-                    <div>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <Wifi className="w-5 h-5 text-blue-600" />
-                        <span className="font-medium text-gray-900">WiFi Router</span>
+                        <Wifi className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                        <span className="text-sm sm:text-base font-medium text-gray-900">WiFi Router</span>
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">Högpresterande router för hela hemmet</div>
-                      <div className="text-lg font-semibold text-blue-600 mt-2">69 kr/mån</div>
+                      <div className="text-xs sm:text-sm text-gray-600 mt-1">Högpresterande router för hela hemmet</div>
+                      <div className="text-base sm:text-lg font-semibold text-blue-600 mt-1 sm:mt-2">69 kr/mån</div>
                     </div>
-                    <Circle className={`w-6 h-6 ${formData.routerOption === 'rent' ? 'text-blue-600 fill-blue-600' : 'text-gray-400'}`} />
+                    <Circle className={`w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 ${formData.routerOption === 'rent' ? 'text-blue-600 fill-blue-600' : 'text-gray-400'}`} />
                   </div>
                 </label>
               </div>
@@ -279,20 +284,20 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="bg-white rounded-2xl shadow-sm p-8"
+              className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 md:p-8"
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold">Dina uppgifter</h2>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 sm:mb-6">
+                <h2 className="text-lg sm:text-xl font-semibold">Dina uppgifter</h2>
                 <button
                   onClick={() => setShowScanner(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-xs sm:text-sm font-medium w-full sm:w-auto justify-center"
                 >
-                  <Scan className="w-4 h-4" />
+                  <Scan className="w-3 h-3 sm:w-4 sm:h-4" />
                   Scanna körkort
                 </button>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Förnamn *
@@ -301,7 +306,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                     type="text"
                     value={formData.firstName}
                     onChange={(e) => updateFormData('firstName', e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                     placeholder="Anna"
                   />
                 </div>
@@ -314,7 +319,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => updateFormData('lastName', e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                     placeholder="Andersson"
                   />
                 </div>
@@ -327,7 +332,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                     type="text"
                     value={formData.personalNumber}
                     onChange={(e) => updateFormData('personalNumber', e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                     placeholder="ÅÅÅÅMMDD-XXXX"
                   />
                 </div>
@@ -340,7 +345,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                     type="email"
                     value={formData.email}
                     onChange={(e) => updateFormData('email', e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                     placeholder="anna@exempel.se"
                   />
                 </div>
@@ -353,7 +358,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                     type="tel"
                     value={formData.mobileNumber}
                     onChange={(e) => updateFormData('mobileNumber', e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                     placeholder="070-123 45 67"
                   />
                 </div>
@@ -367,7 +372,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                     value={formData.startDate}
                     onChange={(e) => updateFormData('startDate', e.target.value)}
                     min={today}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                   />
                 </div>
               </div>
@@ -381,19 +386,19 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="bg-white rounded-2xl shadow-sm p-8"
+              className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 md:p-8"
             >
-              <h2 className="text-xl font-semibold mb-6">Leveransadress</h2>
+              <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Leveransadress</h2>
               
               {prefilledAddress && (
-                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <p className="text-sm text-green-800">
+                <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-xs sm:text-sm text-green-800">
                     Vi har fyllt i adressen du angav tidigare. Kontrollera att uppgifterna stämmer.
                   </p>
                 </div>
               )}
               
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Adress *
@@ -402,12 +407,12 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                     type="text"
                     value={formData.address}
                     onChange={(e) => updateFormData('address', e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                     placeholder="Gatuadress 123"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Postnummer *
@@ -416,7 +421,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                       type="text"
                       value={formData.postalCode}
                       onChange={(e) => updateFormData('postalCode', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                       placeholder="123 45"
                     />
                   </div>
@@ -429,7 +434,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                       type="text"
                       value={formData.city}
                       onChange={(e) => updateFormData('city', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                       placeholder="Stockholm"
                     />
                   </div>
@@ -442,7 +447,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                       type="text"
                       value={formData.apartmentNumber}
                       onChange={(e) => updateFormData('apartmentNumber', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm sm:text-base"
                       placeholder="1201"
                     />
                   </div>
@@ -458,43 +463,43 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="space-y-6"
+              className="space-y-4 sm:space-y-6"
             >
               {/* Sammanfattning */}
-              <div className="bg-white rounded-2xl shadow-sm p-8">
-                <h2 className="text-xl font-semibold mb-6">Sammanfattning</h2>
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 md:p-8">
+                <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Sammanfattning</h2>
                 
-                <div className="space-y-4">
-                  <div className="flex justify-between py-3 border-b">
-                    <span className="text-gray-600">Bredbandsabonnemang</span>
-                    <span className="font-medium">100/100 Mbit/s</span>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="flex justify-between py-2 sm:py-3 border-b">
+                    <span className="text-sm sm:text-base text-gray-600">Bredbandsabonnemang</span>
+                    <span className="text-sm sm:text-base font-medium">100/100 Mbit/s</span>
                   </div>
                   
                   {formData.routerOption === 'rent' && (
-                    <div className="flex justify-between py-3 border-b">
-                      <span className="text-gray-600">WiFi Router</span>
-                      <span className="font-medium">69 kr/mån</span>
+                    <div className="flex justify-between py-2 sm:py-3 border-b">
+                      <span className="text-sm sm:text-base text-gray-600">WiFi Router</span>
+                      <span className="text-sm sm:text-base font-medium">69 kr/mån</span>
                     </div>
                   )}
                   
-                  <div className="flex justify-between py-3 border-b">
-                    <span className="text-gray-600">Leveransadress</span>
-                    <span className="font-medium text-right">
-                      {formData.address}<br />
-                      {formData.postalCode} {formData.city}
+                  <div className="flex justify-between py-2 sm:py-3 border-b">
+                    <span className="text-sm sm:text-base text-gray-600">Leveransadress</span>
+                    <span className="text-sm sm:text-base font-medium text-right">
+                      <span className="block">{formData.address}</span>
+                      <span className="block">{formData.postalCode} {formData.city}</span>
                     </span>
                   </div>
                   
-                  <div className="flex justify-between py-3 border-b">
-                    <span className="text-gray-600">Startdatum</span>
-                    <span className="font-medium">{formData.startDate || 'Så snart som möjligt'}</span>
+                  <div className="flex justify-between py-2 sm:py-3 border-b">
+                    <span className="text-sm sm:text-base text-gray-600">Startdatum</span>
+                    <span className="text-sm sm:text-base font-medium">{formData.startDate || 'Så snart som möjligt'}</span>
                   </div>
                 </div>
               </div>
 
               {/* Villkor */}
-              <div className="bg-white rounded-2xl shadow-sm p-8">
-                <h2 className="text-xl font-semibold mb-6">Godkänn villkor</h2>
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 md:p-8">
+                <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Godkänn villkor</h2>
                 
                 <div className="space-y-4">
                   <label className="flex items-start gap-3 cursor-pointer">
@@ -502,9 +507,9 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                       type="checkbox"
                       checked={formData.acceptTerms}
                       onChange={(e) => updateFormData('acceptTerms', e.target.checked)}
-                      className="mt-1 w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                      className="mt-1 w-4 h-4 sm:w-5 sm:h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                     />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-xs sm:text-sm text-gray-700">
                       Jag godkänner de <a href="#" className="text-blue-600 underline">allmänna villkoren</a> för Bredbandsval.se och Bredband2.
                     </span>
                   </label>
@@ -514,9 +519,9 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                       type="checkbox"
                       checked={formData.acceptPrivacy}
                       onChange={(e) => updateFormData('acceptPrivacy', e.target.checked)}
-                      className="mt-1 w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                      className="mt-1 w-4 h-4 sm:w-5 sm:h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                     />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-xs sm:text-sm text-gray-700">
                       Jag godkänner <a href="#" className="text-blue-600 underline">integritetspolicy</a> för Bredbandsval.se och Bredband2.
                     </span>
                   </label>
@@ -526,17 +531,17 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                       type="checkbox"
                       checked={formData.wantNewsletter}
                       onChange={(e) => updateFormData('wantNewsletter', e.target.checked)}
-                      className="mt-1 w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                      className="mt-1 w-4 h-4 sm:w-5 sm:h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                     />
-                    <span className="text-sm text-gray-700">
+                    <span className="text-xs sm:text-sm text-gray-700">
                       Ja tack, jag vill ha nyhetsbrev från Bredbandsval.se
                     </span>
                   </label>
                 </div>
 
-                <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <Shield className="w-5 h-5 text-green-600" />
+                <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600">
+                    <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 flex-shrink-0" />
                     <span>Beställningen skickas direkt till Bredband2. Alltid 14 dagars ångerrätt.</span>
                   </div>
                 </div>
@@ -546,12 +551,12 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
         </AnimatePresence>
 
         {/* Action buttons */}
-        <div className="mt-8 flex items-center justify-between">
+        <div className="mt-6 sm:mt-8 flex items-center justify-between gap-3">
           <button
             onClick={handleBack}
             disabled={currentStep === 1}
             className={`
-              px-6 py-3 rounded-lg font-medium transition-all
+              px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium transition-all text-sm sm:text-base
               ${currentStep === 1 
                 ? 'text-gray-400 cursor-not-allowed' 
                 : 'text-gray-700 hover:bg-gray-100'}
@@ -565,27 +570,28 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               onClick={handleNext}
               disabled={!isStepValid(currentStep)}
               className={`
-                px-8 py-3 rounded-lg font-medium transition-all flex items-center gap-2
+                px-4 sm:px-8 py-2.5 sm:py-3 rounded-lg font-medium transition-all flex items-center gap-1 sm:gap-2 text-sm sm:text-base
                 ${isStepValid(currentStep)
                   ? 'bg-[#101929] text-white hover:bg-[#1a2332] shadow-lg hover:shadow-xl'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
               `}
             >
               Nästa
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           ) : (
             <button
               onClick={handleSubmit}
               disabled={!isStepValid(4) || isProcessing}
               className={`
-                px-8 py-3 rounded-lg font-medium transition-all flex items-center gap-2
+                px-4 sm:px-8 py-2.5 sm:py-3 rounded-lg font-medium transition-all flex items-center gap-1 sm:gap-2 text-sm sm:text-base
                 ${isStepValid(4) && !isProcessing
                   ? 'bg-[#101929] text-white hover:bg-[#1a2332] shadow-lg hover:shadow-xl'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
               `}
             >
-              {isProcessing ? 'Bearbetar...' : 'Godkänn och beställ med BankID'}
+              <span className="hidden sm:inline">{isProcessing ? 'Bearbetar...' : 'Godkänn och beställ med BankID'}</span>
+              <span className="sm:hidden">{isProcessing ? 'Bearbetar...' : 'Beställ med BankID'}</span>
             </button>
           )}
         </div>
@@ -605,12 +611,12 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.9 }}
-              className="bg-white rounded-2xl p-8 max-w-md w-full"
+              className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-8 max-w-md w-full mx-4"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="text-center">
                 {/* BankID Logo */}
-                <div className="w-24 h-24 mx-auto mb-6">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6">
                   <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <rect width="100" height="100" rx="20" fill="#00843D"/>
                     <path d="M30 70V30h20c8 0 14 6 14 14s-6 14-14 14H40v12H30zm10-22h8c3 0 5-2 5-5s-2-5-5-5h-8v10z" fill="white"/>
@@ -618,8 +624,8 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                   </svg>
                 </div>
                 
-                <h3 className="text-xl font-semibold mb-2">Öppna BankID</h3>
-                <p className="text-gray-600 mb-6">
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">Öppna BankID</h3>
+                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
                   Öppna BankID-appen på din telefon eller dator för att slutföra beställningen.
                 </p>
                 
@@ -632,7 +638,7 @@ export default function OrderPage({ prefilledAddress }: { prefilledAddress?: { a
                 <button
                   onClick={() => setShowBankID(false)}
                   disabled={isProcessing}
-                  className="text-gray-600 hover:text-gray-800 transition-colors"
+                  className="text-sm sm:text-base text-gray-600 hover:text-gray-800 transition-colors"
                 >
                   Avbryt
                 </button>
