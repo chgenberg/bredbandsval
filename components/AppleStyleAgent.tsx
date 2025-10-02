@@ -20,8 +20,15 @@ import SmartPairingCard from './SmartPairingCard';
 import { generateAIRecommendation, generateFollowUpAnswer } from '@/lib/ai/openai-client';
 import { computeNeeds, scorePackageMatch } from '@/lib/decision/profile-model';
 import { SpeedTestResult } from '@/lib/network-analysis/webrtc-speed-test';
+import { RouterAnalysisResult } from '@/lib/network-analysis/router-analyzer';
 import { generateRecommendationPDF } from '@/lib/pdf-generator';
 import { generateSmartPairs } from '@/lib/smart-pairing';
+import { 
+  questionGenerator, 
+  GeneratedQuestion, 
+  QuestionAnswer,
+  type UserProfile as DynamicUserProfile 
+} from '@/lib/ai/dynamic-question-generator';
 
 interface Message {
   id: string;
@@ -86,12 +93,20 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
   const [selectedStreamingServices, setSelectedStreamingServices] = useState<string[]>([]);
   const [selectedMultiValues, setSelectedMultiValues] = useState<string[]>([]);
   const [speedTestResult, setSpeedTestResult] = useState<SpeedTestResult | null>(null);
+  const [routerAnalysisResult, setRouterAnalysisResult] = useState<RouterAnalysisResult | null>(null);
   const [followUpQuestion, setFollowUpQuestion] = useState('');
   const [loadingMessage, setLoadingMessage] = useState('Valle AI analyserar');
   const [smartPairs, setSmartPairs] = useState<any[]>([]);
   const [showResultsModal, setShowResultsModal] = useState(false);
   const [aiRecommendationText, setAiRecommendationText] = useState('');
   const [structuredRecommendations, setStructuredRecommendations] = useState<any>(null);
+  
+  // New: Dynamic question system
+  const [questionHistory, setQuestionHistory] = useState<QuestionAnswer[]>([]);
+  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState<GeneratedQuestion | null>(null);
+  const MAX_QUESTIONS = 7; // Total number of questions including guaranteed ones
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -269,7 +284,8 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     }
     
     if (value === 'skip') {
-      await askNextQuestion(serviceType === 'tv' ? 'tv-type' : 'household');
+      // Start dynamic question system
+      await askNextQuestion();
       return;
     }
     
@@ -277,215 +293,86 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     await processAnswer(value);
   };
 
-  const askNextQuestion = async (step: string) => {
-    console.log('askNextQuestion called with step:', step, 'serviceType:', serviceType);
+  /**
+   * NEW: Dynamic question asking using AI
+   */
+  const askNextQuestion = async () => {
+    if (!serviceType) {
+      console.error('No service type selected');
+      return;
+    }
+
+    console.log('🔄 Generating dynamic question...', {
+      questionNumber: currentQuestionNumber + 1,
+      serviceType,
+      profileKeys: Object.keys(userProfile)
+    });
+
     setLoadingMessage(getRandomLoadingMessage());
     setIsTyping(true);
-    await new Promise(resolve => setTimeout(resolve, 600));
-    
-    const broadbandQuestions = {
-      'household': {
-        text: 'Hur många personer bor i ditt hushåll?',
-        replies: [
-          { text: 'Bara jag', value: '1', icon: 'user' },
-          { text: '2 personer', value: '2', icon: 'users' },
-          { text: '3-4 personer', value: '3-4', icon: 'users' },
-          { text: '5 eller fler', value: '5+', icon: 'users' },
-        ],
-        helpText: 'Antalet personer påverkar hur mycket bandbredd som behövs för att alla ska kunna surfa samtidigt utan störningar.'
-      },
-      'streaming': {
-        text: 'Hur ofta streamar ni film och serier i hemmet?',
-        replies: [
-          { text: 'Varje dag', value: 'heavy', icon: 'play' },
-          { text: 'Några gånger i veckan', value: 'moderate', icon: 'play' },
-          { text: 'Sällan eller aldrig', value: 'light', icon: 'play' },
-        ],
-        helpText: 'Streaming i 4K kräver cirka 25 Mbit/s per stream. HD kräver cirka 5-8 Mbit/s.'
-      },
-      'gaming': {
-        text: 'Spelar någon i hushållet onlinespel?',
-        replies: [
-          { text: 'Ja, ofta', value: 'yes', icon: 'gamepad' },
-          { text: 'Nej', value: 'no', icon: 'arrow-right' },
-        ],
-        helpText: 'Onlinespel kräver låg latens (ping) för bästa upplevelse, inte nödvändigtvis högsta hastigheten.'
-      },
-      'meetings': {
-        text: 'Arbetar någon hemifrån med videomöten?',
-        replies: [
-          { text: 'Ja, dagligen', value: 'daily', icon: 'briefcase' },
-          { text: 'Ibland', value: 'sometimes', icon: 'video' },
-          { text: 'Nej', value: 'no', icon: 'arrow-right' },
-        ],
-        helpText: 'Videomöten kräver stabil uppkoppling och bra uppladdningshastighet, minst 3-5 Mbit/s.'
-      },
-      'router': {
-        text: 'Behöver du en router från leverantören?',
-        replies: [
-          { text: 'Ja, jag vill ha en router', value: 'yes', icon: 'router' },
-          { text: 'Nej, jag har redan', value: 'no', icon: 'arrow-right' },
-        ],
-        helpText: 'Många leverantörer inkluderar router i priset. Om du redan har en bra router kan du spara pengar.'
-      },
-      'contract': {
-        text: 'Vilken bindningstid föredrar du?',
-        replies: [
-          { text: 'Ingen bindning', value: 'none', icon: 'zap' },
-          { text: '3-6 månader', value: 'short', icon: 'zap' },
-          { text: 'Längre för bättre pris', value: 'long', icon: 'zap' },
-        ],
-        helpText: 'Längre bindningstid ger ofta lägre månadspris, men ingen bindning ger mer flexibilitet.'
-      },
-      'budget': {
-        text: 'Vad är din ungefärliga budget per månad?',
-        replies: [
-          { text: 'Under 400 kr', value: 'low', icon: 'piggy' },
-          { text: '400-600 kr', value: 'medium', icon: 'piggy' },
-          { text: '600-800 kr', value: 'high', icon: 'piggy' },
-          { text: 'Över 800 kr', value: 'premium', icon: 'piggy' },
-        ],
-        helpText: 'Budget hjälper oss filtrera bort för dyra alternativ och hitta bästa värdet.'
-      },
-      'current-provider': {
-        text: 'Har du bredband idag? Vad betalar du ungefär?',
-        replies: [
-          { text: 'Ja, under 300 kr', value: 'cheap', icon: 'zap' },
-          { text: 'Ja, 300-500 kr', value: 'medium', icon: 'zap' },
-          { text: 'Ja, över 500 kr', value: 'expensive', icon: 'zap' },
-          { text: 'Nej, första gången', value: 'first-time', icon: 'zap' },
-        ],
-        helpText: 'Hjälper oss beräkna besparingar och om uppgradering är värt det.'
-      },
-      'priorities': {
-        text: 'Vad är viktigast för dig?',
-        multiSelect: true,
-        replies: [
-          { text: 'Lägsta pris', value: 'price', icon: 'piggy' },
-          { text: 'Högsta hastighet', value: 'speed', icon: 'zap' },
-          { text: 'Bästa supporten', value: 'support', icon: 'help' },
-          { text: 'Ingen bindning', value: 'flexibility', icon: 'calendar' },
-          { text: 'Allt-i-ett-lösning', value: 'convenience', icon: 'package' },
-        ],
-        helpText: 'Hjälper oss vikta olika faktorer i rekommendationen.'
-      }
-    };
-    
-    const tvQuestions = {
-      'tv-type': {
-        text: 'Vad är viktigast för dig när det gäller TV?',
-        replies: [
-          { text: 'Sport', value: 'sports', icon: 'tv' },
-          { text: 'Film & serier', value: 'entertainment', icon: 'play' },
-          { text: 'Nyheter & dokumentärer', value: 'news', icon: 'tv' },
-          { text: 'Allt', value: 'all', icon: 'package' },
-        ],
-        helpText: 'Detta hjälper oss att hitta paket med rätt kanaler för dina intressen.'
-      },
-      'streaming-services': {
-        text: 'Vilka streamingtjänster använder du? (välj alla som stämmer)',
-        multiSelect: true,
-        replies: [
-          { text: 'Netflix', value: 'netflix', icon: 'play' },
-          { text: 'HBO Max', value: 'hbo', icon: 'play' },
-          { text: 'Disney+', value: 'disney', icon: 'play' },
-          { text: 'Viaplay', value: 'viaplay', icon: 'play' },
-          { text: 'SVT Play', value: 'svtplay', icon: 'tv' },
-          { text: 'TV4 Play', value: 'tv4play', icon: 'tv' },
-          { text: 'Prime Video', value: 'prime', icon: 'play' },
-          { text: 'Apple TV+', value: 'appletv', icon: 'play' },
-          { text: 'SkyShowtime', value: 'skyshowtime', icon: 'play' },
-          { text: 'Paramount+', value: 'paramount', icon: 'play' },
-          { text: 'Discovery+', value: 'discovery', icon: 'play' },
-          { text: 'YouTube Premium', value: 'youtube', icon: 'play' },
-        ],
-        helpText: 'Vissa TV-paket inkluderar streamingtjänster vilket kan ge bättre totalpris.'
-      },
-      'tv-contract': {
-        text: 'Hur länge vill du binda dig för TV-paketet?',
-        replies: [
-          { text: 'Ingen bindning', value: 'none', icon: 'zap' },
-          { text: '12 månader', value: 'year', icon: 'zap' },
-          { text: '24 månader för bästa pris', value: 'long', icon: 'zap' },
-        ],
-        helpText: 'TV-paket har ofta kampanjpriser första året med längre bindningstid.'
-      },
-      'budget': {
-        text: 'Vad är din ungefärliga budget per månad?',
-        replies: [
-          { text: 'Under 400 kr', value: 'low', icon: 'piggy' },
-          { text: '400-600 kr', value: 'medium', icon: 'piggy' },
-          { text: '600-800 kr', value: 'high', icon: 'piggy' },
-          { text: 'Över 800 kr', value: 'premium', icon: 'piggy' },
-        ],
-        helpText: 'Budget hjälper oss filtrera bort för dyra alternativ och hitta bästa värdet.'
-      },
-      'current-provider': {
-        text: 'Har du TV-paket idag? Vad betalar du ungefär?',
-        replies: [
-          { text: 'Ja, under 300 kr', value: 'cheap', icon: 'zap' },
-          { text: 'Ja, 300-500 kr', value: 'medium', icon: 'zap' },
-          { text: 'Ja, över 500 kr', value: 'expensive', icon: 'zap' },
-          { text: 'Nej, första gången', value: 'first-time', icon: 'zap' },
-        ],
-        helpText: 'Hjälper oss beräkna besparingar och om uppgradering är värt det.'
-      },
-      'priorities': {
-        text: 'Vad är viktigast för dig?',
-        multiSelect: true,
-        replies: [
-          { text: 'Lägsta pris', value: 'price', icon: 'piggy' },
-          { text: 'Bästa kanalutbudet', value: 'channels', icon: 'tv' },
-          { text: 'Bästa supporten', value: 'support', icon: 'help' },
-          { text: 'Ingen bindning', value: 'flexibility', icon: 'calendar' },
-          { text: 'Inkluderade streamingtjänster', value: 'streaming', icon: 'play' },
-        ],
-        helpText: 'Hjälper oss vikta olika faktorer i rekommendationen.'
-      }
-    };
-    
-    // Choose questions based on service type
-    let questions = broadbandQuestions;
-    if (serviceType === 'tv') {
-      questions = tvQuestions;
-    } else if (serviceType === 'both') {
-      // Merge both question sets for combined service
-      questions = { ...broadbandQuestions, ...tvQuestions };
-    }
-    
-    const question = questions[step];
-    console.log('Looking for question:', step, 'serviceType:', serviceType);
-    console.log('Available questions:', Object.keys(questions));
-    console.log('Found question:', question);
-    
-    if (question) {
+    await new Promise(resolve => setTimeout(resolve, 800)); // Slightly longer for AI generation
+
+    try {
+      const nextQuestion = await questionGenerator.generateNextQuestion({
+        userProfile: userProfile as DynamicUserProfile,
+        previousAnswers: questionHistory,
+        questionNumber: currentQuestionNumber + 1,
+        maxQuestions: MAX_QUESTIONS,
+        serviceType: serviceType
+      });
+
+      console.log('✅ Generated question:', nextQuestion);
+
+      setCurrentQuestion(nextQuestion);
+      setCurrentQuestionNumber(prev => prev + 1);
+
       const msg: Message = {
         id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        content: question.text,
+        content: nextQuestion.questionText,
         sender: 'agent',
         timestamp: new Date(),
-        quickReplies: question.replies,
-        helpText: question.helpText,
-        multiSelect: question.multiSelect
+        quickReplies: nextQuestion.suggestedAnswers.map(ans => ({
+          text: ans.text,
+          value: ans.value,
+          icon: ans.icon
+        })),
+        helpText: nextQuestion.helpText,
+        multiSelect: false
       };
-      
+
       setMessages(prev => [...prev, msg]);
-      setCurrentStep(step);
+      setIsTyping(false);
+
+    } catch (error) {
+      console.error('❌ Error generating question:', error);
+      setIsTyping(false);
       
-      // Reset selected streaming services when we show the question
-      if (step === 'streaming-services') {
-        setSelectedStreamingServices([]);
+      // Fallback: go straight to recommendations if we can't generate more questions
+      if (currentQuestionNumber >= 3) { // Have at least 3 answers
+        await calculateRecommendations();
+      } else {
+        // Show error message
+        const errorMsg: Message = {
+          id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          content: 'Jag har tillräckligt med information nu. Låt mig hitta de bästa alternativen för dig!',
+          sender: 'agent',
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, errorMsg]);
+        await calculateRecommendations();
       }
-      console.log('Question added to messages, currentStep set to:', step);
-    } else {
-      console.error('No question found for step:', step, 'in serviceType:', serviceType);
     }
-    
-    setIsTyping(false);
-    console.log('isTyping set to false');
   };
 
+  /**
+   * NEW: Process answer in dynamic system
+   */
   const processAnswer = async (value: string, displayText?: string) => {
+    if (!currentQuestion) {
+      console.error('No current question to process answer for');
+      return;
+    }
+
     // Only add user message if displayText is provided (from multiselect)
     if (displayText) {
       const userMsg: Message = {
@@ -494,82 +381,58 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
         sender: 'user',
         timestamp: new Date(),
       };
-      
       setMessages(prev => [...prev, userMsg]);
     }
-    
-    // Save to profile based on current step
-    const profileUpdate = {};
-    
-    // Define question flow based on service type
-    const getNextStep = () => {
-      if (serviceType === 'broadband') {
-        const flow = ['household', 'streaming', 'gaming', 'meetings', 'router', 'contract', 'budget', 'current-provider', 'priorities'];
-        const currentIndex = flow.indexOf(currentStep);
-        return currentIndex < flow.length - 1 ? flow[currentIndex + 1] : null;
-      } else if (serviceType === 'tv') {
-        const flow = ['tv-type', 'streaming-services', 'tv-contract', 'budget', 'current-provider', 'priorities'];
-        const currentIndex = flow.indexOf(currentStep);
-        return currentIndex < flow.length - 1 ? flow[currentIndex + 1] : null;
-      } else { // both
-        const flow = ['household', 'streaming', 'gaming', 'meetings', 'tv-type', 'streaming-services', 'router', 'contract', 'budget', 'current-provider', 'priorities'];
-        const currentIndex = flow.indexOf(currentStep);
-        return currentIndex < flow.length - 1 ? flow[currentIndex + 1] : null;
-      }
+
+    // Save answer to history
+    const answerRecord: QuestionAnswer = {
+      question: currentQuestion.questionText,
+      answer: value,
+      dataField: currentQuestion.dataField,
+      timestamp: new Date()
     };
+
+    setQuestionHistory(prev => [...prev, answerRecord]);
+
+    // Update user profile with the answer
+    const profileUpdate: any = {};
     
-    switch (currentStep) {
-      case 'household':
-        profileUpdate['householdSize'] = value;
-        break;
-      case 'streaming':
-        profileUpdate['streamingHeavy'] = value === 'heavy';
-        profileUpdate['streamingLevel'] = value;
-        break;
-      case 'gaming':
-        profileUpdate['onlineGaming'] = value === 'yes';
-        break;
-      case 'meetings':
-        profileUpdate['videoMeetings'] = value === 'daily' || value === 'sometimes';
-        profileUpdate['workFromHome'] = value === 'daily';
-        break;
-      case 'router':
-        profileUpdate['includeRouter'] = value === 'yes';
-        break;
-      case 'contract':
-        profileUpdate['contractPreference'] = value;
-        break;
-      case 'tv-type':
-        profileUpdate['tvPreference'] = value;
-        break;
-      case 'streaming-services':
-        profileUpdate['streamingServices'] = value;
-        break;
-      case 'tv-contract':
-        profileUpdate['tvContractPreference'] = value;
-        break;
-      case 'budget':
-        profileUpdate['budget'] = value;
-        break;
-      case 'current-provider':
-        profileUpdate['currentProvider'] = value;
-        break;
-      case 'priorities':
-        profileUpdate['priorities'] = value;
-        break;
-    }
+    // Map answer to profile field intelligently
+    const field = currentQuestion.dataField;
     
-    setUserProfile(prev => ({ ...prev, ...profileUpdate }));
-    
-    const nextStep = getNextStep();
-    console.log('🔄 Current step:', currentStep, 'Next step:', nextStep, 'Service type:', serviceType);
-    console.log('📋 Updated profile:', { ...userProfile, ...profileUpdate });
-    
-    if (nextStep) {
-      await askNextQuestion(nextStep);
+    // Handle specific transformations
+    if (field === 'streamingLevel') {
+      profileUpdate.streamingHeavy = value === 'heavy';
+      profileUpdate.streamingLevel = value;
+    } else if (field === 'onlineGaming') {
+      profileUpdate.onlineGaming = value === 'yes' || value === 'often';
+    } else if (field === 'videoMeetings') {
+      profileUpdate.videoMeetings = value === 'daily' || value === 'sometimes';
+      profileUpdate.workFromHome = value === 'daily';
+    } else if (field === 'includeRouter') {
+      profileUpdate.includeRouter = value === 'yes';
     } else {
-      console.log('🎯 No more steps, calling calculateRecommendations');
+      // Direct mapping for most fields
+      profileUpdate[field] = value;
+    }
+
+    setUserProfile(prev => ({ ...prev, ...profileUpdate }));
+
+    console.log('📝 Answer processed:', {
+      question: currentQuestion.questionText,
+      answer: value,
+      field: currentQuestion.dataField,
+      questionNumber: currentQuestionNumber,
+      maxQuestions: MAX_QUESTIONS
+    });
+
+    // Check if we should continue or finish
+    if (currentQuestionNumber >= MAX_QUESTIONS) {
+      console.log('🎯 Reached max questions, generating recommendations');
       await calculateRecommendations();
+    } else {
+      // Generate next question
+      await askNextQuestion();
     }
   };
 
@@ -802,12 +665,36 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     }
   };
 
-  const handleRealUsageAccept = async (method: string) => {
+  const handleRealUsageAccept = async (method: string, routerData?: RouterAnalysisResult) => {
     setShowRealUsage(false);
     
-    if (method === 'router') {
-      // Visa hastighetstestet
+    if (method === 'router' && routerData) {
+      // Vi har verklig router-analysdata
+      setRouterAnalysisResult(routerData);
+      
+      // Visa resultatet i chatten
+      const msg: Message = {
+        id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        content: `Perfekt! Jag analyserade ditt nätverk och hittade ${routerData.devices.length} enheter. Din uppmätta hastighet är ${routerData.currentSpeed.download} Mbit/s ned och ${routerData.currentSpeed.upload} Mbit/s upp. Baserat på din faktiska användning rekommenderar jag ${routerData.recommendations.recommendedSpeed} Mbit/s.`,
+        sender: 'agent',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, msg]);
+      
+      // Uppdatera användarens profil med verklig data
+      setUserProfile(prev => ({
+        ...prev,
+        actualSpeed: routerData.currentSpeed,
+        deviceCount: routerData.devices.length,
+        peakUsage: Math.max(...routerData.usagePattern.hourlyUsage.map(h => h.usage)),
+        analysisAccuracy: routerData.accuracy,
+        recommendedSpeed: routerData.recommendations.recommendedSpeed
+      }));
+      
+    } else if (method === 'router') {
+      // Fallback till hastighetstestet om router-analysen misslyckades
       setShowSpeedTest(true);
+      return;
     } else {
       // För ISP-metoden, fortsätt med frågor (BankID inte implementerat än)
       const msg: Message = {
@@ -819,16 +706,23 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       setMessages(prev => [...prev, msg]);
       setIsTyping(false); // Ensure typing is false
       
-      // Add small delay before continuing
+      // Add small delay before continuing with dynamic questions
       setTimeout(() => {
-        askNextQuestion(serviceType === 'tv' ? 'tv-type' : 'household');
+        askNextQuestion();
       }, 500);
+      return;
     }
+    
+    // Fortsätt med dynamiska frågor efter router-analys
+    console.log('Router analysis complete, starting dynamic questions');
+    setTimeout(() => {
+      askNextQuestion();
+    }, 1000);
   };
 
   const handleRealUsageDecline = () => {
     setShowRealUsage(false);
-    askNextQuestion('household');
+    askNextQuestion();
   };
 
   const handleSpeedTestComplete = async (result: SpeedTestResult) => {
@@ -844,15 +738,14 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
     };
     setMessages(prev => [...prev, msg]);
     
-    // Fortsätt med frågor baserat på serviceType
-    const nextStep = serviceType === 'tv' ? 'tv-type' : 'household';
-    console.log('Speed test complete, continuing with:', nextStep, 'serviceType:', serviceType);
-    await askNextQuestion(nextStep);
+    // Fortsätt med dynamiska frågor
+    console.log('Speed test complete, starting dynamic questions');
+    setTimeout(() => askNextQuestion(), 800);
   };
 
   const handleSpeedTestSkip = () => {
     setShowSpeedTest(false);
-    askNextQuestion('household');
+    askNextQuestion();
   };
 
   const getIcon = (iconName?: string) => {

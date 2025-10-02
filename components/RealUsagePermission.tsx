@@ -3,15 +3,36 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Router, Smartphone, Lock, HelpCircle, X } from 'lucide-react';
+import RealRouterAnalysis from './RealRouterAnalysis';
+import { RouterAnalysisResult } from '@/lib/network-analysis/router-analyzer';
 
 interface RealUsagePermissionProps {
-  onAccept: (method: 'router' | 'isp' | 'app') => void;
+  onAccept: (method: 'router' | 'isp' | 'app', data?: RouterAnalysisResult) => void;
   onDecline: () => void;
 }
 
 export default function RealUsagePermission({ onAccept, onDecline }: RealUsagePermissionProps) {
   const [selectedMethod, setSelectedMethod] = useState<'router' | 'isp' | null>(null);
   const [openHelp, setOpenHelp] = useState<string | null>(null);
+  const [showRouterAnalysis, setShowRouterAnalysis] = useState(false);
+
+  const handleMethodSelect = (method: 'router' | 'isp') => {
+    if (method === 'router') {
+      setShowRouterAnalysis(true);
+    } else {
+      onAccept(method);
+    }
+  };
+
+  const handleRouterAnalysisComplete = (result: RouterAnalysisResult) => {
+    setShowRouterAnalysis(false);
+    onAccept('router', result);
+  };
+
+  const handleRouterAnalysisSkip = () => {
+    setShowRouterAnalysis(false);
+    onAccept('router'); // Fallback till vanlig router-metod
+  };
 
   const methods = [
     {
@@ -19,8 +40,8 @@ export default function RealUsagePermission({ onAccept, onDecline }: RealUsagePe
       icon: Router,
       title: 'Via din router',
       shortDesc: 'Snabb analys på 2 minuter',
-      accuracy: '99% exakt',
-      helpText: 'Vi ansluter säkert till din router och läser trafikstatistik från de senaste 3 månaderna. Ingen personlig data eller innehåll analyseras - endast trafikvolym och hastigheter. Du behöver din routers IP-adress (oftast 192.168.1.1) och lösenord.'
+      accuracy: 'Dynamisk exakthet',
+      helpText: 'Vi mäter din faktiska internethasighet, skannar anslutna enheter och analyserar ditt användningsmönster i realtid. Exaktheten beräknas baserat på datakvalitet och antal hittade enheter. Ingen personlig data lagras.'
     },
     {
       id: 'isp' as const,
@@ -130,7 +151,7 @@ export default function RealUsagePermission({ onAccept, onDecline }: RealUsagePe
           </button>
           
           <button
-            onClick={() => selectedMethod && onAccept(selectedMethod)}
+            onClick={() => selectedMethod && handleMethodSelect(selectedMethod)}
             disabled={!selectedMethod}
             className="flex-1 py-3 px-6 bg-gray-900 text-white rounded-xl font-medium 
                      hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed 
@@ -140,6 +161,14 @@ export default function RealUsagePermission({ onAccept, onDecline }: RealUsagePe
           </button>
         </div>
       </motion.div>
+      
+      {/* Router Analysis Modal */}
+      {showRouterAnalysis && (
+        <RealRouterAnalysis
+          onComplete={handleRouterAnalysisComplete}
+          onSkip={handleRouterAnalysisSkip}
+        />
+      )}
     </motion.div>
   );
 }
