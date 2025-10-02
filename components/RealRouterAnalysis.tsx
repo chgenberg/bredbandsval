@@ -185,7 +185,7 @@ export default function RealRouterAnalysis({ onComplete, onSkip }: RealRouterAna
               <div>{Math.round(progress)}%</div>
             </div>
           </div>
-        ) : result ? (
+        ) : (
           // Resultatskärm
           <div>
             <div className="text-center mb-6">
@@ -250,6 +250,13 @@ export default function RealRouterAnalysis({ onComplete, onSkip }: RealRouterAna
                 {result.recommendations.reason}
               </p>
             </div>
+            
+            <button
+              onClick={() => onComplete(result)}
+              className="w-full mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            >
+              Fortsätt
+            </button>
           </div>
         )}
       </div>
