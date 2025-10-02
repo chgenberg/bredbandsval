@@ -295,17 +295,31 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
 
   /**
    * NEW: Dynamic question asking using AI
+   * @param updatedHistory - Optional updated history to use (avoids state timing issues)
+   * @param updatedProfile - Optional updated profile to use (avoids state timing issues)
+   * @param updatedQuestionNumber - Optional updated question number
    */
-  const askNextQuestion = async () => {
+  const askNextQuestion = async (
+    updatedHistory?: QuestionAnswer[],
+    updatedProfile?: any,
+    updatedQuestionNumber?: number
+  ) => {
     if (!serviceType) {
       console.error('No service type selected');
       return;
     }
 
+    const historyToUse = updatedHistory || questionHistory;
+    const profileToUse = updatedProfile || userProfile;
+    const questionNumberToUse = updatedQuestionNumber !== undefined 
+      ? updatedQuestionNumber 
+      : currentQuestionNumber + 1;
+
     console.log('🔄 Generating dynamic question...', {
-      questionNumber: currentQuestionNumber + 1,
+      questionNumber: questionNumberToUse,
       serviceType,
-      profileKeys: Object.keys(userProfile)
+      profileKeys: Object.keys(profileToUse),
+      historyLength: historyToUse.length
     });
 
     setLoadingMessage(getRandomLoadingMessage());
@@ -314,9 +328,9 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
 
     try {
       const nextQuestion = await questionGenerator.generateNextQuestion({
-        userProfile: userProfile as DynamicUserProfile,
-        previousAnswers: questionHistory,
-        questionNumber: currentQuestionNumber + 1,
+        userProfile: profileToUse as DynamicUserProfile,
+        previousAnswers: historyToUse,
+        questionNumber: questionNumberToUse,
         maxQuestions: MAX_QUESTIONS,
         serviceType: serviceType
       });
@@ -324,7 +338,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       console.log('✅ Generated question:', nextQuestion);
 
       setCurrentQuestion(nextQuestion);
-      setCurrentQuestionNumber(prev => prev + 1);
+      setCurrentQuestionNumber(questionNumberToUse);
 
       const msg: Message = {
         id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -348,7 +362,7 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       setIsTyping(false);
       
       // Fallback: go straight to recommendations if we can't generate more questions
-      if (currentQuestionNumber >= 3) { // Have at least 3 answers
+      if (questionNumberToUse >= 3) { // Have at least 3 answers
         await calculateRecommendations();
       } else {
         // Show error message
@@ -392,7 +406,9 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       timestamp: new Date()
     };
 
-    setQuestionHistory(prev => [...prev, answerRecord]);
+    // Create updated history immediately (don't wait for state)
+    const updatedHistory = [...questionHistory, answerRecord];
+    setQuestionHistory(updatedHistory);
 
     // Update user profile with the answer
     const profileUpdate: any = {};
@@ -416,14 +432,17 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       profileUpdate[field] = value;
     }
 
-    setUserProfile(prev => ({ ...prev, ...profileUpdate }));
+    // Create updated profile immediately (don't wait for state)
+    const updatedProfile = { ...userProfile, ...profileUpdate };
+    setUserProfile(updatedProfile);
 
     console.log('📝 Answer processed:', {
       question: currentQuestion.questionText,
       answer: value,
       field: currentQuestion.dataField,
       questionNumber: currentQuestionNumber,
-      maxQuestions: MAX_QUESTIONS
+      maxQuestions: MAX_QUESTIONS,
+      historyLength: updatedHistory.length
     });
 
     // Check if we should continue or finish
@@ -431,8 +450,8 @@ export default function AppleStyleAgent({ quickSearchMode = false }: AppleStyleA
       console.log('🎯 Reached max questions, generating recommendations');
       await calculateRecommendations();
     } else {
-      // Generate next question
-      await askNextQuestion();
+      // Generate next question with updated data (avoids React state timing issues)
+      await askNextQuestion(updatedHistory, updatedProfile, currentQuestionNumber + 1);
     }
   };
 
