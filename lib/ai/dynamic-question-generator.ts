@@ -254,8 +254,18 @@ export class DynamicQuestionGenerator {
    */
   private getNextGuaranteedQuestion(context: QuestionContext): GeneratedQuestion | null {
     for (const guaranteed of QUESTION_STRATEGY.guaranteed) {
-      // Om detta fält saknas i profilen
-      if (!context.userProfile[guaranteed.field as keyof UserProfile]) {
+      const fieldName = guaranteed.field as keyof UserProfile;
+      
+      // Kolla om fältet saknas i profilen
+      const missingInProfile = !context.userProfile[fieldName];
+      
+      // Kolla om frågan redan ställts i historiken
+      const alreadyAsked = context.previousAnswers.some(
+        qa => qa.dataField === guaranteed.field
+      );
+      
+      // Om fältet saknas OCH inte redan frågats, ställ frågan
+      if (missingInProfile && !alreadyAsked) {
         return {
           questionText: guaranteed.question,
           suggestedAnswers: guaranteed.answers,
@@ -276,7 +286,15 @@ export class DynamicQuestionGenerator {
     const missing: string[] = [];
     
     for (const field of QUESTION_STRATEGY.dynamicPool) {
-      if (!context.userProfile[field as keyof UserProfile]) {
+      const missingInProfile = !context.userProfile[field as keyof UserProfile];
+      
+      // Kolla om frågan redan ställts
+      const alreadyAsked = context.previousAnswers.some(
+        qa => qa.dataField === field
+      );
+      
+      // Endast inkludera om det saknas OCH inte redan frågats
+      if (missingInProfile && !alreadyAsked) {
         missing.push(field);
       }
     }
@@ -374,8 +392,10 @@ RETURNERA ALLTID GILTIG JSON i detta format:
    */
   private buildPrompt(context: QuestionContext, missingData: string[]): string {
     const previousAnswersText = context.previousAnswers
-      .map(qa => `Q: ${qa.question}\nA: ${qa.answer}`)
+      .map(qa => `Q: ${qa.question}\nA: ${qa.answer} (dataField: ${qa.dataField})`)
       .join('\n\n');
+
+    const alreadyAskedFields = context.previousAnswers.map(qa => qa.dataField);
 
     return `
 KONTEXT:
@@ -385,14 +405,22 @@ Fråga: ${context.questionNumber} av ${context.maxQuestions}
 TIDIGARE SVAR:
 ${previousAnswersText || 'Inga tidigare svar än'}
 
+REDAN STÄLLDA DATAFÄLT (ANVÄND INTE DESSA):
+${alreadyAskedFields.length > 0 ? alreadyAskedFields.join(', ') : 'Inga än'}
+
 NUVARANDE PROFIL:
 ${JSON.stringify(context.userProfile, null, 2)}
 
-SAKNADE DATAPUNKTER:
-${missingData.join(', ')}
+SAKNADE DATAPUNKTER (välj från dessa):
+${missingData.join(', ') || 'Alla viktiga fält är ifyllda'}
 
 TILLGÄNGLIGA DATAFÄLT (använd ett av dessa som dataField):
-${QUESTION_STRATEGY.dynamicPool.join(', ')}
+${missingData.join(', ') || QUESTION_STRATEGY.dynamicPool.join(', ')}
+
+VIKTIGT:
+- Välj ENDAST ett dataField från "SAKNADE DATAPUNKTER" listan
+- Använd ALDRIG ett dataField från "REDAN STÄLLDA DATAFÄLT"
+- Om missingData är tom, välj valfritt tillgängligt fält som inte redan använts
 
 UPPGIFT:
 Generera nästa mest relevanta fråga som:
@@ -400,6 +428,7 @@ Generera nästa mest relevanta fråga som:
 2. Fyller viktiga luckor i profilen
 3. Känns naturlig och konversationell
 4. Har mellan 2-4 konkreta svarsalternativ med ikoner
+5. Använder ett dataField som INTE redan ställts
 
 EXEMPEL PÅ BRA UPPFÖLJNINGAR:
 
@@ -409,7 +438,7 @@ Om användare svarade "3-4 personer":
 
 Om användare svarade "Streamer varje dag":
 → Fråga om antal streamers eller kvalitet (HD vs 4K)
-→ {"questionText": "Hur många brukar streama samtidigt?", "dataField": "simultaneousDevices"}
+→ {"questionText": "Streamer ni mest i 4K eller HD?", "dataField": "streamingQuality"}
 
 Om användare svarade "5+ personer" + "Spelar online":
 → Fråga om peak-tider eller fiber-tillgänglighet
@@ -440,6 +469,16 @@ RETURNERA JSON NU:`;
       return this.getFallbackQuestion(context);
     }
 
+    // Kontrollera att frågan inte redan ställts
+    const alreadyAsked = context.previousAnswers.some(
+      qa => qa.dataField === question.dataField
+    );
+    
+    if (alreadyAsked) {
+      console.warn(`Question for field '${question.dataField}' already asked, using fallback`);
+      return this.getFallbackQuestion(context);
+    }
+
     return question;
   }
 
@@ -449,12 +488,24 @@ RETURNERA JSON NU:`;
   private getFallbackQuestion(context: QuestionContext): GeneratedQuestion {
     // Hitta första frågan från fallback som inte är besvarad
     for (const [field, question] of Object.entries(FALLBACK_QUESTIONS)) {
-      if (!context.userProfile[field as keyof UserProfile]) {
+      const missingInProfile = !context.userProfile[field as keyof UserProfile];
+      const alreadyAsked = context.previousAnswers.some(qa => qa.dataField === field);
+      
+      if (missingInProfile && !alreadyAsked) {
         return question;
       }
     }
 
-    // Om allt annat misslyckas, returnera priorities-frågan
+    // Om alla frågor redan ställts, hitta vilken fråga som helst som inte är besvarad
+    const allPossibleFields = [...QUESTION_STRATEGY.dynamicPool];
+    for (const field of allPossibleFields) {
+      const alreadyAsked = context.previousAnswers.some(qa => qa.dataField === field);
+      if (!alreadyAsked && FALLBACK_QUESTIONS[field]) {
+        return FALLBACK_QUESTIONS[field];
+      }
+    }
+
+    // Om verkligen allt misslyckas, returnera priorities-frågan
     return FALLBACK_QUESTIONS.priorities;
   }
 
@@ -464,8 +515,10 @@ RETURNERA JSON NU:`;
   private getCacheKey(context: QuestionContext): string {
     const answersHash = context.previousAnswers
       .map(qa => `${qa.dataField}:${qa.answer}`)
+      .sort() // Sortera för konsistens
       .join('|');
-    return `${context.serviceType}-${context.questionNumber}-${answersHash}`;
+    const profileKeys = Object.keys(context.userProfile).sort().join(',');
+    return `${context.serviceType}-${context.questionNumber}-${answersHash}-${profileKeys}`;
   }
 
   /**
